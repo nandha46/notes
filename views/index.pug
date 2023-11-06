@@ -1,0 +1,1352 @@
+include includes/header.pug
+.nk-app-root
+  // main @s
+  .nk-main
+    // sidebar @s
+    include includes/sidepanel.pug
+    // sidebar @e
+    // wrap @s
+    .nk-wrap
+      // main header @s
+      include includes/navbar.pug
+      // main header @e
+      // content @s
+      .nk-content
+        .container-fluid
+          .nk-content-inner
+            .nk-content-body
+              .nk-block-head.nk-block-head-sm
+                .nk-block-between
+                  .nk-block-head-content
+                    h3.nk-block-title.page-title To Download List
+                    .nk-block-des.text-soft
+                      p You have total 2,595 items.
+                  // .nk-block-head-content
+                  .nk-block-head-content
+                    .toggle-wrap.nk-block-tools-toggle
+                      a.btn.btn-icon.btn-trigger.toggle-expand.me-n1(href='#' data-target='pageMenu')
+                        em.icon.ni.ni-menu-alt-r
+                      .toggle-expand-content(data-content='pageMenu')
+                        ul.nk-block-tools.g-3
+                          li
+                            a.btn.btn-white.btn-outline-light(href='#')
+                              em.icon.ni.ni-download-cloud
+                              span Export
+                          li.nk-block-tools-opt
+                            .drodown
+                              a.dropdown-toggle.btn.btn-icon.btn-primary(href='#' data-bs-toggle='dropdown')
+                                em.icon.ni.ni-plus
+                              .dropdown-menu.dropdown-menu-end
+                                ul.link-list-opt.no-bdr
+                                  li
+                                    a(href='#')
+                                      span Add User
+                                  li
+                                    a(href='#')
+                                      span Add Team
+                                  li
+                                    a(href='#')
+                                      span Import User
+                    // .toggle-wrap
+                  // .nk-block-head-content
+                // .nk-block-between
+              // .nk-block-head
+              .nk-block
+                .card.card-bordered.card-stretch
+                  .card-inner-group
+                    .card-inner.position-relative.card-tools-toggle
+                      .card-title-group
+                        .card-tools
+                          .form-inline.flex-nowrap.gx-3
+                            .form-wrap.w-150px
+                              select.form-select.js-select2(data-search='off' data-placeholder='Bulk Action')
+                                option(value='') Bulk Action
+                                option(value='email') Send Email
+                                option(value='group') Change Group
+                                option(value='suspend') Suspend User
+                                option(value='delete') Delete User
+                            .btn-wrap
+                              span.d-none.d-md-block
+                                button.btn.btn-dim.btn-outline-light.disabled Apply
+                              span.d-md-none
+                                button.btn.btn-dim.btn-outline-light.btn-icon.disabled
+                                  em.icon.ni.ni-arrow-right
+                          // .form-inline
+                        // .card-tools
+                        .card-tools.me-n1
+                          ul.btn-toolbar.gx-1
+                            li
+                              a.btn.btn-icon.search-toggle.toggle-search(href='#' data-target='search')
+                                em.icon.ni.ni-search
+                            // li
+                            li.btn-toolbar-sep
+                            // li
+                            li
+                              .toggle-wrap
+                                a.btn.btn-icon.btn-trigger.toggle(href='#' data-target='cardTools')
+                                  em.icon.ni.ni-menu-right
+                                .toggle-content(data-content='cardTools')
+                                  ul.btn-toolbar.gx-1
+                                    li.toggle-close
+                                      a.btn.btn-icon.btn-trigger.toggle(href='#' data-target='cardTools')
+                                        em.icon.ni.ni-arrow-left
+                                    // li
+                                    li
+                                      .dropdown
+                                        a.btn.btn-trigger.btn-icon.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                          .dot.dot-primary
+                                          em.icon.ni.ni-filter-alt
+                                        .filter-wg.dropdown-menu.dropdown-menu-xl.dropdown-menu-end
+                                          .dropdown-head
+                                            span.sub-title.dropdown-title Filter Users
+                                            .dropdown
+                                              a.btn.btn-sm.btn-icon(href='#')
+                                                em.icon.ni.ni-more-h
+                                          .dropdown-body.dropdown-body-rg
+                                            .row.gx-6.gy-3
+                                              .col-6
+                                                .custom-control.custom-control-sm.custom-checkbox
+                                                  input#hasBalance.custom-control-input(type='checkbox')
+                                                  label.custom-control-label(for='hasBalance')  Have Balance
+                                              .col-6
+                                                .custom-control.custom-control-sm.custom-checkbox
+                                                  input#hasKYC.custom-control-input(type='checkbox')
+                                                  label.custom-control-label(for='hasKYC')  KYC Verified
+                                              .col-6
+                                                .form-group
+                                                  label.overline-title.overline-title-alt Role
+                                                  select.form-select.js-select2
+                                                    option(value='any') Any Role
+                                                    option(value='investor') Investor
+                                                    option(value='seller') Seller
+                                                    option(value='buyer') Buyer
+                                              .col-6
+                                                .form-group
+                                                  label.overline-title.overline-title-alt Status
+                                                  select.form-select.js-select2
+                                                    option(value='any') Any Status
+                                                    option(value='active') Active
+                                                    option(value='pending') Pending
+                                                    option(value='suspend') Suspend
+                                                    option(value='deleted') Deleted
+                                              .col-12
+                                                .form-group
+                                                  button.btn.btn-secondary(type='button') Filter
+                                          .dropdown-foot.between
+                                            a.clickable(href='#') Reset Filter
+                                            a(href='#') Save Filter
+                                        // .filter-wg
+                                      // .dropdown
+                                    // li
+                                    li
+                                      .dropdown
+                                        a.btn.btn-trigger.btn-icon.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                          em.icon.ni.ni-setting
+                                        .dropdown-menu.dropdown-menu-xs.dropdown-menu-end
+                                          ul.link-check
+                                            li
+                                              span Show
+                                            li.active
+                                              a(href='#') 10
+                                            li
+                                              a(href='#') 20
+                                            li
+                                              a(href='#') 50
+                                          ul.link-check
+                                            li
+                                              span Order
+                                            li.active
+                                              a(href='#') DESC
+                                            li
+                                              a(href='#') ASC
+                                      // .dropdown
+                                    // li
+                                  // .btn-toolbar
+                                // .toggle-content
+                              // .toggle-wrap
+                            // li
+                          // .btn-toolbar
+                        // .card-tools
+                      // .card-title-group
+                      .card-search.search-wrap(data-search='search')
+                        .card-body
+                          .search-content
+                            a.search-back.btn.btn-icon.toggle-search(href='#' data-target='search')
+                              em.icon.ni.ni-arrow-left
+                            input.form-control.border-transparent.form-focus-none(type='text' placeholder='Search by user or email')
+                            button.search-submit.btn.btn-icon
+                              em.icon.ni.ni-search
+                      // .card-search
+                    // .card-inner
+                    .card-inner.p-0
+                      .nk-tb-list.nk-tb-ulist.is-compact
+                        .nk-tb-item.nk-tb-head
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid')
+                          .nk-tb-col
+                            span.sub-text User
+                          .nk-tb-col.tb-col-md
+                            span.sub-text Role
+                          .nk-tb-col.tb-col-sm
+                            span.sub-text Email
+                          .nk-tb-col.tb-col-md
+                            span.sub-text Phone
+                          .nk-tb-col.tb-col-xxl
+                            span.sub-text Company
+                          .nk-tb-col.tb-col-lg
+                            span.sub-text Verified
+                          .nk-tb-col.tb-col-xxl
+                            span.sub-text Last Login
+                          .nk-tb-col
+                            span.sub-text Status
+                          .nk-tb-col.nk-tb-col-tools.text-end
+                            .dropdown
+                              a.btn.btn-xs.btn-outline-light.btn-icon.dropdown-toggle(href='#' data-bs-toggle='dropdown' data-offset='0,5')
+                                em.icon.ni.ni-plus
+                              .dropdown-menu.dropdown-menu-xs.dropdown-menu-end
+                                ul.link-tidy.sm.no-bdr
+                                  li
+                                    .custom-control.custom-control-sm.custom-checkbox
+                                      input#bl.custom-control-input(type='checkbox' checked='')
+                                      label.custom-control-label(for='bl') Balance
+                                  li
+                                    .custom-control.custom-control-sm.custom-checkbox
+                                      input#ph.custom-control-input(type='checkbox' checked='')
+                                      label.custom-control-label(for='ph') Phone
+                                  li
+                                    .custom-control.custom-control-sm.custom-checkbox
+                                      input#vri.custom-control-input(type='checkbox')
+                                      label.custom-control-label(for='vri') Verified
+                                  li
+                                    .custom-control.custom-control-sm.custom-checkbox
+                                      input#st.custom-control-input(type='checkbox')
+                                      label.custom-control-label(for='st') Status
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid1.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid1')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-primary
+                                span AB
+                              .user-name
+                                span.tb-lead Abu Bin Ishtiyak
+                          .nk-tb-col.tb-col-md
+                            span Customer
+                          .nk-tb-col.tb-col-sm
+                            span info@softnio.com
+                          .nk-tb-col.tb-col-md
+                            span +811 847-4958
+                          .nk-tb-col.tb-col-xxl
+                            span Bangladesh
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-success.ni.ni-check-circle
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 10 Feb 2020
+                          .nk-tb-col
+                            span.tb-status.text-success Active
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid2.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid2')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-warning
+                                span PN
+                              .user-name
+                                span.tb-lead Patrick Newman
+                          .nk-tb-col.tb-col-md
+                            span Investor
+                          .nk-tb-col.tb-col-sm
+                            span patrick@example.com
+                          .nk-tb-col.tb-col-md
+                            span +942 238-4474
+                          .nk-tb-col.tb-col-xxl
+                            span United States
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-success.ni.ni-check-circle
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 06 Feb 2020
+                          .nk-tb-col
+                            span.tb-status.text-success Active
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid3.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid3')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-success
+                                span HK
+                              .user-name
+                                span.tb-lead Howard Kennedy
+                          .nk-tb-col.tb-col-md
+                            span Customer
+                          .nk-tb-col.tb-col-sm
+                            span howard@example.com
+                          .nk-tb-col.tb-col-md
+                            span +447 595-6725
+                          .nk-tb-col.tb-col-xxl
+                            span England
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-info.ni.ni-alarm-alt
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 01 Feb 2020
+                          .nk-tb-col
+                            span.tb-status.text-warning Pending
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid4.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid4')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-purple
+                                span AB
+                              .user-name
+                                span.tb-lead Albert Brown
+                          .nk-tb-col.tb-col-md
+                            span Subscriber
+                          .nk-tb-col.tb-col-sm
+                            span howard@example.com
+                          .nk-tb-col.tb-col-md
+                            span +408 595-6725
+                          .nk-tb-col.tb-col-xxl
+                            span United States
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.ni.ni-alert-circle
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 31 Jan 2020
+                          .nk-tb-col
+                            span.tb-status.text-success Active
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid5.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid5')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-danger
+                                span BH
+                              .user-name
+                                span.tb-lead Brian Hunter
+                          .nk-tb-col.tb-col-md
+                            span Manager
+                          .nk-tb-col.tb-col-sm
+                            span brian@example.com
+                          .nk-tb-col.tb-col-md
+                            span +811 521-6695
+                          .nk-tb-col.tb-col-xxl
+                            span Bangladesh
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-success.ni.ni-check-circle
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 28 Jan 2020
+                          .nk-tb-col
+                            span.tb-status.text-info Inactive
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid6.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid6')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-dark
+                                span TS
+                              .user-name
+                                span.tb-lead Timothy Silva
+                          .nk-tb-col.tb-col-md
+                            span Investor
+                          .nk-tb-col.tb-col-sm
+                            span timothy@example.com
+                          .nk-tb-col.tb-col-md
+                            span +91 411-5392
+                          .nk-tb-col.tb-col-xxl
+                            span India
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-success.ni.ni-check-circle
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 26 Jan 2020
+                          .nk-tb-col
+                            span.tb-status.text-info Inactive
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid7.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid7')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-success
+                                span JC
+                              .user-name
+                                span.tb-lead Janice Cooper
+                          .nk-tb-col.tb-col-md
+                            span Investor
+                          .nk-tb-col.tb-col-sm
+                            span janice@example.com
+                          .nk-tb-col.tb-col-md
+                            span +91 483-6614
+                          .nk-tb-col.tb-col-xxl
+                            span India
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-warning.ni.ni-alarm-alt
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 21 Jan 2020
+                          .nk-tb-col
+                            span.tb-status.text-danger Suspend
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid8.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid8')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-dark
+                                span EC
+                              .user-name
+                                span.tb-lead Elizabeth Carter
+                          .nk-tb-col.tb-col-md
+                            span Customer
+                          .nk-tb-col.tb-col-sm
+                            span elizabeth93@example.com
+                          .nk-tb-col.tb-col-md
+                            span +862 507-4068
+                          .nk-tb-col.tb-col-xxl
+                            span China
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-info.ni.ni-alarm-alt
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 21 Jan 2020
+                          .nk-tb-col
+                            span.tb-status.text-success Active
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid9.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid9')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-warning
+                                span LN
+                              .user-name
+                                span.tb-lead Lori Newman
+                          .nk-tb-col.tb-col-md
+                            span Investor
+                          .nk-tb-col.tb-col-sm
+                            span newman@example.com
+                          .nk-tb-col.tb-col-md
+                            span +123 287-2360
+                          .nk-tb-col.tb-col-xxl
+                            span United States
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-info.ni.ni-alarm-alt
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 18 Jan 2020
+                          .nk-tb-col
+                            span.tb-status.text-success Active
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid10.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid10')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-success
+                                span AC
+                              .user-name
+                                span.tb-lead Alice Contreras
+                          .nk-tb-col.tb-col-md
+                            span Manager
+                          .nk-tb-col.tb-col-sm
+                            span alice92@example.com
+                          .nk-tb-col.tb-col-md
+                            span +123 751-5981
+                          .nk-tb-col.tb-col-xxl
+                            span United States
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-success.ni.ni-check-circle
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 11 Jan 2020
+                          .nk-tb-col
+                            span.tb-status.text-success Active
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid11.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid11')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-primary
+                                span JG
+                              .user-name
+                                span.tb-lead Jesse Guzman
+                          .nk-tb-col.tb-col-md
+                            span Customer
+                          .nk-tb-col.tb-col-sm
+                            span guzman@example.com
+                          .nk-tb-col.tb-col-md
+                            span +842 842-2621
+                          .nk-tb-col.tb-col-xxl
+                            span Vietnam
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-success.ni.ni-check-circle
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 10 Jan 2020
+                          .nk-tb-col
+                            span.tb-status.text-success Active
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid12.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid12')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-danger
+                                span GB
+                              .user-name
+                                span.tb-lead Gary Bishop
+                          .nk-tb-col.tb-col-md
+                            span Customer
+                          .nk-tb-col.tb-col-sm
+                            span bishop@example.com
+                          .nk-tb-col.tb-col-md
+                            span +651 979-7962
+                          .nk-tb-col.tb-col-xxl
+                            span Singapore
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-success.ni.ni-check-circle
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 10 Jan 2020
+                          .nk-tb-col
+                            span.tb-status.text-warning Pending
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid13.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid13')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-dark
+                                span WL
+                              .user-name
+                                span.tb-lead Wayne Lewis
+                          .nk-tb-col.tb-col-md
+                            span Customer
+                          .nk-tb-col.tb-col-sm
+                            span waynelewis@example.com
+                          .nk-tb-col.tb-col-md
+                            span +632 979-7962
+                          .nk-tb-col.tb-col-xxl
+                            span Philippines
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-success.ni.ni-check-circle
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 05 Jan 2020
+                          .nk-tb-col
+                            span.tb-status.text-warning Pending
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid14.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid14')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-warning
+                                span FP
+                              .user-name
+                                span.tb-lead Frank Phillips
+                          .nk-tb-col.tb-col-md
+                            span Customer
+                          .nk-tb-col.tb-col-sm
+                            span frank97@example.com
+                          .nk-tb-col.tb-col-md
+                            span +632 577-9342
+                          .nk-tb-col.tb-col-xxl
+                            span Philippines
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-success.ni.ni-check-circle
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 01 Jan 2020
+                          .nk-tb-col
+                            span.tb-status.text-success Active
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid15.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid15')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-success
+                                span MB
+                              .user-name
+                                span.tb-lead Marilyn Bradley
+                          .nk-tb-col.tb-col-md
+                            span Customer
+                          .nk-tb-col.tb-col-sm
+                            span marilyn84@example.com
+                          .nk-tb-col.tb-col-md
+                            span +601 890-3578
+                          .nk-tb-col.tb-col-xxl
+                            span Malaysia
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.ni.ni-alarm-alt(class='text-warning/')
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 01 Jan 2020
+                          .nk-tb-col
+                            span.tb-status.text-success Active
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-repeat
+                                          span Orders
+                                      li.divider
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-star
+                                          span Reset Pass
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-shield-off
+                                          span Reset 2FA
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-na
+                                          span Suspend User
+                        // .nk-tb-item
+                      // .nk-tb-list
+                    // .card-inner
+                    .card-inner
+                      ul.pagination.justify-content-center.justify-content-md-start
+                        li.page-item
+                          a.page-link(href='#') Prev
+                        li.page-item
+                          a.page-link(href='#') 1
+                        li.page-item
+                          a.page-link(href='#') 2
+                        li.page-item
+                          span.page-link
+                            em.icon.ni.ni-more-h
+                        li.page-item
+                          a.page-link(href='#') 6
+                        li.page-item
+                          a.page-link(href='#') 7
+                        li.page-item
+                          a.page-link(href='#') Next
+                      // .pagination
+                    // .card-inner
+                  // .card-inner-group
+                // .card
+              // .nk-block
+      // content @e
+      // footer @s
+      include includes/footer.pug
+      // footer @e
+    // wrap @e
+  // main @e
+// app-root @e
+// select region modal
+#region.modal.fade(tabindex='-1' role='dialog')
+  .modal-dialog.modal-lg(role='document')
+    .modal-content
+      a.close(href='#' data-bs-dismiss='modal')
+        em.icon.ni.ni-cross-sm
+      .modal-body.modal-body-md
+        h5.title.mb-4 Select Your Country
+        .nk-country-region
+          ul.country-list.text-center.gy-2
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/arg.png' alt='')
+                span.country-name Argentina
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/aus.png' alt='')
+                span.country-name Australia
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/bangladesh.png' alt='')
+                span.country-name Bangladesh
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/canada.png' alt='')
+                span.country-name
+                  | Canada 
+                  small (English)
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/china.png' alt='')
+                span.country-name Centrafricaine
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/china.png' alt='')
+                span.country-name China
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/french.png' alt='')
+                span.country-name France
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/germany.png' alt='')
+                span.country-name Germany
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/iran.png' alt='')
+                span.country-name Iran
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/italy.png' alt='')
+                span.country-name Italy
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/mexico.png' alt='')
+                span.country-name M&eacute;xico
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/philipine.png' alt='')
+                span.country-name Philippines
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/portugal.png' alt='')
+                span.country-name Portugal
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/s-africa.png' alt='')
+                span.country-name South Africa
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/spanish.png' alt='')
+                span.country-name Spain
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/switzerland.png' alt='')
+                span.country-name Switzerland
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/uk.png' alt='')
+                span.country-name United Kingdom
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/english.png' alt='')
+                span.country-name United State
+    // .modal-content
+  // .modla-dialog
+// .modal
+// JavaScript
+script(src='./assets/js/bundle.js?ver=3.0.3')
+script(src='./assets/js/scripts.js?ver=3.0.3')
