@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import iso6391 from 'iso-639-1';
 
 const schema = new mongoose.Schema({
     id: {
@@ -12,14 +13,20 @@ const schema = new mongoose.Schema({
     genres:[],
     homepage:String,
     imdb_id:String,
-    original_language:String,
+    original_language:{
+        type:String,
+        get: lang => iso6391.getName(lang)
+    },
     original_title:String,
     overview:String,
     popularity:Number,
     poster_path:String,
     production_companies:[],
     production_countries:[],
-    release_date:Date,
+    release_date:{
+        type:Date,
+        get: date => date == null?'-':date.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })
+    },
     revenue:Number,
     runtime:Number,
     spoken_languages:[],

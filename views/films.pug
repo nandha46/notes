@@ -77,15 +77,15 @@ include includes/header.pug
                           .nk-tb-col
                             span.sub-text Title
                           .nk-tb-col.tb-col-md
-                            span.sub-text Type
-                          .nk-tb-col.tb-col-sm
-                            span.sub-text Comment
-                          .nk-tb-col.tb-col-md
                             span.sub-text Language
+                          .nk-tb-col.tb-col-sm
+                            span.sub-text Votes
+                          .nk-tb-col.tb-col-md
+                            span.sub-text Genres
                           .nk-tb-col.tb-col-lg
-                            span.sub-text Completed Date
+                            span.sub-text Release Date
                           .nk-tb-col.tb-col-xxl
-                            span.sub-text Added Date
+                            span.sub-text Overview
                           .nk-tb-col.nk-tb-col-tools.text-end
                         // .nk-tb-item
                       each film in allFilms  
@@ -93,22 +93,19 @@ include includes/header.pug
                           .nk-tb-col
                             .user-card
                               .user-avatar.xs.bg-primary
-                                span Sc
+                                span=film.title[0]
                               .user-name
-                                span.tb-lead=film.original_title
+                                span.tb-lead=film.title
                           .nk-tb-col.tb-col-md
-                            span Movie
+                            span=film.original_language
                           .nk-tb-col.tb-col-sm
-                            span stars neve campbell
+                            span=film.vote_average
                           .nk-tb-col.tb-col-md
-                            span English
+                            span=film.genres.toString()
                           .nk-tb-col.tb-col-lg
-                            ul.list-status
-                              li
-                                em.icon.text-success.ni.ni-check-circle
-                                span 21 Mar 2021
+                            span=film.release_date
                           .nk-tb-col.tb-col-xxl
-                            span 10 Feb 2020
+                            span=film.overview
                           .nk-tb-col.nk-tb-col-tools
                             ul.nk-tb-actions.gx-2
                               li.nk-tb-action-hidden
@@ -212,6 +209,17 @@ include includes/header.pug
                 .form-control-wrap
                   select#movie-select.form-select.js-select2(data-search='on')
                     //- option(value='default_option') Pick a Title
+          .form-group
+            .custom-control.custom-switch
+              input#customSwitch1.custom-control-input(type='checkbox')
+              label.custom-control-label(for='customSwitch1') Adult
+          .form-control-wrap
+            label.form-label(for='priority') Priority
+            #priority.form-control-slider(data-tooltip='true' data-start='5' data-min='1' data-max='10')
+          .form-group
+            label.form-label(for='comment') Url
+            .form-control-wrap
+              input#url.form-control(type='text')
           .form-group
             label.form-label(for='comment') Comment
             .form-control-wrap

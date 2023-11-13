@@ -7,6 +7,9 @@ $(function(){
         let data = {
             'mediaType': $('#media-select').val(),
             'selectedTitle': $('#movie-select').val(),
+            'adult': $('#customSwitch1').is(':checked'),
+            'priority': $('#priority')[0].noUiSlider.get(),
+            'url': $('#url').val(),
             'comment': $('#comment').val(),
             'movArr': movArr,
             'tvArr': tvArr
