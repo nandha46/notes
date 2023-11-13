@@ -1,13 +1,6 @@
-// const express = require('express');
 import express from 'express';
 const app = express();
-// const Joi = require('joi');
 import Joi from 'joi';
-// const fetch = require('node-fetch');
-import fetch from 'node-fetch';
-
-// const helmet  = require('helmet');
-// const morgan = require('morgan');
 
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -22,9 +15,7 @@ app.set('view engine', 'pug');
 app.set('views', './views');
 app.use(express.static('public'))
 
-// const { Movie } = require('./models/movie');
-
-// import Movie from '../models/movie.js';
+import Movie from './models/movie.js';
 
 const options = {
   method: 'GET',
@@ -40,14 +31,27 @@ app.get('/', (req, res)=>{
 
 app.post('/add-to-download-list', (req, res) => {
     const schema = Joi.object({
-        name: Joi.string().required()
+        mediaType: Joi.number().required(),
+        selectedTitle: Joi.number().required(),
+        comment: Joi.string().required(),
+        movArr: Joi.array().required(),
+        tvArr: Joi.array().required()
     });
     const result = schema.validate(req.body);
     if(result.error){
-        res.send(result.error);
+        res.status(400).send({"message": result.error.details[0].message});
         return;
     }
-    res.status(200).send( {status: "success", movie: []});
+
+    if(req.body.movArr){
+      for(const mov in req.body.movArr){
+        let movie = new Movie(mov);
+        movie.save();
+      }
+    }
+
+    console.log(req.body);
+    res.status(200).send( {status: "success", "data": req.body});
 });
 
 app.listen(3000, () => {
