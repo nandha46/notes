@@ -16,11 +16,16 @@ $(function(){
             url: '/add-to-download-list', 
             type:'post',
             data: JSON.stringify(data), 
-            contentType: "application/json",
-            success: function (data) {
-                console.log(data);
-            },
-            fail: function (data){console.log(data)}
+            contentType: "application/json"
+        }).done(function(result){
+            if(result.status){
+                Swal.fire("Good job!", "Added to watchlist!", "success");
+            } else {
+                Swal.fire(`${result.message}!`, "", "error");
+            }
+        }).fail(function (xhr, status, error){
+            Swal.fire(`Error!`, "Check the console for more..", "error");            
+            console.log("Error:", error);
         });
         return false;
     });

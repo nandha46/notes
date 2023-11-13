@@ -31,6 +31,6 @@ const schema = new mongoose.Schema({
     vote_count:Number
 });
 
-const Movie = mongoose.model('movies', schema);
+const Tv = mongoose.model('tv_shows', schema);
 
-export default Movie;
+export default Tv;

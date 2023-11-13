@@ -15,7 +15,17 @@ app.set('view engine', 'pug');
 app.set('views', './views');
 app.use(express.static('public'))
 
+import mongoose from 'mongoose';
+mongoose.connect('mongodb://localhost/mongo-test')
+            .then(()=> {
+                console.log('connected to monogo db');
+            }).catch(err => {
+                console.error('could not connect to mongo db....');
+            });
+
 import Movie from './models/movie.js';
+import Tv from './models/tv.js';
+import Watchlist from './models/watchlist.js';
 
 const options = {
   method: 'GET',
@@ -29,6 +39,15 @@ app.get('/', (req, res)=>{
     res.status(200).render('index', {});
 });
 
+app.get('/watchlist', (req, res)=>{
+    res.status(200).render('downloadList', {});
+});
+
+import movies from './routes/movies.js';
+
+app.use('/', movies);
+
+
 app.post('/add-to-download-list', (req, res) => {
     const schema = Joi.object({
         mediaType: Joi.number().required(),
@@ -39,19 +58,49 @@ app.post('/add-to-download-list', (req, res) => {
     });
     const result = schema.validate(req.body);
     if(result.error){
-        res.status(400).send({"message": result.error.details[0].message});
+        res.status(200).send({status:false, "message": result.error.details[0].message});
         return;
     }
 
     if(req.body.movArr){
-      for(const mov in req.body.movArr){
+      for(const mov of req.body.movArr){
         let movie = new Movie(mov);
-        movie.save();
+        movie.save().then(()=> {console.log("Movie saved")}).catch((err)=>{
+          if(err.code === 11000){
+            console.error('Duplicate Movie');
+          } else {
+            console.error('some other error in saving movie')
+          }
+        });
       }
     }
+    
+    // if(req.body.tvArr){
+    //   for(const tv of req.body.tvArr){
+    //     let movie = new Movie(tv);
+    //     movie.save().then(()=> {console.log("Movie saved")}).catch((err)=>{
+    //       if(err.code === 11000){
+    //         console.error('Duplicate Movie');
+    //       } else {
+    //         console.error('some other error in saving movie')
+    //       }
+    //     });
+    //   }
+    // }
 
-    console.log(req.body);
-    res.status(200).send( {status: "success", "data": req.body});
+    let newWatchlistEntry = new Watchlist({
+      mediaType:req.body.mediaType,
+      id:req.body.selectedTitle,
+      comment:req.body.comment
+    });
+
+    newWatchlistEntry.save().then(()=> {
+      console.log('Entry saved')
+    }).catch((err)=> {
+      console.error(err);
+    })
+
+    res.status(200).send( {status: true, "data": req.body});
 });
 
 app.listen(3000, () => {

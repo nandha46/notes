@@ -1,0 +1,366 @@
+include includes/header.pug
+.nk-app-root
+  // main @s
+  .nk-main
+    // sidebar @s
+    include includes/sidepanel.pug
+    // sidebar @e
+    // wrap @s
+    .nk-wrap
+      // main header @s
+      include includes/navbar.pug
+      // main header @e
+      // content @s
+      .nk-content
+        .container-fluid
+          .nk-content-inner
+            .nk-content-body
+              .nk-block-head.nk-block-head-sm
+                .nk-block-between
+                  .nk-block-head-content
+                    h3.nk-block-title.page-title To Download List
+                    .nk-block-des.text-soft
+                      p You have total 2,595 items.
+                  // .nk-block-head-content
+                  .nk-block-head-content
+                    .toggle-wrap.nk-block-tools-toggle
+                      a.btn.btn-icon.btn-trigger.toggle-expand.me-n1(href='#' data-target='pageMenu')
+                        em.icon.ni.ni-menu-alt-r
+                      .toggle-expand-content(data-content='pageMenu')
+                        ul.nk-block-tools.g-3
+                          li
+                            a.btn.btn-white.btn-outline-light(href='#')
+                              em.icon.ni.ni-download-cloud
+                              span Export
+                          li.nk-block-tools-opt
+                            .drodown
+                              a.dropdown-toggle.btn.btn-icon.btn-primary(href='#' data-bs-toggle='dropdown')
+                                em.icon.ni.ni-plus
+                              .dropdown-menu.dropdown-menu-end
+                                ul.link-list-opt.no-bdr
+                                  li
+                                    a(href='#' data-bs-toggle='modal' data-bs-target='#modalForm')
+                                      span Add Media
+                    // .toggle-wrap
+                  // .nk-block-head-content
+                // .nk-block-between
+              // .nk-block-head
+              .nk-block
+                .card.card-bordered.card-stretch
+                  .card-inner-group
+                    .card-inner.position-relative.card-tools-toggle
+                      .card-title-group
+                        .card-tools
+                          .form-inline.flex-nowrap.gx-3
+                            .form-wrap.w-150px
+                              select.form-select.js-select2(data-search='off' data-placeholder='Bulk Action')
+                                option(value='') Bulk Action
+                                option(value='email') Send Email
+                                option(value='group') Change Group
+                                option(value='suspend') Suspend User
+                                option(value='delete') Delete User
+                            .btn-wrap
+                              span.d-none.d-md-block
+                                button.btn.btn-dim.btn-outline-light.disabled Apply
+                              span.d-md-none
+                                button.btn.btn-dim.btn-outline-light.btn-icon.disabled
+                                  em.icon.ni.ni-arrow-right
+                          // .form-inline
+                        // .card-tools
+                        .card-tools.me-n1
+                          ul.btn-toolbar.gx-1
+                            li
+                              a.btn.btn-icon.search-toggle.toggle-search(href='#' data-target='search')
+                                em.icon.ni.ni-search
+                            // li
+                            li.btn-toolbar-sep
+                            // li
+                            li
+                              .toggle-wrap
+                                a.btn.btn-icon.btn-trigger.toggle(href='#' data-target='cardTools')
+                                  em.icon.ni.ni-menu-right
+                                .toggle-content(data-content='cardTools')
+                                  ul.btn-toolbar.gx-1
+                                    li.toggle-close
+                                      a.btn.btn-icon.btn-trigger.toggle(href='#' data-target='cardTools')
+                                        em.icon.ni.ni-arrow-left
+                                    // li
+                                    li
+                                      .dropdown
+                                        a.btn.btn-trigger.btn-icon.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                          .dot.dot-primary
+                                          em.icon.ni.ni-filter-alt
+                                        .filter-wg.dropdown-menu.dropdown-menu-xl.dropdown-menu-end
+                                          .dropdown-head
+                                            span.sub-title.dropdown-title Filter Users
+                                            .dropdown
+                                              a.btn.btn-sm.btn-icon(href='#')
+                                                em.icon.ni.ni-more-h
+                                          .dropdown-body.dropdown-body-rg
+                                            .row.gx-6.gy-3
+                                              .col-6
+                                                .custom-control.custom-control-sm.custom-checkbox
+                                                  input#hasBalance.custom-control-input(type='checkbox')
+                                                  label.custom-control-label(for='hasBalance')  Have Balance
+                                              .col-6
+                                                .custom-control.custom-control-sm.custom-checkbox
+                                                  input#hasKYC.custom-control-input(type='checkbox')
+                                                  label.custom-control-label(for='hasKYC')  KYC Verified
+                                              .col-6
+                                                .form-group
+                                                  label.overline-title.overline-title-alt Role
+                                                  select.form-select.js-select2
+                                                    option(value='any') Any Role
+                                                    option(value='investor') Investor
+                                                    option(value='seller') Seller
+                                                    option(value='buyer') Buyer
+                                              .col-6
+                                                .form-group
+                                                  label.overline-title.overline-title-alt Status
+                                                  select.form-select.js-select2
+                                                    option(value='any') Any Status
+                                                    option(value='active') Active
+                                                    option(value='pending') Pending
+                                                    option(value='suspend') Suspend
+                                                    option(value='deleted') Deleted
+                                              .col-12
+                                                .form-group
+                                                  button.btn.btn-secondary(type='button') Filter
+                                          .dropdown-foot.between
+                                            a.clickable(href='#') Reset Filter
+                                            a(href='#') Save Filter
+                                        // .filter-wg
+                                      // .dropdown
+                                    // li
+                                    li
+                                      .dropdown
+                                        a.btn.btn-trigger.btn-icon.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                          em.icon.ni.ni-setting
+                                        .dropdown-menu.dropdown-menu-xs.dropdown-menu-end
+                                          ul.link-check
+                                            li
+                                              span Show
+                                            li.active
+                                              a(href='#') 10
+                                            li
+                                              a(href='#') 20
+                                            li
+                                              a(href='#') 50
+                                          ul.link-check
+                                            li
+                                              span Order
+                                            li.active
+                                              a(href='#') DESC
+                                            li
+                                              a(href='#') ASC
+                                      // .dropdown
+                                    // li
+                                  // .btn-toolbar
+                                // .toggle-content
+                              // .toggle-wrap
+                            // li
+                          // .btn-toolbar
+                        // .card-tools
+                      // .card-title-group
+                      .card-search.search-wrap(data-search='search')
+                        .card-body
+                          .search-content
+                            a.search-back.btn.btn-icon.toggle-search(href='#' data-target='search')
+                              em.icon.ni.ni-arrow-left
+                            input.form-control.border-transparent.form-focus-none(type='text' placeholder='Search by user or email')
+                            button.search-submit.btn.btn-icon
+                              em.icon.ni.ni-search
+                      // .card-search
+                    // .card-inner
+                    .card-inner.p-0
+                      .nk-tb-list.nk-tb-ulist.is-compact
+                        .nk-tb-item.nk-tb-head
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid')
+                          .nk-tb-col
+                            span.sub-text User
+                          .nk-tb-col.tb-col-md
+                            span.sub-text Role
+                          .nk-tb-col.tb-col-sm
+                            span.sub-text Email
+                          .nk-tb-col.tb-col-md
+                            span.sub-text Phone
+                          .nk-tb-col.tb-col-xxl
+                            span.sub-text Company
+                          .nk-tb-col.tb-col-lg
+                            span.sub-text Verified
+                          .nk-tb-col.tb-col-xxl
+                            span.sub-text Last Login
+                          .nk-tb-col
+                            span.sub-text Status
+                          .nk-tb-col.nk-tb-col-tools.text-end
+                            .dropdown
+                              a.btn.btn-xs.btn-outline-light.btn-icon.dropdown-toggle(href='#' data-bs-toggle='dropdown' data-offset='0,5')
+                                em.icon.ni.ni-plus
+                              .dropdown-menu.dropdown-menu-xs.dropdown-menu-end
+                                ul.link-tidy.sm.no-bdr
+                                  li
+                                    .custom-control.custom-control-sm.custom-checkbox
+                                      input#bl.custom-control-input(type='checkbox' checked='')
+                                      label.custom-control-label(for='bl') Balance
+                                  li
+                                    .custom-control.custom-control-sm.custom-checkbox
+                                      input#ph.custom-control-input(type='checkbox' checked='')
+                                      label.custom-control-label(for='ph') Phone
+                                  li
+                                    .custom-control.custom-control-sm.custom-checkbox
+                                      input#vri.custom-control-input(type='checkbox')
+                                      label.custom-control-label(for='vri') Verified
+                                  li
+                                    .custom-control.custom-control-sm.custom-checkbox
+                                      input#st.custom-control-input(type='checkbox')
+                                      label.custom-control-label(for='st') Status
+                        // .nk-tb-item
+                        .nk-tb-item
+                          .nk-tb-col.nk-tb-col-check
+                            .custom-control.custom-control-sm.custom-checkbox.notext
+                              input#uid1.custom-control-input(type='checkbox')
+                              label.custom-control-label(for='uid1')
+                          .nk-tb-col
+                            .user-card
+                              .user-avatar.xs.bg-primary
+                                span AB
+                              .user-name
+                                span.tb-lead Abu Bin Ishtiyak
+                          .nk-tb-col.tb-col-md
+                            span Customer
+                          .nk-tb-col.tb-col-sm
+                            span info@softnio.com
+                          .nk-tb-col.tb-col-md
+                            span +811 847-4958
+                          .nk-tb-col.tb-col-xxl
+                            span Bangladesh
+                          .nk-tb-col.tb-col-lg
+                            ul.list-status
+                              li
+                                em.icon.text-success.ni.ni-check-circle
+                                span Email
+                          .nk-tb-col.tb-col-xxl
+                            span 10 Feb 2020
+                          .nk-tb-col
+                            span.tb-status.text-success Active
+                          .nk-tb-col.nk-tb-col-tools
+                            ul.nk-tb-actions.gx-2
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Wallet')
+                                  em.icon.ni.ni-wallet-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Send Email')
+                                  em.icon.ni.ni-mail-fill
+                              li.nk-tb-action-hidden
+                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Suspend')
+                                  em.icon.ni.ni-user-cross-fill
+                              li
+                                .drodown
+                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
+                                    em.icon.ni.ni-more-h
+                                  .dropdown-menu.dropdown-menu-end
+                                    ul.link-list-opt.no-bdr
+                                      li
+                                        a(href='#')
+                                          em.icon.ni.ni-eye
+                                          span View Details
+                        // .nk-tb-item
+                      // .nk-tb-list
+                    // .card-inner
+                    .card-inner
+                      ul.pagination.justify-content-center.justify-content-md-start
+                        li.page-item
+                          a.page-link(href='#') Prev
+                        li.page-item
+                          a.page-link(href='#') 1
+                        li.page-item
+                          a.page-link(href='#') 2
+                        li.page-item
+                          span.page-link
+                            em.icon.ni.ni-more-h
+                        li.page-item
+                          a.page-link(href='#') 6
+                        li.page-item
+                          a.page-link(href='#') 7
+                        li.page-item
+                          a.page-link(href='#') Next
+                      // .pagination
+                    // .card-inner
+                  // .card-inner-group
+                // .card
+              // .nk-block
+      // content @e
+      // footer @s
+      include includes/footer.pug
+      // footer @e
+    // wrap @e
+  // main @e
+// app-root @e
+// select region modal
+#region.modal.fade(tabindex='-1' role='dialog')
+  .modal-dialog.modal-lg(role='document')
+    .modal-content
+      a.close(href='#' data-bs-dismiss='modal')
+        em.icon.ni.ni-cross-sm
+      .modal-body.modal-body-md
+        h5.title.mb-4 Select Your Country
+        .nk-country-region
+          ul.country-list.text-center.gy-2
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/arg.png' alt='')
+                span.country-name Argentina
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/aus.png' alt='')
+                span.country-name Australia
+            li
+              a.country-item(href='#')
+                img.country-flag(src='./images/flags/english.png' alt='')
+                span.country-name United State
+    // .modal-content
+  // .modla-dialog
+// .modal
+#modalForm.modal.fade
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        h5.modal-title Add Movie/TV Show/Book/Magazine
+        a.close(href='#' data-bs-dismiss='modal' aria-label='Close')
+          em.icon.ni.ni-cross
+      .modal-body
+        form#download-list-form.form-validate.is-alter
+          .form-group
+            label.form-label(for='media-select') Select Media Type
+            .form-control-wrap
+              .form-control-select
+                select#media-select.form-control
+                  option(value='1') Movie
+                  option(value='2') TV Show
+                  option(value='3' disabled='') Book
+                  option(value='4' disabled='') Magazine
+                  option(value='5' disabled='') Song
+              .form-group
+                label.form-label(for='default-01') Title
+                .form-control-wrap
+                  input#default-01.form-control(type='text' placeholder='Enter movie name' onchange='return loadMovieData(this);')
+              .form-group
+                label.form-label Select Movie
+                .form-control-wrap
+                  select#movie-select.form-select.js-select2(data-search='on')
+                    //- option(value='default_option') Pick a Title
+          .form-group
+            label.form-label(for='comment') Comment
+            .form-control-wrap
+              input#comment.form-control(type='text')
+          .form-group
+            button.btn.btn-lg.btn-primary(type='submit') Save Informations
+      .modal-footer.bg-light
+        span.sub-text Modal Footer Text
+// JavaScript
+script(src='./assets/js/bundle.js?ver=3.0.3')
+script(src='./assets/js/scripts.js?ver=3.0.3')
+script(src='./frontend/script.js?ver=1.0.0')
