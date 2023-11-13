@@ -1,5 +1,4 @@
-
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 mongoose.connect('mongodb://localhost/mongo-test')
             .then(()=> {
@@ -38,4 +37,4 @@ const schema = new mongoose.Schema({
 
 const Movie = mongoose.model('movies', schema);
 
-exports.Movie = Movie;
+export default Movie;
