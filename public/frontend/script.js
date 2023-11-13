@@ -3,9 +3,27 @@ var tvArr = [];
 
 $(function(){
     $('#download-list-form').on('submit', ()=>{
-        $('#mov-json-data').val(JSON.stringify(movArr));
-        $('#tv-json-data').val(JSON.stringify(tvArr));
-    })
+
+        let data = {
+            'mediaType': $('#media-select').val(),
+            'selectedTitle': $('#movie-select').val(),
+            'comment': $('#comment').val(),
+            'movArr': movArr,
+            'tvArr': tvArr
+        };
+
+        $.ajax({
+            url: '/add-to-download-list', 
+            type:'post',
+            data: JSON.stringify(data), 
+            contentType: "application/json",
+            success: function (data) {
+                console.log(data);
+            },
+            fail: function (data){console.log(data)}
+        });
+        return false;
+    });
 })
 
 const loadMovieData = e => {

@@ -332,7 +332,7 @@ include includes/header.pug
         a.close(href='#' data-bs-dismiss='modal' aria-label='Close')
           em.icon.ni.ni-cross
       .modal-body
-        form#download-list-form.form-validate.is-alter(action='#')
+        form#download-list-form.form-validate.is-alter
           .form-group
             label.form-label(for='media-select') Select Media Type
             .form-control-wrap
@@ -356,8 +356,6 @@ include includes/header.pug
             label.form-label(for='comment') Comment
             .form-control-wrap
               input#comment.form-control(type='text')
-              input#mov-json-data.form-control(type='hidden' value='')
-              input#tv-json-data.form-control(type='hidden' value='')
           .form-group
             button.btn.btn-lg.btn-primary(type='submit') Save Informations
       .modal-footer.bg-light
