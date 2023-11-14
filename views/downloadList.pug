@@ -18,9 +18,9 @@ include includes/header.pug
               .nk-block-head.nk-block-head-sm
                 .nk-block-between
                   .nk-block-head-content
-                    h3.nk-block-title.page-title All Movies
+                    h3.nk-block-title.page-title All Watchlist
                     .nk-block-des.text-soft
-                      p You have total #{allFilms.length} items.
+                      p You have total #{allWatchlists.length} items.
                   // .nk-block-head-content
                   .nk-block-head-content
                     .toggle-wrap.nk-block-tools-toggle
@@ -79,33 +79,33 @@ include includes/header.pug
                           .nk-tb-col.tb-col-md
                             span.sub-text Language
                           .nk-tb-col.tb-col-sm
-                            span.sub-text Votes
+                            span.sub-text Priority
                           .nk-tb-col.tb-col-md
-                            span.sub-text Genres
+                            span.sub-text Comment
                           .nk-tb-col.tb-col-lg
-                            span.sub-text Release Date
+                            span.sub-text Added Date
                           .nk-tb-col.tb-col-xxl
-                            span.sub-text Overview
+                            span.sub-text Url
                           .nk-tb-col.nk-tb-col-tools.text-end
                         // .nk-tb-item
-                      each film in allFilms  
+                      each watchlist in allWatchlists  
                         .nk-tb-item
                           .nk-tb-col
                             .user-card
                               .user-avatar.xs.bg-primary
-                                span=film.title[0]
+                                span=watchlist.movie[0].title[0]
                               .user-name
-                                span.tb-lead=film.title
+                                span.tb-lead=watchlist.movie[0].title+" ("+watchlist.movie[0].original_title+")"
                           .nk-tb-col.tb-col-md
-                            span=film.original_language
+                            span=watchlist.movie[0].original_language
                           .nk-tb-col.tb-col-sm
-                            span=film.vote_average
+                            span=watchlist.priority
                           .nk-tb-col.tb-col-md
-                            span=film.genres.toString()
+                            span=watchlist.comment
                           .nk-tb-col.tb-col-lg
-                            span=film.release_date
+                            span=watchlist.movie[0].release_date
                           .nk-tb-col.tb-col-xxl
-                            span=film.overview
+                            span=watchlist.url
                           .nk-tb-col.nk-tb-col-tools
                             ul.nk-tb-actions.gx-2
                               li.nk-tb-action-hidden

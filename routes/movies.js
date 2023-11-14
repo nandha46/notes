@@ -3,7 +3,9 @@ import express from 'express';
 const router = express.Router();
 
 import Movie from '../models/movie.js';
-import Watchlist from '../models/watchlist.js';
+import WatchlistExport from '../models/watchlist.js';
+
+const {validateWatchlist, Watchlist} = WatchlistExport;
 
 router.get('/films', async (req, res) => {
     const allFilms = await getAllMovies();
@@ -11,8 +13,8 @@ router.get('/films', async (req, res) => {
 });
 
 router.get('/watchlist', async (req, res) => {
-    const allFilms = await getAllWatchlist();
-    res.status(200).render('downloadList', {allFilms: allFilms});
+    const allWatchlists = await getAllWatchlist();
+    res.status(200).render('downloadList', {allWatchlists: allWatchlists});
 });
 
 async function getAllMovies () {
@@ -22,7 +24,7 @@ async function getAllMovies () {
 
 async function getAllWatchlist () {
     const watchlist = await Watchlist.find().populate('movie');
-    console.log(watchlist);
+    console.log(watchlist[0]);
     return watchlist;
 }
 

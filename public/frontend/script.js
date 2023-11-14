@@ -1,5 +1,9 @@
+// import config from '../config';
+
 var movArr = [];
 var tvArr = [];
+
+// let tmdb_bearer_token = config.get('tmdb_bearer_token');
 
 $(function(){
     $('#download-list-form').on('submit', ()=>{

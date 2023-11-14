@@ -1,9 +1,10 @@
 import express from 'express';
 const app = express();
-import Joi from 'joi';
 
 import helmet from 'helmet';
 import morgan from 'morgan';
+
+import config from 'config';
 
 import countryList from 'country-list';
 
@@ -27,7 +28,9 @@ mongoose.connect('mongodb://localhost/mongo-test')
 
 import Movie from './models/movie.js';
 import Tv from './models/tv.js';
-import Watchlist from './models/watchlist.js';
+import watchlistExport from './models/watchlist.js';
+
+const {validateWatchlist ,Watchlist} = watchlistExport;
 
 app.get('/', (req, res)=>{
     res.status(200).render('index', {});
@@ -39,17 +42,7 @@ app.use('/', movies);
 
 
 app.post('/add-to-download-list', (req, res) => {
-    const schema = Joi.object({
-        mediaType: Joi.number().required(),
-        selectedTitle: Joi.number().required(),
-        adult:Joi.boolean(),
-        priority:Joi.number(),
-        url:Joi.string().allow(''),
-        comment: Joi.string().allow(''),
-        movArr: Joi.array().required(),
-        tvArr: Joi.array().required()
-    });
-    const result = schema.validate(req.body);
+    const result = validateWatchlist(req.body);
     if(result.error){
         res.status(200).send({status:false, "message": result.error.details[0].message});
         return;
@@ -99,6 +92,8 @@ app.post('/add-to-download-list', (req, res) => {
     res.status(200).send( {status: true, "data": req.body});
 });
 
-app.listen(3000, () => {
-    console.log('listening on port 3000....')
+let port = config.get('port');
+
+app.listen(port, () => {
+    console.log(`listening on port ${port}....`);
 });
