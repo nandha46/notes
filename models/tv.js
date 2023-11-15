@@ -36,6 +36,8 @@ const schema = new mongoose.Schema({
     video:Boolean,
     vote_average:Number,
     vote_count:Number
+}, {
+    timestamps:true
 });
 
 const Tv = mongoose.model('tv_shows', schema);
