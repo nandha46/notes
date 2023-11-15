@@ -24,6 +24,12 @@ schema.virtual('movie', {
     foreignField:'id'
 });
 
+schema.virtual('tvshow', {
+    ref:'tv_shows',
+    localField:'id',
+    foreignField:'id'
+});
+
 const Watchlist = mongoose.model('watchlist', schema);
 
 function validateWatchlist (watchlist) {

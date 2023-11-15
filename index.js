@@ -37,8 +37,10 @@ app.get('/', (req, res)=>{
 });
 
 import movies from './routes/movies.js';
+import tvshows from './routes/tvshows.js';
 
 app.use('/', movies);
+app.use('/', tvshows);
 
 
 app.post('/add-to-download-list', (req, res) => {
@@ -61,18 +63,18 @@ app.post('/add-to-download-list', (req, res) => {
       }
     }
     
-    // if(req.body.tvArr){
-    //   for(const tv of req.body.tvArr){
-    //     let movie = new Movie(tv);
-    //     movie.save().then(()=> {console.log("Movie saved")}).catch((err)=>{
-    //       if(err.code === 11000){
-    //         console.error('Duplicate Movie');
-    //       } else {
-    //         console.error('some other error in saving movie')
-    //       }
-    //     });
-    //   }
-    // }
+    if(req.body.tvArr){
+      for(const tv of req.body.tvArr){
+        let newTv = new Tv(tv);
+        newTv.save().then(()=> {console.log("TV Show saved")}).catch((err)=>{
+          if(err.code === 11000){
+            console.error('Duplicate TV Show');
+          } else {
+            console.error('some other error in saving tv show')
+          }
+        });
+      }
+    }
 
     let newWatchlistEntry = new Watchlist({
       mediaType:req.body.mediaType,

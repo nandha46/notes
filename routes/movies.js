@@ -9,12 +9,12 @@ const {validateWatchlist, Watchlist} = WatchlistExport;
 
 router.get('/films', async (req, res) => {
     const allFilms = await getAllMovies();
-    res.status(200).render('films', {allFilms: allFilms});
+    res.status(200).render('movies/films', {allFilms: allFilms});
 });
 
-router.get('/watchlist', async (req, res) => {
+router.get('/to-download', async (req, res) => {
     const allWatchlists = await getAllWatchlist();
-    res.status(200).render('downloadList', {allWatchlists: allWatchlists});
+    res.status(200).render('movies/downloadList', {allWatchlists: allWatchlists});
 });
 
 async function getAllMovies () {
@@ -23,7 +23,7 @@ async function getAllMovies () {
 }
 
 async function getAllWatchlist () {
-    const watchlist = await Watchlist.find().populate('movie');
+    const watchlist = await Watchlist.find({mediaType:1}).populate('movie');
     console.log(watchlist[0]);
     return watchlist;
 }

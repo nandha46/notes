@@ -10,7 +10,7 @@ const schema = new mongoose.Schema({
     backdrop_path: String,
     belongs_to_collection:String,
     budget:Number,
-    genres:[],
+    genre_ids:[],
     homepage:String,
     imdb_id:String,
     original_language:{
@@ -37,6 +37,7 @@ const schema = new mongoose.Schema({
     vote_average:Number,
     vote_count:Number
 });
+
 
 const Movie = mongoose.model('movies', schema);
 
