@@ -130,3 +130,5 @@ dist
 .pnp.*
 
 notes.code-workspace
+
+public/tmdb/movie_posters
