@@ -1,0 +1,48 @@
+// .modal
+#modalForm.modal.fade
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        h5.modal-title Add Movie/TV Show/Book/Magazine
+        a.close(href='#' data-bs-dismiss='modal' aria-label='Close')
+          em.icon.ni.ni-cross
+      .modal-body
+        form#download-list-form.form-validate.is-alter
+          .form-group
+            label.form-label(for='media-select') Select Media Type
+            .form-control-wrap
+              .form-control-select
+                select#media-select.form-control
+                  option(value='1') Movie
+                  option(value='2') TV Show
+                  option(value='3' disabled='') Book
+                  option(value='4' disabled='') Magazine
+                  option(value='5' disabled='') Song
+              .form-group
+                label.form-label(for='default-01') Title
+                .form-control-wrap
+                  input#default-01.form-control(type='text' placeholder='Enter movie name' onchange='return loadMovieData(this);')
+              .form-group
+                label.form-label Select Movie
+                .form-control-wrap
+                  select#movie-select.form-select.js-select2(data-search='on')
+                    //- option(value='default_option') Pick a Title
+          .form-group
+            .custom-control.custom-switch
+              input#customSwitch1.custom-control-input(type='checkbox')
+              label.custom-control-label(for='customSwitch1') Adult
+          .form-control-wrap
+            label.form-label(for='priority') Priority
+            #priority.form-control-slider(data-tooltip='true' data-start='5' data-min='1' data-max='10')
+          .form-group
+            label.form-label(for='comment') Url
+            .form-control-wrap
+              input#url.form-control(type='text')
+          .form-group
+            label.form-label(for='comment') Comment
+            .form-control-wrap
+              input#comment.form-control(type='text')
+          .form-group
+            button.btn.btn-lg.btn-primary(type='submit') Save Informations
+      .modal-footer.bg-light
+        span.sub-text Modal Footer Text

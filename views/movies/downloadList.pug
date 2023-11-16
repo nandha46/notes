@@ -18,7 +18,7 @@ include ../includes/header.pug
               .nk-block-head.nk-block-head-sm
                 .nk-block-between
                   .nk-block-head-content
-                    h3.nk-block-title.page-title All Watchlist
+                    h3.nk-block-title.page-title Movies to Download
                     .nk-block-des.text-soft
                       p You have total #{allWatchlists.length} items.
                   // .nk-block-head-content
@@ -28,10 +28,6 @@ include ../includes/header.pug
                         em.icon.ni.ni-menu-alt-r
                       .toggle-expand-content(data-content='pageMenu')
                         ul.nk-block-tools.g-3
-                          li
-                            a.btn.btn-white.btn-outline-light(href='#')
-                              em.icon.ni.ni-download-cloud
-                              span Export
                           li.nk-block-tools-opt
                             .drodown
                               a.dropdown-toggle.btn.btn-icon.btn-primary(href='#' data-bs-toggle='dropdown')
@@ -45,110 +41,48 @@ include ../includes/header.pug
                   // .nk-block-head-content
                 // .nk-block-between
               // .nk-block-head
-              .nk-block
-                .card.card-bordered.card-stretch
-                  .card-inner-group
-                    .card-inner.position-relative.card-tools-toggle
-                      .card-title-group
-                        .card-tools.me-n1
-                          ul.btn-toolbar.gx-1
-                            li
-                              a.btn.btn-icon.search-toggle.toggle-search(href='#' data-target='search')
-                                em.icon.ni.ni-search
-                            // li
-                            li.btn-toolbar-sep
-                            // li
-                          // .btn-toolbar
-                        // .card-tools
-                      // .card-title-group
-                      .card-search.search-wrap(data-search='search')
-                        .card-body
-                          .search-content
-                            a.search-back.btn.btn-icon.toggle-search(href='#' data-target='search')
-                              em.icon.ni.ni-arrow-left
-                            input.form-control.border-transparent.form-focus-none(type='text' placeholder='Search by title or comment')
-                            button.search-submit.btn.btn-icon
-                              em.icon.ni.ni-search
-                      // .card-search
-                    // .card-inner
-                    .card-inner.p-0
-                      .nk-tb-list.nk-tb-ulist.is-compact
-                        .nk-tb-item.nk-tb-head
-                          .nk-tb-col
-                            span.sub-text Title
-                          .nk-tb-col.tb-col-md
-                            span.sub-text Language
-                          .nk-tb-col.tb-col-sm
-                            span.sub-text Priority
-                          .nk-tb-col.tb-col-md
-                            span.sub-text Comment
-                          .nk-tb-col.tb-col-lg
-                            span.sub-text Added Date
-                          .nk-tb-col.tb-col-xxl
-                            span.sub-text Url
-                          .nk-tb-col.nk-tb-col-tools.text-end
-                        // .nk-tb-item
-                      each watchlist in allWatchlists  
-                        .nk-tb-item
-                          .nk-tb-col
-                            .user-card
-                              .user-avatar.xs.bg-primary
-                                span=watchlist.movie[0].title[0]
-                              .user-name
-                                span.tb-lead=watchlist.movie[0].title+" ("+watchlist.movie[0].original_title+")"
-                          .nk-tb-col.tb-col-md
-                            span=watchlist.movie[0].original_language
-                          .nk-tb-col.tb-col-sm
-                            span=watchlist.priority
-                          .nk-tb-col.tb-col-md
-                            span=watchlist.comment
-                          .nk-tb-col.tb-col-lg
-                            span=watchlist.movie[0].release_date
-                          .nk-tb-col.tb-col-xxl
-                            span=watchlist.url
-                          .nk-tb-col.nk-tb-col-tools
-                            ul.nk-tb-actions.gx-2
-                              li.nk-tb-action-hidden
-                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Edit')
-                                  em.icon.ni.ni-wallet-fill
-                              li.nk-tb-action-hidden
-                                a.btn.btn-sm.btn-icon.btn-trigger(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Change to Completed')
-                                  em.icon.ni.ni-mail-fill
-                              li
-                                .drodown
-                                  a.btn.btn-sm.btn-icon.btn-trigger.dropdown-toggle(href='#' data-bs-toggle='dropdown')
-                                    em.icon.ni.ni-more-h
-                                  .dropdown-menu.dropdown-menu-end
-                                    ul.link-list-opt.no-bdr
-                                      li
-                                        a(href='#')
-                                          em.icon.ni.ni-eye
-                                          span View Movie Details
-                        // .nk-tb-item
-                      // .nk-tb-list
-                    // .card-inner
+              .nk-block.nk-block-lg
+                  .card.card-bordered.card-preview
                     .card-inner
-                      ul.pagination.justify-content-center.justify-content-md-start
-                        li.page-item
-                          a.page-link(href='#') Prev
-                        li.page-item
-                          a.page-link(href='#') 1
-                        li.page-item
-                          a.page-link(href='#') 2
-                        li.page-item
-                          span.page-link
-                            em.icon.ni.ni-more-h
-                        li.page-item
-                          a.page-link(href='#') 6
-                        li.page-item
-                          a.page-link(href='#') 7
-                        li.page-item
-                          a.page-link(href='#') Next
-                      // .pagination
-                    // .card-inner
-                  // .card-inner-group
-                // .card
-              // .nk-block
+                      table.datatable-init.nowrap.table
+                        thead
+                          tr
+                            th Title
+                            th Comment
+                            th Language
+                            th Priority
+                            th Release date
+                            th Url
+                            th More
+                        tbody
+                          each watchlist in allWatchlists
+                            tr.nk-tb-item
+                              td=watchlist.movie[0].title+" ("+watchlist.movie[0].original_title+")"
+                              td=watchlist.comment
+                              td=watchlist.movie[0].original_language
+                              td=watchlist.priority
+                              td=watchlist.movie[0].release_date
+                              td=watchlist.url
+                              td.nk-tb-col.nk-tb-col-tools
+                                ul.nk-tb-actions.gx-1
+                                  li.nk-tb-action-hidden
+                                    a.btn.btn-trigger.btn-icon(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Edit')
+                                      em.icon.ni.ni-wallet-fill
+                                  li.nk-tb-action-hidden
+                                    a.btn.btn-trigger.btn-icon(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Change to Completed')
+                                      em.icon.ni.ni-mail-fill
+                                  li
+                                    .drodown
+                                      a.dropdown-toggle.btn.btn-icon.btn-trigger(href='#' data-bs-toggle='dropdown')
+                                        em.icon.ni.ni-more-h
+                                      .dropdown-menu.dropdown-menu-end
+                                        ul.link-list-opt.no-bdr
+                                          li
+                                            a(href='#')
+                                              em.icon.ni.ni-eye
+                                              span View Movie
+                  // .card-preview
+              // nk-block
       // content @e
       // footer @s
       include ../includes/footer.pug
@@ -180,54 +114,7 @@ include ../includes/header.pug
                 span.country-name United State
     // .modal-content
   // .modla-dialog
-// .modal
-#modalForm.modal.fade
-  .modal-dialog(role='document')
-    .modal-content
-      .modal-header
-        h5.modal-title Add Movie/TV Show/Book/Magazine
-        a.close(href='#' data-bs-dismiss='modal' aria-label='Close')
-          em.icon.ni.ni-cross
-      .modal-body
-        form#download-list-form.form-validate.is-alter
-          .form-group
-            label.form-label(for='media-select') Select Media Type
-            .form-control-wrap
-              .form-control-select
-                select#media-select.form-control
-                  option(value='1') Movie
-                  option(value='2') TV Show
-                  option(value='3' disabled='') Book
-                  option(value='4' disabled='') Magazine
-                  option(value='5' disabled='') Song
-              .form-group
-                label.form-label(for='default-01') Title
-                .form-control-wrap
-                  input#default-01.form-control(type='text' placeholder='Enter movie name' onchange='return loadMovieData(this);')
-              .form-group
-                label.form-label Select Movie
-                .form-control-wrap
-                  select#movie-select.form-select.js-select2(data-search='on')
-                    //- option(value='default_option') Pick a Title
-          .form-group
-            .custom-control.custom-switch
-              input#customSwitch1.custom-control-input(type='checkbox')
-              label.custom-control-label(for='customSwitch1') Adult
-          .form-control-wrap
-            label.form-label(for='priority') Priority
-            #priority.form-control-slider(data-tooltip='true' data-start='5' data-min='1' data-max='10')
-          .form-group
-            label.form-label(for='comment') Url
-            .form-control-wrap
-              input#url.form-control(type='text')
-          .form-group
-            label.form-label(for='comment') Comment
-            .form-control-wrap
-              input#comment.form-control(type='text')
-          .form-group
-            button.btn.btn-lg.btn-primary(type='submit') Save Informations
-      .modal-footer.bg-light
-        span.sub-text Modal Footer Text
+include ../forms/addMedia.pug
 // JavaScript
 script(src='./assets/js/bundle.js?ver=3.0.3')
 script(src='./assets/js/scripts.js?ver=3.0.3')

@@ -7,6 +7,9 @@ import morgan from 'morgan';
 import config from 'config';
 
 import countryList from 'country-list';
+import axios from 'axios';
+import { promises as fsPromises } from 'fs';
+import path from 'path';
 
 app.use(helmet({
     contentSecurityPolicy: false
@@ -34,6 +37,52 @@ const {validateWatchlist ,Watchlist} = watchlistExport;
 
 app.get('/', (req, res)=>{
     res.status(200).render('index', {});
+});
+
+app.get('/download-images', async (req, res) => {
+    let movies = await Movie.find().select('poster_path');
+    const imageUrl = 'https://image.tmdb.org/t/p/original';
+    const imageDirectory = 'public/tmdb/movie_posters';
+    const dirname = path.resolve();
+    let downloaded = 0;
+    let alreadyExists = 0;
+    let skipped = 0;
+    for (let mov of movies){
+      try {
+        // Download the image using axios
+        if (mov.poster_path == null) {
+          console.log('Poster doesn\'t exist. Skipping...');
+          skipped++;
+          continue;
+        }
+        const imagePath = path.join(dirname, imageDirectory, mov.poster_path);
+
+        const exists = await fileExists(imagePath);
+
+        if(exists) {
+          console.log('poster exists..');
+          alreadyExists++;
+          continue;
+        }
+
+        let url = imageUrl+mov.poster_path;
+        const response = await axios.get(url, { responseType: 'arraybuffer' });
+
+        // Save the image to the disk
+        await fsPromises.writeFile(imagePath, response.data);
+        downloaded++;
+        console.log('Poster Saved.');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+    }
+
+    res.status(200).send(`
+    Downloaded: ${downloaded} 
+    Skipped: ${skipped}
+    Exists: ${alreadyExists}
+    `);
 });
 
 import movies from './routes/movies.js';
@@ -95,6 +144,15 @@ app.post('/add-to-download-list', (req, res) => {
 });
 
 let port = config.get('port');
+
+async function fileExists(filePath) {
+  try {
+      await fsPromises.access(filePath, fsPromises.constants.F_OK);
+      return true; // File exists
+  } catch (err) {
+      return false; // File does not exist
+  }
+}
 
 app.listen(port, () => {
     console.log(`listening on port ${port}....`);

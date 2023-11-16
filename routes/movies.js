@@ -12,6 +12,11 @@ router.get('/films', async (req, res) => {
     res.status(200).render('movies/films', {allFilms: allFilms});
 });
 
+router.get('/all-films', async (req, res) => {
+    const allFilms = await getAllMovies();
+    res.status(200).render('movies/allFilms', {allFilms: allFilms});
+});
+
 router.get('/to-download', async (req, res) => {
     const allWatchlists = await getAllWatchlist();
     res.status(200).render('movies/downloadList', {allWatchlists: allWatchlists});

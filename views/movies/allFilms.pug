@@ -18,9 +18,9 @@ include ../includes/header.pug
               .nk-block-head.nk-block-head-sm
                 .nk-block-between
                   .nk-block-head-content
-                    h3.nk-block-title.page-title TV Shows to Download
+                    h3.nk-block-title.page-title All Movies
                     .nk-block-des.text-soft
-                      p You have total #{allWatchlists.length} items.
+                      p You have total #{allFilms.length} items.
                   // .nk-block-head-content
                   .nk-block-head-content
                     .toggle-wrap.nk-block-tools-toggle
@@ -28,6 +28,10 @@ include ../includes/header.pug
                         em.icon.ni.ni-menu-alt-r
                       .toggle-expand-content(data-content='pageMenu')
                         ul.nk-block-tools.g-3
+                          li
+                            a.btn.btn-white.btn-outline-light(href='#')
+                              em.icon.ni.ni-download-cloud
+                              span Export
                           li.nk-block-tools-opt
                             .drodown
                               a.dropdown-toggle.btn.btn-icon.btn-primary(href='#' data-bs-toggle='dropdown')
@@ -41,48 +45,22 @@ include ../includes/header.pug
                   // .nk-block-head-content
                 // .nk-block-between
               // .nk-block-head
-              .nk-block.nk-block-lg
-                  .card.card-bordered.card-preview
-                    .card-inner
-                      table.datatable-init.nowrap.table
-                        thead
-                          tr
-                            th Title
-                            th Comment
-                            th Language
-                            th Priority
-                            th Release date
-                            th Url
-                            th More
-                        tbody
-                          each watchlist in allWatchlists
-                            tr.nk-tb-item
-                              td=watchlist.tvshow[0].name+" ("+watchlist.tvshow[0].original_name+")"
-                              td=watchlist.comment
-                              td=watchlist.tvshow[0].original_language
-                              td=watchlist.priority
-                              td=watchlist.tvshow[0].first_air_date
-                              td=watchlist.url
-                              td.nk-tb-col.nk-tb-col-tools
-                                ul.nk-tb-actions.gx-1
-                                  li.nk-tb-action-hidden
-                                    a.btn.btn-trigger.btn-icon(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Edit')
-                                      em.icon.ni.ni-wallet-fill
-                                  li.nk-tb-action-hidden
-                                    a.btn.btn-trigger.btn-icon(href='#' data-bs-toggle='tooltip' data-bs-placement='top' title='Change to Completed')
-                                      em.icon.ni.ni-mail-fill
-                                  li
-                                    .drodown
-                                      a.dropdown-toggle.btn.btn-icon.btn-trigger(href='#' data-bs-toggle='dropdown')
-                                        em.icon.ni.ni-more-h
-                                      .dropdown-menu.dropdown-menu-end
-                                        ul.link-list-opt.no-bdr
-                                          li
-                                            a(href='#')
-                                              em.icon.ni.ni-eye
-                                              span View TV Show
-                  // .card-preview
-              // nk-block
+              .nk-block
+                .row.g-gs
+                  each film in allFilms
+                    .col-sm-6.col-lg-4.col-xxl-3
+                      .gallery.card.card-bordered
+                        a.gallery-image.popup-image(href='./tmdb/movie_posters'+film.poster_path)
+                          img.w-100.rounded-top(src='./tmdb/movie_posters'+film.poster_path alt='')
+                        .gallery-body.card-inner.align-center.justify-between.flex-wrap.g-2
+                          .user-card
+                            .user-info
+                              span.lead-text=film.title
+                              span.sub-text=film.original_language
+                          div
+                            button.btn.btn-p-0.btn-nofocus
+                              em.icon.ni.ni-heart
+                              span=film.vote_average
       // content @e
       // footer @s
       include ../includes/footer.pug

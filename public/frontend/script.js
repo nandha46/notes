@@ -65,7 +65,9 @@ const loadMovieData = e => {
                     let results = data.results;
                     movArr = [...movArr, ...results];
                      for (const item of results){
-                         var newOption = new Option(item.title, item.id, true, true);
+                        let releaseYear = ('release_date' in item) ? new Date(item.release_date).toLocaleDateString('en-US', {year: 'numeric' }):'';
+                        let optionName = item.title+" ("+releaseYear+")";
+                         var newOption = new Option(optionName, item.id, true, true);
                          // Append it to the select
                          $('#movie-select').append(newOption).trigger('change');
                      }
@@ -73,7 +75,7 @@ const loadMovieData = e => {
                  }, fail => console.log(fail)).catch(err => console.error(err));
              }
         })
-        .then(response => console.log(response))
+        // .then(response => console.log(response))
         .catch(err => console.error(err));
             break;
         case "2":
@@ -87,7 +89,9 @@ const loadMovieData = e => {
                     let results = data.results;
                     tvArr = [...tvArr, ...results];
                      for (const item of results){
-                         var newOption = new Option(item.name, item.id, true, true);
+                        let releaseYear = ('first_air_date' in item) ? new Date(item.first_air_date).toLocaleDateString('en-US', {year: 'numeric' }):'';
+                        let optionName = item.name+" ("+releaseYear+")";
+                         var newOption = new Option(optionName, item.id, true, true);
                          // Append it to the select
                          $('#movie-select').append(newOption).trigger('change');
                      }
