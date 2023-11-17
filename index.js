@@ -1,4 +1,5 @@
 import express from 'express';
+import compression from 'compression';
 const app = express();
 
 import helmet from 'helmet';
@@ -11,6 +12,7 @@ import axios from 'axios';
 import { promises as fsPromises } from 'fs';
 import path from 'path';
 
+app.use(compression());
 app.use(helmet({
     contentSecurityPolicy: false
 }));
@@ -87,10 +89,11 @@ app.get('/download-images', async (req, res) => {
 
 import movies from './routes/movies.js';
 import tvshows from './routes/tvshows.js';
+import auths from './routes/auths.js'
 
 app.use('/', movies);
 app.use('/', tvshows);
-
+app.use('/', auths);
 
 app.post('/add-to-download-list', (req, res) => {
     const result = validateWatchlist(req.body);
