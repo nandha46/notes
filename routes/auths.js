@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-router.set('view engine', 'ejs');
+// router.set('view engine', 'ejs');
 
 router.get('/register', (req, res) => {
     res.render('auth/register');

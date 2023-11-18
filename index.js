@@ -157,6 +157,10 @@ async function fileExists(filePath) {
   }
 }
 
+// import certifications from './routes/certifications.js';
+
+// app.use('', certifications);
+
 app.listen(port, () => {
     console.log(`listening on port ${port}....`);
 });
