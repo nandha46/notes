@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import iso6391 from 'iso-639-1';
 
 const schema = new mongoose.Schema({
     id: {
@@ -15,7 +14,6 @@ const schema = new mongoose.Schema({
     imdb_id:String,
     original_language:{
         type:String,
-        get: lang => iso6391.getName(lang)
     },
     original_title:String,
     overview:String,

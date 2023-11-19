@@ -7,7 +7,6 @@ import morgan from 'morgan';
 
 import config from 'config';
 
-import countryList from 'country-list';
 import axios from 'axios';
 import { promises as fsPromises } from 'fs';
 import path from 'path';
@@ -16,10 +15,11 @@ app.use(compression());
 app.use(helmet({
     contentSecurityPolicy: false
 }));
-app.use(morgan('tiny'));
+app.use(morgan('dev'));
 app.use(express.json());
+app.use(express.urlencoded({extended:true}));
 
-app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
 app.set('views', './views');
 app.use(express.static('public'))
 
@@ -89,11 +89,11 @@ app.get('/download-images', async (req, res) => {
 
 import movies from './routes/movies.js';
 import tvshows from './routes/tvshows.js';
-import auths from './routes/auths.js'
+import auth from './routes/auth.js'
 
 app.use('/', movies);
 app.use('/', tvshows);
-app.use('/', auths);
+app.use('/', auth);
 
 app.post('/add-to-download-list', (req, res) => {
     const result = validateWatchlist(req.body);
