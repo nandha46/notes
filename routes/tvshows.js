@@ -7,9 +7,14 @@ import WatchlistExport from '../models/watchlist.js';
 
 const {validateWatchlist, Watchlist} = WatchlistExport;
 
-router.get('/tvshows', async (req, res) => {
+router.get('/all-tvshows', async (req, res) => {
     const allShows = await getAllTvshows();
     res.status(200).render('tvshows/allTvshows', {allShows: allShows});
+});
+
+router.get('/tvshows-gallery', async (req, res) => {
+    const allShows = await getAllTvshows();
+    res.status(200).render('tvshows/tvshowsGallery', {allShows: allShows});
 });
 
 router.get('/tvshows-to-download', async (req, res) => {

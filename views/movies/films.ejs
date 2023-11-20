@@ -1,25 +1,25 @@
-<%- include('includes/header') %>
+<%- include('../includes/header') %>
 <body class="nk-body bg-lighter npc-general has-sidebar ">
     <div class="nk-app-root">
         <!-- main @s -->
         <div class="nk-main ">
-            <%- include('includes/sidepanel') %>
+            <%- include('../includes/sidepanel') %>
             <!-- wrap @s -->
             <div class="nk-wrap ">
-                <%- include('includes/navbar') %>
+                <%- include('../includes/navbar') %>
                 <!-- content @s -->
                 <div class="nk-content ">
-                    <%- include('includes/dashboard') %>
+                    <%- include('movieTable') %>
                 </div>
                 <!-- content @e -->
-                <%- include('includes/footer') %>
+                <%- include('../includes/footer') %>
             </div>
             <!-- wrap @e -->
         </div>
         <!-- main @e -->
     </div>
     <!-- app-root @e -->
-    <%- include('includes/region-modal') %>
+    <%- include('../includes/region-modal') %>
     <!-- JavaScript -->
     <script src="./assets/js/bundle.js?ver=3.0.3"></script>
     <script src="./assets/js/scripts.js?ver=3.0.3"></script>

@@ -7,19 +7,19 @@ import WatchlistExport from '../models/watchlist.js';
 
 const {validateWatchlist, Watchlist} = WatchlistExport;
 
-router.get('/films', async (req, res) => {
-    const allFilms = await getAllMovies();
-    res.status(200).render('movies/films', {allFilms: allFilms});
-});
-
 router.get('/all-films', async (req, res) => {
     const allFilms = await getAllMovies();
-    res.status(200).render('movies/allFilms', {allFilms: allFilms});
+    res.status(200).render('movies/films', { title:"All Movies", allFilms: allFilms});
 });
 
-router.get('/to-download', async (req, res) => {
+router.get('/films-gallery', async (req, res) => {
+    const allFilms = await getAllMovies();
+    res.status(200).render('movies/movieGallery', { title:"Movie Gallery", allFilms: allFilms});
+});
+
+router.get('/to-download-movies', async (req, res) => {
     const allWatchlists = await getAllWatchlist();
-    res.status(200).render('movies/downloadList', {allWatchlists: allWatchlists});
+    res.status(200).render('movies/downloadList', { title:"Movies To Download", allWatchlists: allWatchlists});
 });
 
 async function getAllMovies () {
