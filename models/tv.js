@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+const Schema = mongoose.Schema;
 
 const schema = new mongoose.Schema({
     id: {
@@ -33,7 +34,8 @@ const schema = new mongoose.Schema({
     name:String,
     video:Boolean,
     vote_average:Number,
-    vote_count:Number
+    vote_count:Number,
+    credits:Schema.Types.Mixed
 }, {
     timestamps:true
 });

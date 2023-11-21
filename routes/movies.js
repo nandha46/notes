@@ -19,7 +19,7 @@ router.get('/films-gallery', async (req, res) => {
 
 router.get('/to-download-movies', async (req, res) => {
     const allWatchlists = await getAllWatchlist();
-    res.status(200).render('movies/downloadList', { title:"Movies To Download", allWatchlists: allWatchlists});
+    res.status(200).render('movies/toDownloadMovie', { title:"Movies To Download", allWatchlists: allWatchlists});
 });
 
 async function getAllMovies () {

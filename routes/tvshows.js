@@ -9,17 +9,17 @@ const {validateWatchlist, Watchlist} = WatchlistExport;
 
 router.get('/all-tvshows', async (req, res) => {
     const allShows = await getAllTvshows();
-    res.status(200).render('tvshows/allTvshows', {allShows: allShows});
+    res.status(200).render('tvshows/tvshows', {title: "All TV Shows", allShows: allShows});
 });
 
 router.get('/tvshows-gallery', async (req, res) => {
     const allShows = await getAllTvshows();
-    res.status(200).render('tvshows/tvshowsGallery', {allShows: allShows});
+    res.status(200).render('tvshows/tvshowGallery', {title: "TV Shows Gallery", allShows: allShows});
 });
 
 router.get('/tvshows-to-download', async (req, res) => {
     const allWatchlists = await getAllWatchlist();
-    res.status(200).render('tvshows/downloadList', {allWatchlists: allWatchlists});
+    res.status(200).render('tvshows/toDownloadTv', {title: "TV Shows Download list", allWatchlists: allWatchlists});
 });
 
 async function getAllTvshows () {

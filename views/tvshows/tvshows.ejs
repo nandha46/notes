@@ -1,0 +1,124 @@
+<%- include('../includes/header') %>
+<body class="nk-body bg-lighter npc-general has-sidebar ">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <%- include('../includes/sidepanel') %>
+            <!-- wrap @s -->
+            <div class="nk-wrap ">
+                <%- include('../includes/navbar') %>
+                <!-- content @s -->
+                <div class="nk-content ">
+                    <div class="container-fluid">
+                        <div class="nk-content-inner">
+                            <div class="nk-content-body">
+                                    <div class="nk-block-head nk-block-head-sm">
+                                        <div class="nk-block-between">
+                                            <div class="nk-block-head-content">
+                                                <h3 class="nk-block-title page-title">All TV Shows</h3>
+                                                <div class="nk-block-des text-soft">
+                                                    <p>You have total <%= allShows.length %> tv Shows.</p>
+                                                </div>
+                                            </div><!-- .nk-block-head-content -->
+                                            <div class="nk-block-head-content">
+                                                <div class="toggle-wrap nk-block-tools-toggle">
+                                                    <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                                    <div class="toggle-expand-content" data-content="pageMenu">
+                                                        <ul class="nk-block-tools g-3">
+                                                            <li>
+                                                                <div class="drodown">
+                                                                    <a href="#" class="dropdown-toggle btn btn-white btn-dim btn-outline-light" data-bs-toggle="dropdown"><em class="d-none d-sm-inline icon ni ni-filter-alt"></em><span>Filtered By</span><em class="dd-indc icon ni ni-chevron-right"></em></a>
+                                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                                        <ul class="link-list-opt no-bdr">
+                                                                            <li><a href="#"><span>Open</span></a></li>
+                                                                            <li><a href="#"><span>Closed</span></a></li>
+                                                                            <li><a href="#"><span>Onhold</span></a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li class="nk-block-tools-opt d-none d-sm-block">
+                                                                <a href="#" class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Add Project</span></a>
+                                                            </li>
+                                                            <li class="nk-block-tools-opt d-block d-sm-none">
+                                                                <a href="#" class="btn btn-icon btn-primary"><em class="icon ni ni-plus"></em></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div><!-- .toggle-wrap -->
+                                            </div><!-- .nk-block-head-content -->
+                                        </div><!-- .nk-block-between -->
+                                    </div><!-- .nk-block-head -->
+                                    <div class="nk-block nk-block-lg">
+                                        <div class="card card-bordered card-preview">
+                                            <div class="card-inner">
+                                                <table class="datatable-init-export nowrap table" data-export-title="Export">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Title</th>
+                                                            <th>language</th>
+                                                            <th>Votes</th>
+                                                            <th>Genres</th>
+                                                            <th>Release date</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% for(tvshow of allShows) {%>
+                                                        <tr class="nk-tb-item">
+                                                            <td><%= tvshow.name %></td>
+                                                            <td><%= tvshow.original_language %></td>
+                                                            <td><%= tvshow.vote_average %></td>
+                                                            <td><%= tvshow.genre_ids.toString() %></td>
+                                                            <td><%= tvshow.first_air_date %></td>
+                                                            <td class="nk-tb-col-tools">
+                                                              <ul class="nk-tb-actions gx-1">
+                                                                <li class="nk-tb-action-hidden">
+                                                                    <a href="#" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                                                                        <em class="icon ni ni-wallet-fill"></em>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="nk-tb-action-hidden">
+                                                                    <a href="#" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Change to Completed">
+                                                                        <em class="icon ni ni-mail-fill"></em>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="drodown">
+                                                                        <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+                                                                        <div class="dropdown-menu dropdown-menu-end">
+                                                                            <ul class="link-list-opt no-bdr">
+                                                                                <li><a href="#"><em class="icon ni ni-eye"></em><span>View TV Show Details</span></a></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                            </ul></td>
+                                                        </tr>
+                                                        <% } %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div><!-- .card-preview -->
+                                    </div> <!-- nk-block -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <%- include('../includes/footer') %>
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+    <!-- app-root @e -->
+    <%- include('../includes/region-modal') %>
+    <!-- JavaScript -->
+    <script src="./assets/js/bundle.js?ver=3.0.3"></script>
+    <script src="./assets/js/scripts.js?ver=3.0.3"></script>
+    <script src="./assets/js/charts/gd-analytics.js?ver=3.0.3"></script>
+    <script src="./assets/js/libs/jqvmap.js?ver=3.0.3"></script>
+</body>
+
+</html>

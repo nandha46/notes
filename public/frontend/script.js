@@ -57,7 +57,6 @@ const loadMovieData = e => {
         case "1":
             fetch(`https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=true&language=en-US&page=1`, options)
         .then(response => {
-            { 
                 let data = response.json();
                 $('#movie-select').empty().trigger("change");
                 data.then(data => {
@@ -73,7 +72,6 @@ const loadMovieData = e => {
                      }
                  }
                  }, fail => console.log(fail)).catch(err => console.error(err));
-             }
         })
         // .then(response => console.log(response))
         .catch(err => console.error(err));

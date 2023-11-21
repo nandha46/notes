@@ -33,12 +33,13 @@ import commonRoutes from './routes/commonRoutes.js'
 import movies from './routes/movies.js';
 import tvshows from './routes/tvshows.js';
 import auth from './routes/auth.js';
-
+import persons from './routes/persons.js'
 
 app.use('/', commonRoutes);
 app.use('/', movies);
 app.use('/', tvshows);
 app.use('/', auth);
+app.use('/', persons);
 
 let port = config.get('port');
 
