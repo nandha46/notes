@@ -34,7 +34,7 @@ router.get('/load-persons-from-cast', async (req, res)=> {
             .then(response => {
              let data = response.json();
              data.then(data => {
-                  movie.credits= { cast: data.cast };
+                  movie.credits = {cast: data.cast };
                   movie.save().then(() => {
                       console.log("movie updated..");
                     })

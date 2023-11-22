@@ -38,10 +38,10 @@
                                                                 </div>
                                                             </li>
                                                             <li class="nk-block-tools-opt d-none d-sm-block">
-                                                                <a href="#" class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Add Project</span></a>
+                                                                <a href="#" data-bs-toggle='modal' data-bs-target='#modalForm' class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Add to Download list</span></a>
                                                             </li>
                                                             <li class="nk-block-tools-opt d-block d-sm-none">
-                                                                <a href="#" class="btn btn-icon btn-primary"><em class="icon ni ni-plus"></em></a>
+                                                                <a href="#" data-bs-toggle='modal' data-bs-target='#modalForm' class="btn btn-icon btn-primary"><em class="icon ni ni-plus"></em></a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -113,6 +113,7 @@
         <!-- main @e -->
     </div>
     <!-- app-root @e -->
+    <%- include('../forms/addMedia') %>
     <%- include('../includes/region-modal') %>
     <!-- JavaScript -->
     <script src="./assets/js/bundle.js?ver=3.0.3"></script>
