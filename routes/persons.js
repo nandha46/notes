@@ -1,4 +1,4 @@
-import express, { response } from "express";
+import express from "express";
 const router = express.Router();
 
 import fetch from "node-fetch";
@@ -8,8 +8,12 @@ import Person from "../models/person.js";
 import Movie from "../models/movie.js";
 
 router.get('/persons', async(req, res)=> {
-    const allPersons = await Person.find().sort({popularity:-1}).limit(50);
+    const allPersons = await Person.find().sort({popularity:-1});
     res.status(200).render('persons/allPersons', {title: "All Persons", allPersons: allPersons});
+});
+
+router.get('/persons-async', async(req, res)=> {
+    res.status(200).render('persons/asyncPersons', {title: "All Persons"});
 });
 
 router.get('/persons-gallery', async(req, res) => {

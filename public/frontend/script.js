@@ -36,7 +36,27 @@ $(function(){
         });
         return false;
     });
-})
+
+    NioApp.DataTable.init2 = function () {
+        console.log('Serverside loaded..')
+        console.log(NioApp)
+        NioApp.DataTable('.datatable-init-export-serverside', {
+          responsive: {
+            details: true,
+          },
+            ajax: { 
+                "url":'api/v1/persons',
+                "type":"POST"
+            },
+            processing: true,
+            serverSide: true,
+          buttons: ['copy', 'excel', 'csv', 'pdf', 'colvis']
+        });
+        $.fn.DataTable.ext.pager.numbers_length = 7;
+    };
+
+      NioApp.DataTable.init2();
+});
 
 const loadMovieData = e => {
     let mediaType = $('#media-select').val();
