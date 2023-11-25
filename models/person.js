@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
     biography:String,
     birthday:{
         type:Date, 
-        get: date => date == null?' - ':date.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })},
+        get: date => date == null?'-':date.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })},
     gender:{
         type:Number,
         get: gender => {if (gender == 0){
@@ -17,8 +17,7 @@ const schema = new mongoose.Schema({
                 } else {
                     return "Male";
                 }
-    }
-    },
+    }},
     homepage:String,
     id:Number,
     imdb_id:String,
@@ -30,6 +29,31 @@ const schema = new mongoose.Schema({
     external_ids:Schema.Types.Mixed,
     movie_credits:Schema.Types.Mixed,
     tv_credits:Schema.Types.Mixed
+}, {
+    toJSON:{
+        virtuals:true,
+        getters:true
+    },
+    toObject:{
+        virtuals:true,
+        getters:true
+    }
+});
+
+schema.virtual('age').get( function () {
+    const currentDate = new Date();
+    if (this.birthDate === '-') return '-';
+    
+    const birthDate = new Date(this.birthday);
+
+  
+  const age = currentDate.getFullYear() - birthDate.getFullYear();
+
+  if (currentDate.getMonth() * 100+currentDate.getDate() < birthDate.getMonth()*100+birthDate.getDate()) {
+    return age - 1;
+  }
+
+  return age; 
 });
 
 const Person = mongoose.model('persons', schema);

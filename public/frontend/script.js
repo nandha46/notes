@@ -38,8 +38,6 @@ $(function(){
     });
 
     NioApp.DataTable.init2 = function () {
-        console.log('Serverside loaded..')
-        console.log(NioApp)
         NioApp.DataTable('.datatable-init-export-serverside', {
           responsive: {
             details: true,
@@ -48,11 +46,24 @@ $(function(){
                 "url":'api/v1/persons',
                 "type":"POST"
             },
+            columns: [
+                { data: 'name' },
+                { data: 'gender' },
+                { data: 'age' },
+                { data: 'place_of_birth' },
+                { data: 'popularity' },
+                { data: 'known_for_department' },
+                { data: 'birthday' },
+                { data: 'movie_credits.cast.length' },
+                { data: 'tv_credits.cast.length' },
+                { data: 'age' }
+            ],
+
             processing: true,
             serverSide: true,
           buttons: ['copy', 'excel', 'csv', 'pdf', 'colvis']
         });
-        $.fn.DataTable.ext.pager.numbers_length = 7;
+        // $.fn.DataTable.ext.pager.numbers_length = 7;
     };
 
       NioApp.DataTable.init2();
