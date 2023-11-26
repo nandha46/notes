@@ -11,9 +11,9 @@ if(searchValue == ''){
   totalPersons = await Person.estimatedDocumentCount();
   persons = await Person.find().limit(req.body.length).skip(req.body.start);    
 } else {
-  totalPersons = await Person.find({name:/Tayl/i}).estimatedDocumentCount();
-  persons = await Person.find({name:/Tayl/i}).limit(req.body.length).skip(req.body.start);
-  console.log(persons);
+  let search = new RegExp(searchValue, 'i');
+  totalPersons = await Person.find( {$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).estimatedDocumentCount();
+  persons = await Person.find({$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).limit(req.body.length).skip(req.body.start);
 }
 
     res.status(200).send({
