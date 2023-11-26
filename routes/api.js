@@ -6,10 +6,15 @@ import Person from '../models/person.js';
 router.post('/v1/persons', async (req, res) => {
 
 let searchValue = req.body.search.value;
-
-const totalPersons = await Person.estimatedDocumentCount();
-
-const persons = searchValue == ''? await Person.find().limit(req.body.length).skip(req.body.start) : await Person.find({name:req.body.search.value}).limit(req.body.length).skip(req.body.start);
+let persons, totalPersons;
+if(searchValue == ''){
+  totalPersons = await Person.estimatedDocumentCount();
+  persons = await Person.find().limit(req.body.length).skip(req.body.start);    
+} else {
+  totalPersons = await Person.find({name:/Tayl/i}).estimatedDocumentCount();
+  persons = await Person.find({name:/Tayl/i}).limit(req.body.length).skip(req.body.start);
+  console.log(persons);
+}
 
     res.status(200).send({
       draw:req.body.draw,
@@ -17,36 +22,6 @@ const persons = searchValue == ''? await Person.find().limit(req.body.length).sk
       recordsFiltered:totalPersons,
       data:persons
     });
-
-    // res.status(200).send({
-    //     "draw": 1,
-    //     "recordsTotal": 2,
-    //     "recordsFiltered": 2,
-    //     "data": [
-    //       [
-    //         "A. K. Veerasamy",
-    //         "Male",
-    //         "Tamilnadu, India",
-    //         "2.607",
-    //         "Acting",
-    //         "jan 1, 1927",
-    //         "17",
-    //         "0",
-    //         ""
-    //       ],
-    //       [
-    //         "Abbas",
-    //         "Male",
-    //         "Tamilnadu",
-    //         "1.05",
-    //         "Acting",
-    //         "9th Oct 79",
-    //         "15",
-    //         "1",
-    //         ""
-    //       ]
-    //     ]
-    //   })
 });
 
 export default router;
