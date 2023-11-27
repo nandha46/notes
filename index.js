@@ -19,7 +19,7 @@ app.use(express.urlencoded({extended:true}));
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 import mongoose from 'mongoose';
 mongoose.connect('mongodb://localhost/mongo-test')
@@ -35,6 +35,8 @@ import tvshows from './routes/tvshows.js';
 import auth from './routes/auth.js';
 import persons from './routes/persons.js';
 import api from './routes/api.js';
+import cookieParser from 'cookie-parser';
+app.use(cookieParser());
 
 app.use('/', commonRoutes);
 app.use('/', movies);

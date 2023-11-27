@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import Joi from 'joi';
+import jwt from "jsonwebtoken";
+import config from 'config';
 
 const schema = new mongoose.Schema({
     name:{
@@ -22,10 +24,19 @@ const schema = new mongoose.Schema({
         maxlength:255,
         unique:true
     },
+    isAdmin:{type:Boolean, default:false},
+    roles:[],
+    operations:[]
 
 }, {
     timestamps:true
 });
+
+console.log('secret', config.get('jwt_private_key'));
+
+schema.methods.generateAuthToken = function () {
+   return jwt.sign({_id:this._id, isAdmin:this.isAdmin, name:this.name, profile:this.profile, email:this.email}, config.get('jwt_private_key'));
+}
 
 function validateUser(user) {
     const schema = Joi.object({

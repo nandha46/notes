@@ -6,14 +6,10 @@ import config from "config";
 
 import Person from "../models/person.js";
 import Movie from "../models/movie.js";
+import auth from '../middleware/auth.js'
 
-router.get('/persons', async(req, res)=> {
-    const allPersons = await Person.find().sort({popularity:-1});
-    res.status(200).render('persons/allPersons', {title: "All Persons", allPersons: allPersons});
-});
-
-router.get('/persons-async', async(req, res)=> {
-    res.status(200).render('persons/asyncPersons', {title: "All Persons"});
+router.get('/persons', auth, async(req, res)=> {
+    res.status(200).render('persons/allPersons', {title: "All Persons"});
 });
 
 router.get('/persons-gallery', async(req, res) => {

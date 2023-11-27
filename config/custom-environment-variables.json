@@ -1,3 +1,4 @@
 {
-    "tmdb_bearer_token":"tmdb_bearer_token"
+    "tmdb_bearer_token":"tmdb_bearer_token",
+    "jwt_private_key":"notes_jwt_private_key"
 }

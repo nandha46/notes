@@ -17,7 +17,7 @@
                                             <div class="nk-block-head-content">
                                                 <h3 class="nk-block-title page-title">All Persons</h3>
                                                 <div class="nk-block-des text-soft">
-                                                    <p>You have total <%= allPersons.length %> persons.</p>
+                                                    <p>You have total 2 persons.</p>
                                                 </div>
                                             </div><!-- .nk-block-head-content -->
                                             <div class="nk-block-head-content">
@@ -52,11 +52,12 @@
                                     <div class="nk-block nk-block-lg">
                                         <div class="card card-bordered card-preview">
                                             <div class="card-inner">
-                                                <table class="datatable-init-export nowrap table" data-export-title="Export">
+                                                <table class="datatable-init-export-serverside nowrap table" data-export-title="Export">
                                                     <thead>
                                                         <tr>
                                                             <th>Name</th>
                                                             <th>Gender</th>
+                                                            <th>Age</th>
                                                             <th>Place of birth</th>
                                                             <th>Popularity</th>
                                                             <th>Department</th>
@@ -66,43 +67,6 @@
                                                             <th></th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
-                                                        <% for(person of allPersons) {%>
-                                                        <tr class="nk-tb-item">
-                                                            <td><%= person.name %></td>
-                                                            <td><%= person.gender %></td>
-                                                            <td><%= person.place_of_birth %></td>
-                                                            <td><%= person.popularity %></td>
-                                                            <td><%= person.known_for_department %></td>
-                                                            <td><%= person.birthday %></td>
-                                                            <td><%= person.movie_credits.cast.length %></td>
-                                                            <td><%= person.tv_credits.cast.length %></td>
-                                                            <td class="nk-tb-col-tools">
-                                                              <ul class="nk-tb-actions gx-1">
-                                                                <li class="nk-tb-action-hidden">
-                                                                    <a href="#" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                                                                        <em class="icon ni ni-wallet-fill"></em>
-                                                                    </a>
-                                                                </li>
-                                                                <li class="nk-tb-action-hidden">
-                                                                    <a href="#" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Change to Completed">
-                                                                        <em class="icon ni ni-mail-fill"></em>
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="drodown">
-                                                                        <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
-                                                                        <div class="dropdown-menu dropdown-menu-end">
-                                                                            <ul class="link-list-opt no-bdr">
-                                                                                <li><a href="#"><em class="icon ni ni-eye"></em><span>View TV Show Details</span></a></li>
-                                                                            </ul>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
-                                                            </ul></td>
-                                                        </tr>
-                                                        <% } %>
-                                                    </tbody>
                                                 </table>
                                             </div>
                                         </div><!-- .card-preview -->
@@ -124,6 +88,7 @@
     <script src="./assets/js/bundle.js?ver=3.0.3"></script>
     <script src="./assets/js/scripts.js?ver=3.0.3"></script>
     <script src="./assets/js/libs/datatable-btns.js?ver=3.0.3"></script>
+    <script src="./frontend/script.js?ver=1.0.0"></script>
 </body>
 
 </html>

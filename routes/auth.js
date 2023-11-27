@@ -2,6 +2,7 @@ import express from 'express';
 const router = express.Router();
 import bcrypt from 'bcrypt';
 import _ from 'lodash';
+import Joi from 'joi';
 
 import UserExport from '../models/user.js'
 const {User, validateUser} = UserExport;
@@ -20,7 +21,7 @@ router.post('/register', async (req, res) => {
    
    let user = await User.findOne({email: req.body.email});
 
-   if(!user) return res.status(400).render('auth/register', {err: 'User Already Exists'});
+   if(user) return res.status(400).render('auth/register', {err: 'User Already Exists'});
 
    user = new User(_.pick(req.body, ['name', 'email', 'password']));
    const hashedPass = await bcrypt.hash(req.body.password, 10);
@@ -38,8 +39,39 @@ router.get('/login', (req, res) => {
     res.render('auth/login');
 });
 
+router.get('/logout', (req, res) => {
+    res.cookie('jwt', "", 10);
+    res.send('Logged out');
+});
+
+router.post('/login', async (req, res) => {
+    const {error} = validate(req.body);
+    console.log(error);
+    if(error) return res.status(400).render('auth/login', {err: error.details[0].message});
+   
+    let user = await User.findOne({email: req.body.email});
+
+    if(!user) return res.status(400).render('auth/login', {err: 'Invalid email or password'});
+
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
+
+    if(!validPassword) return res.status(400).render('auth/login', {err: 'Invalid email or password'});
+    
+    console.log('success')
+   return res.cookie('jwt', user.generateAuthToken()).redirect(302, '/');
+});
+
 router.get('/password-reset', (req, res) => {
     res.render('auth/password-reset');
 });
+
+function validate (credentials) {
+    const schema = Joi.object({
+        email:Joi.string().min(7).max(255).email().required(),
+        password:Joi.string().min(8).max(255).required()
+    });
+
+    return schema.validate(credentials);
+}
 
 export default router;
