@@ -22,12 +22,14 @@ app.set('views', './views');
 app.use(express.static('public'));
 
 import mongoose from 'mongoose';
-mongoose.connect('mongodb://localhost/mongo-test')
-            .then(()=> {
-                console.log('connected to monogo db');
-            }).catch(err => {
-                console.error('could not connect to mongo db....');
-            });
+mongoose
+  .connect("mongodb://localhost/mongo-test")
+  .then(() => {
+    console.log("connected to monogo db");
+  })
+  .catch((err) => {
+    console.error("could not connect to mongo db....");
+  });
 
 import commonRoutes from './routes/commonRoutes.js'
 import movies from './routes/movies.js';
@@ -36,6 +38,8 @@ import auth from './routes/auth.js';
 import persons from './routes/persons.js';
 import api from './routes/api.js';
 import cookieParser from 'cookie-parser';
+import certifications from './routes/certifications.js';
+
 app.use(cookieParser());
 
 app.use('/', commonRoutes);
@@ -44,12 +48,9 @@ app.use('/', tvshows);
 app.use('/', auth);
 app.use('/', persons);
 app.use('/api', api);
+app.use('', certifications);
 
-let port = config.get('port');
-
-// import certifications from './routes/certifications.js';
-
-// app.use('', certifications);
+const port = config.get('port');
 
 app.listen(port, () => {
     console.log(`listening on port ${port}....`);

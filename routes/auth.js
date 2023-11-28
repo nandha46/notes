@@ -36,7 +36,7 @@ router.post('/register', async (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-    res.render('auth/login');
+    res.render('auth/login', {err:null});
 });
 
 router.get('/logout', (req, res) => {
@@ -46,7 +46,6 @@ router.get('/logout', (req, res) => {
 
 router.post('/login', async (req, res) => {
     const {error} = validate(req.body);
-    console.log(error);
     if(error) return res.status(400).render('auth/login', {err: error.details[0].message});
    
     let user = await User.findOne({email: req.body.email});
@@ -57,7 +56,6 @@ router.post('/login', async (req, res) => {
 
     if(!validPassword) return res.status(400).render('auth/login', {err: 'Invalid email or password'});
     
-    console.log('success')
    return res.cookie('jwt', user.generateAuthToken()).redirect(302, '/');
 });
 

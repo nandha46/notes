@@ -15,7 +15,6 @@ if(searchValue == ''){
   totalPersons = await Person.find( {$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).estimatedDocumentCount();
   persons = await Person.find({$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).limit(req.body.length).skip(req.body.start);
 }
-
     res.status(200).send({
       draw:req.body.draw,
       recordsTotal:totalPersons,

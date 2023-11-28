@@ -64,20 +64,36 @@
                   <li class="dropdown user-dropdown">
                       <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
                           <div class="user-toggle">
-                              <div class="user-avatar sm">
-                                  <em class="icon ni ni-user-alt"></em>
+                              <div class="user-avatar">
+                                <% if(user && user.profile != null) { %>
+                                  <img src="./images/user_profile/<%= user.profile %>" alt="">
+                                <% } else {%>
+                                   <img src="./images/user_profile/b.jpg" alt="">
+                                <% } %>
                               </div>
                               <div class="user-info d-none d-md-block">
-                                  <div class="user-status"><%= user?(user.isAdmin == true?"Administrator":"User"):"Unknown" %></div>
-                                  <div class="user-name dropdown-indicator"><%= user?user.name:"Guest" %></div>
-                              </div>
+                                <% if( user && user.isAdmin == true){ %>
+                                  <div class="user-status">Administrator</div>
+                                  <div class="user-name dropdown-indicator"><%= user.name.slice(0,14) %></div>
+                                <% } else if(user && user.isAdmin == false){ %>
+                                    <div class="user-status">User</div>
+                                    <div class="user-name dropdown-indicator"><%= user.name %></div>
+                                <% } else { %>
+                                    <div class="user-status">Hacker</div>
+                                    <div class="user-name dropdown-indicator">Anonymous</div>
+                                <% } %>
+                                </div>
                           </div>
                       </a>
                       <div class="dropdown-menu dropdown-menu-md dropdown-menu-end dropdown-menu-s1">
                           <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
                               <div class="user-card">
                                   <div class="user-avatar">
-                                    <em class="icon ni ni-user-alt"></em>
+                                    <% if(user && user.profile != null) { %>
+                                        <img src="./images/user_profile/<%= user.profile %>" alt="">
+                                      <% } else {%>
+                                         <img src="./images/user_profile/b.jpg" alt="">
+                                      <% } %>
                                   </div>
                                   <div class="user-info">
                                       <span class="lead-text"><%= user?user.name:"Guest" %></span>
@@ -95,7 +111,7 @@
                           </div>
                           <div class="dropdown-inner">
                               <ul class="link-list">
-                                  <li><a href="#"><em class="icon ni ni-signout"></em><span>Sign out</span></a></li>
+                                  <li><a href="/logout"><em class="icon ni ni-signout"></em><span>Sign out</span></a></li>
                               </ul>
                           </div>
                       </div>

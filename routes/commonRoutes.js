@@ -12,11 +12,13 @@ import watchlistExport from '../models/watchlist.js';
 
 const {validateWatchlist ,Watchlist} = watchlistExport;
 
-router.get('/', (req, res)=>{
+import authMiddleware from '../middleware/auth.js';
+
+router.get('/', authMiddleware, (req, res)=>{
     res.status(200).render('index', {title: "Dashboard | Notes App"});
 });
 
-router.get('/download-posters', async (req, res) => {
+router.get('/download-posters', authMiddleware, async (req, res) => {
     let movies = await Movie.find().select('poster_path');
     const imageUrl = 'https://image.tmdb.org/t/p/original';
     const imageDirectory = 'public/tmdb/movie_posters';

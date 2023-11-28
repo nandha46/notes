@@ -4,7 +4,9 @@ const router = express.Router();
 import MovieCertification from '../models/movie_certification.js';
 import TvCertification from '../models/tv_certification.js';
 
-router.get('/load-certrifications', async (req, res) => {
+import authMiddleware from '../middleware/auth.js';
+
+router.get('/load-certrifications', authMiddleware, async (req, res) => {
     
       for (let cert in movieCertData){
         let certArr = movieCertData[cert];

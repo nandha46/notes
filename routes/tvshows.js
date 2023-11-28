@@ -4,20 +4,21 @@ const router = express.Router();
 
 import Tv from '../models/tv.js';
 import WatchlistExport from '../models/watchlist.js';
-
 const {validateWatchlist, Watchlist} = WatchlistExport;
 
-router.get('/all-tvshows', async (req, res) => {
+import authMiddleware from '../middleware/auth.js';
+
+router.get('/all-tvshows', authMiddleware, async (req, res) => {
     const allShows = await getAllTvshows();
     res.status(200).render('tvshows/tvshows', {title: "All TV Shows", allShows: allShows});
 });
 
-router.get('/tvshows-gallery', async (req, res) => {
+router.get('/tvshows-gallery', authMiddleware, async (req, res) => {
     const allShows = await getAllTvshows();
     res.status(200).render('tvshows/tvshowGallery', {title: "TV Shows Gallery", allShows: allShows});
 });
 
-router.get('/tvshows-to-download', async (req, res) => {
+router.get('/tvshows-to-download', authMiddleware, async (req, res) => {
     const allWatchlists = await getAllWatchlist();
     res.status(200).render('tvshows/toDownloadTv', {title: "TV Shows Download list", allWatchlists: allWatchlists});
 });

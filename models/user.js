@@ -22,7 +22,10 @@ const schema = new mongoose.Schema({
         required:true,
         minlength:8,
         maxlength:255,
-        unique:true
+    },
+    profile:{
+        type:String,
+        default:'a-sm.jpg'
     },
     isAdmin:{type:Boolean, default:false},
     roles:[],
@@ -31,8 +34,6 @@ const schema = new mongoose.Schema({
 }, {
     timestamps:true
 });
-
-console.log('secret', config.get('jwt_private_key'));
 
 schema.methods.generateAuthToken = function () {
    return jwt.sign({_id:this._id, isAdmin:this.isAdmin, name:this.name, profile:this.profile, email:this.email}, config.get('jwt_private_key'));
