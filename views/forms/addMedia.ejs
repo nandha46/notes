@@ -33,7 +33,7 @@
                     <div class="form-group">
                         <label class="form-label" for="movie-select">Select Movie</label>
                         <div class="form-control-wrap">
-                            <select class="form-select js-select2" id="movie-select" dataa-search="on">
+                            <select class="form-select js-select2" id="movie-select" data-search="on">
                             </select>
                         </div>
                     </div>
@@ -41,6 +41,16 @@
                         <div class="custom-control custom-switch">
                             <input type="checkbox" class="custom-control-input" id="customSwitch1">
                             <label class="custom-control-label" for="customSwitch1">Adult</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Select Tags</label>
+                        <div class="form-control-wrap">
+                            <select class="form-select js-select2-ajax" id="tag-select" data-search="on" multiple>
+                                <option value="1">Cute</option>
+                                <option value="2">Beautiful</option>
+                                <option value="3">Hot</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-control-wrap">

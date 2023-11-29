@@ -67,12 +67,48 @@ $(function(){
     };
 
       NioApp.DataTable.init2();
+
+    NioApp.Select2.init = function () {
+        NioApp.Select2('.js-select2-ajax', { 
+            placeholder: 'Select an option yourself',
+            minimumInputLength: 2,
+    ajax: {
+        url: "/api/v1/tags",
+        dataType: 'json',
+        quietMillis: 100,
+        data: function (term, page) {
+            return {
+                option: term
+            };
+        },
+        results: function (data, page) {
+            var more = (page * 10) < data.total;
+            return {
+                results: data.itemName,
+                more: more
+            };
+        }
+    },
+    formatResult: function (data, term) {
+        return data;
+    },
+    formatSelection: function (data) {
+        return data;
+    },
+    dropdownCssClass: "bigdrop",
+    escapeMarkup: function (m) {
+        return m;
+    } 
+        });
+    };
+
+    NioApp.Select2.init();
 });
 
 const loadMovieData = e => {
     let mediaType = $('#media-select').val();
     let query = $(e).val();
-    if (query.length < 3)
+    if (query.length < 2)
         return false;
     let url= '';
 

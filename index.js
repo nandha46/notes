@@ -25,7 +25,7 @@ import mongoose from 'mongoose';
 mongoose
   .connect("mongodb://localhost/mongo-test")
   .then(() => {
-    console.log("connected to monogo db");
+    console.log("connected to monogo db on port 27017");
   })
   .catch((err) => {
     console.error("could not connect to mongo db....");

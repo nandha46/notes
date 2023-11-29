@@ -2,6 +2,7 @@ import express from "express";
 const router = express.Router();
 
 import Movie from '../models/movie.js';
+import Tags from '../models/tags.js';
 
 import axios from 'axios';
 import { promises as fsPromises } from 'fs';
@@ -113,6 +114,32 @@ router.post('/add-to-download-list', (req, res) => {
     })
 
     res.status(200).send( {status: true, "data": req.body});
+});
+
+router.get('/load-tags', authMiddleware, async (req, res)=> {
+    const tagsFile = path.resolve('data/tags.json');
+    fileExists(tagsFile).then(()=> {
+      fsPromises.readFile(tagsFile).then(fileDataBuffer => {
+        const tagsdata = JSON.parse(fileDataBuffer.toString());
+        const tags = tagsdata.tags;
+        const arr = [];
+        for (let tag of tags){
+          arr.push({name:tag});
+        }
+        Tags.insertMany(arr).then(()=> res.send('Inserted')).catch(err => {
+          if(err.code === 11000){
+            // Don't report duplicate
+          } else {
+            console.error('some other error in saving tag');
+            res.send(err)
+          }
+        });
+      })
+    }).catch(err => {
+      console.error(err);
+      res.send(err);
+    })
+    res.send('Completed.')
 });
 
 async function fileExists(filePath) {

@@ -56,7 +56,7 @@ router.post('/login', async (req, res) => {
 
     if(!validPassword) return res.status(400).render('auth/login', {err: 'Invalid email or password'});
     
-   return res.cookie('jwt', user.generateAuthToken()).redirect(302, '/');
+   return res.cookie('jwt', user.generateAuthToken()).redirect(302, '/login');
 });
 
 router.get('/password-reset', (req, res) => {

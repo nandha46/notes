@@ -8,6 +8,7 @@ const schema = new mongoose.Schema({
     priority:Number,
     url:String,
     comment:String,
+    tags:[ {type:mongoose.Schema.Types.ObjectId, ref:'tags'} ],
     completed:{
         type:Boolean,
         default:false
@@ -40,6 +41,7 @@ function validateWatchlist (watchlist) {
         priority:Joi.number(),
         url:Joi.string().allow(''),
         comment: Joi.string().allow(''),
+        tags:Joi.array(),
         completed:Joi.boolean(),
         movArr: Joi.array().required(),
         tvArr: Joi.array().required()
