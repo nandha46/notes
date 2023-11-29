@@ -16,7 +16,8 @@ $(function(){
             'url': $('#url').val(),
             'comment': $('#comment').val(),
             'movArr': movArr,
-            'tvArr': tvArr
+            'tvArr': tvArr,
+            'tags':$('#tag-select').val()
         };
 
         $.ajax({
@@ -81,23 +82,16 @@ $(function(){
                 option: term
             };
         },
-        results: function (data, page) {
-            var more = (page * 10) < data.total;
+        processResults: function (results) {
+            var data = $.map(results, function (obj) {
+                obj.text = obj.text || obj.name;
+                obj.id = obj.id || obj._id;
+                return obj;
+            });
             return {
-                results: data.itemName,
-                more: more
+              results: data
             };
-        }
-    },
-    formatResult: function (data, term) {
-        return data;
-    },
-    formatSelection: function (data) {
-        return data;
-    },
-    dropdownCssClass: "bigdrop",
-    escapeMarkup: function (m) {
-        return m;
+          }
     } 
         });
     };

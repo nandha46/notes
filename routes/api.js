@@ -2,6 +2,7 @@ import express from 'express';
 const router = express.Router();
 
 import Person from '../models/person.js';
+import Tags from '../models/tags.js';
 
 router.post('/v1/persons', async (req, res) => {
 
@@ -21,6 +22,18 @@ if(searchValue == ''){
       recordsFiltered:totalPersons,
       data:persons
     });
+});
+
+router.get('/v1/tags', (req,res) => {
+  const query = req.query.option.term;
+  const type = req.query.option._type;
+  const searchKey = new RegExp(query,'i');
+  Tags.find({name:{$regex:searchKey}},'_id name').then(result => {
+    res.status(200).send(result);
+  }).catch(err => {
+    console.error(err);
+    res.send('Error');
+  });
 });
 
 export default router;

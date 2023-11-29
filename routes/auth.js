@@ -46,17 +46,28 @@ router.get('/logout', (req, res) => {
 
 router.post('/login', async (req, res) => {
     const {error} = validate(req.body);
-    if(error) return res.status(400).render('auth/login', {err: error.details[0].message});
+    if(error) {
+        console.error(error.details[0].message);
+        return res.status(400).render('auth/login', {err: error.details[0].message});
+    }
    
     let user = await User.findOne({email: req.body.email});
 
-    if(!user) return res.status(400).render('auth/login', {err: 'Invalid email or password'});
+    if(!user) 
+    {
+        console.error('Invalid email or password');
+        return res.status(400).render('auth/login', {err: 'Invalid email or password'});
+    }
 
     const validPassword = await bcrypt.compare(req.body.password, user.password);
 
-    if(!validPassword) return res.status(400).render('auth/login', {err: 'Invalid email or password'});
+    if(!validPassword) 
+    {
+        console.error('Invalid email or password');
+        return res.status(400).render('auth/login', {err: 'Invalid email or password'});
+    }
     
-   return res.cookie('jwt', user.generateAuthToken()).redirect(302, '/login');
+   return res.cookie('jwt', user.generateAuthToken()).redirect(302, '/');
 });
 
 router.get('/password-reset', (req, res) => {

@@ -14,7 +14,7 @@ const schema = new mongoose.Schema({
         default:false
     }
 }, {
-    toJSON:{virtuals:false},
+    toJSON:{virtuals:true},
     toObject:{virtuals:true},
     timestamps:true
 });

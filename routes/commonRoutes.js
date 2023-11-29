@@ -98,13 +98,16 @@ router.post('/add-to-download-list', (req, res) => {
       }
     }
 
+    console.log(req.body)
+
     let newWatchlistEntry = new Watchlist({
       mediaType:req.body.mediaType,
       id:req.body.selectedTitle,
       adult:req.body.adult,
       priority:req.body.priority,
       url:req.body.url,
-      comment:req.body.comment
+      comment:req.body.comment,
+      tags:req.body.tags
     });
 
     newWatchlistEntry.save().then(()=> {
