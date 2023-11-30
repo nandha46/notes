@@ -24,7 +24,7 @@ router.get('/to-download-movies', authMiddleware, async (req, res) => {
 });
 
 async function getAllMovies () {
-    const movies = await Movie.find();
+    const movies = await Movie.find().limit(30);
     return movies;
 }
 

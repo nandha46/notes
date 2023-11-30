@@ -3,6 +3,7 @@ const router = express.Router();
 
 import Person from '../models/person.js';
 import Tags from '../models/tags.js';
+import Movie from '../models/movie.js';
 
 router.post('/v1/persons', async (req, res) => {
 
@@ -21,6 +22,26 @@ if(searchValue == ''){
       recordsTotal:totalPersons,
       recordsFiltered:totalPersons,
       data:persons
+    });
+});
+
+router.post('/v1/movies', async (req, res) => {
+
+let searchValue = req.body.search.value;
+let movies, totalMovies;
+if(searchValue == ''){
+  totalMovies = await Movie.estimatedDocumentCount();
+  movies = await Movie.find().limit(req.body.length).skip(req.body.start).populate('language');    
+} else {
+  let search = new RegExp(searchValue, 'i');
+  totalMovies = await Movie.find( {$or:[ {title: { $regex:search }}, {original_title: {$regex:search}}, {original_language: {$regex:search}}, {overview: {$regex:search}} ] }).estimatedDocumentCount();
+  movies = await Movie.find({$or:[ {title: { $regex:search }}, {original_title: {$regex:search}}, {original_language: {$regex:search}}, {overview: {$regex:search}} ] }).limit(req.body.length).skip(req.body.start).populate('language');
+}
+    res.status(200).send({
+      draw:req.body.draw,
+      recordsTotal:totalMovies,
+      recordsFiltered:totalMovies,
+      data:movies
     });
 });
 

@@ -41,7 +41,7 @@ function validateWatchlist (watchlist) {
         priority:Joi.number(),
         url:Joi.string().allow(''),
         comment: Joi.string().allow(''),
-        tags:Joi.array(),
+        tags:Joi.array().required(),
         completed:Joi.boolean(),
         movArr: Joi.array().required(),
         tvArr: Joi.array().required()

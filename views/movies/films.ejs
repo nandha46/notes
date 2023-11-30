@@ -9,7 +9,67 @@
                 <%- include('../includes/navbar') %>
                 <!-- content @s -->
                 <div class="nk-content ">
-                    <%- include('movieTable') %>
+                    <div class="container-fluid">
+                        <div class="nk-content-inner">
+                            <div class="nk-content-body">
+                                    <div class="nk-block-head nk-block-head-sm">
+                                        <div class="nk-block-between">
+                                            <div class="nk-block-head-content">
+                                                <h3 class="nk-block-title page-title">All Movies</h3>
+                                                <div class="nk-block-des text-soft">
+                                                    <p>You have total <%= allFilms.length %> movies.</p>
+                                                </div>
+                                            </div><!-- .nk-block-head-content -->
+                                            <div class="nk-block-head-content">
+                                                <div class="toggle-wrap nk-block-tools-toggle">
+                                                    <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                                    <div class="toggle-expand-content" data-content="pageMenu">
+                                                        <ul class="nk-block-tools g-3">
+                                                            <li>
+                                                                <div class="drodown">
+                                                                    <a href="#" class="dropdown-toggle btn btn-white btn-dim btn-outline-light" data-bs-toggle="dropdown"><em class="d-none d-sm-inline icon ni ni-filter-alt"></em><span>Filtered By</span><em class="dd-indc icon ni ni-chevron-right"></em></a>
+                                                                    <div class="dropdown-menu dropdown-menu-end">
+                                                                        <ul class="link-list-opt no-bdr">
+                                                                            <li><a href="#"><span>Open</span></a></li>
+                                                                            <li><a href="#"><span>Closed</span></a></li>
+                                                                            <li><a href="#"><span>Onhold</span></a></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li class="nk-block-tools-opt d-none d-sm-block">
+                                                                <a href="#" data-bs-toggle='modal' data-bs-target='#modalForm' class="btn btn-primary"><em class="icon ni ni-plus"></em><span>Add to Download list</span></a>
+                                                            </li>
+                                                            <li class="nk-block-tools-opt d-block d-sm-none">
+                                                                <a href="#" data-bs-toggle='modal' data-bs-target='#modalForm' class="btn btn-icon btn-primary"><em class="icon ni ni-plus"></em></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div><!-- .toggle-wrap -->
+                                            </div><!-- .nk-block-head-content -->
+                                        </div><!-- .nk-block-between -->
+                                    </div><!-- .nk-block-head -->
+                                    <div class="nk-block nk-block-lg">
+                                        <div class="card card-bordered card-preview">
+                                            <div class="card-inner">
+                                                <table class="datatable-init-export-serverside-movies nowrap table" data-export-title="Export">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Title</th>
+                                                            <th>language</th>
+                                                            <th>Votes</th>
+                                                            <th>Genres</th>
+                                                            <th>Release date</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div><!-- .card-preview -->
+                                    </div> <!-- nk-block -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- content @e -->
                 <%- include('../includes/footer') %>
@@ -23,8 +83,8 @@
     <!-- JavaScript -->
     <script src="./assets/js/bundle.js?ver=3.0.3"></script>
     <script src="./assets/js/scripts.js?ver=3.0.3"></script>
-    <script src="./assets/js/charts/gd-analytics.js?ver=3.0.3"></script>
-    <script src="./assets/js/libs/jqvmap.js?ver=3.0.3"></script>
+    <script src="./assets/js/libs/datatable-btns.js?ver=3.0.3"></script>
+    <script src="./frontend/script.js?ver=1.0.0"></script>
 </body>
 
 </html>

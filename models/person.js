@@ -40,20 +40,21 @@ const schema = new mongoose.Schema({
     }
 });
 
-schema.virtual('age').get( function () {
-    const currentDate = new Date();
-    if (this.birthDate === '-') return '-';
-    
-    const birthDate = new Date(this.birthday);
+schema.virtual("age").get(function () {
+  const currentDate = new Date();
+  if (this.birthDate === "-") return "-";
 
-  
+  const birthDate = new Date(this.birthday);
   const age = currentDate.getFullYear() - birthDate.getFullYear();
 
-  if (currentDate.getMonth() * 100+currentDate.getDate() < birthDate.getMonth()*100+birthDate.getDate()) {
+  if (
+    currentDate.getMonth() * 100 + currentDate.getDate() <
+    birthDate.getMonth() * 100 + birthDate.getDate()
+  ) {
     return age - 1;
   }
 
-  return age; 
+  return age;
 });
 
 const Person = mongoose.model('persons', schema);

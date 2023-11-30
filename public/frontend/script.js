@@ -64,7 +64,28 @@ $(function(){
             serverSide: true,
           buttons: ['copy', 'excel', 'csv', 'pdf', 'colvis']
         });
-        // $.fn.DataTable.ext.pager.numbers_length = 7;
+        
+        NioApp.DataTable('.datatable-init-export-serverside-movies', {
+          responsive: {
+            details: true,
+          },
+            ajax: { 
+                "url":'api/v1/movies',
+                "type":"POST"
+            },
+            columns: [
+                { data: 'title' },
+                { data: 'language.english_name' },
+                { data: 'vote_average' },
+                { data: 'genre_ids' },
+                { data: 'release_date' },
+                { data: 'options', className:'nk-tb-col-tools' }
+            ],
+            "stripeClasses": [ 'nk-tb-item odd', 'nk-tb-item even' ],
+            processing: true,
+            serverSide: true,
+          buttons: ['copy', 'excel', 'csv', 'pdf', 'colvis']
+        });
     };
 
       NioApp.DataTable.init2();

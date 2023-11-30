@@ -37,7 +37,9 @@ const schema = new mongoose.Schema({
     vote_count:Number,
     credits:Schema.Types.Mixed
 }, {
-    timestamps:true
+    timestamps:true,
+    toJSON:true,
+    toObject:true
 });
 
 const Tv = mongoose.model('tv_shows', schema);
