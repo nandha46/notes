@@ -4,6 +4,7 @@ const router = express.Router();
 import Person from '../models/person.js';
 import Tags from '../models/tags.js';
 import Movie from '../models/movie.js';
+import FavPerson from '../models/fav_person.js';
 
 router.post('/v1/persons', async (req, res) => {
 
@@ -55,6 +56,21 @@ router.get('/v1/tags', (req,res) => {
     console.error(err);
     res.send('Error');
   });
+});
+
+router.get('/v1/person/fav/:id?', (req, res)=> {
+  const fav_person = new FavPerson({person:req.params.id, isFavourite:true});
+    fav_person.save().then(()=> {
+      console.log('Favourite Person Saved')
+      res.send({success:true})
+    }).catch(err => {
+      console.error(err)
+      res.send({success:false})
+    });
+})
+
+router.get('/v1/favperson/:id?', (req, res)=> {
+    FavPerson.findById(req.params.id).populate('persons').then(result => res.send(result)).catch(err => res.send(err));
 });
 
 export default router;

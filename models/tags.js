@@ -5,6 +5,10 @@ const schema = new mongoose.Schema({
         type:String, 
         unique:true
     },
+    popularity:{
+        type:Number, 
+        default:0
+    }
 });
 
 const Tags = mongoose.model('tags', schema);
