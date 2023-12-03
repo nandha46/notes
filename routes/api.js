@@ -26,6 +26,26 @@ if(searchValue == ''){
     });
 });
 
+router.post('/v1/fav/persons', async (req, res) => {
+
+let searchValue = req.body.search.value;
+let persons, totalPersons;
+if(searchValue == ''){
+  totalPersons = await FavPerson.estimatedDocumentCount();
+  persons = await FavPerson.find().populate('person known_movie tags').limit(req.body.length).skip(req.body.start);    
+} else {
+  let search = new RegExp(searchValue, 'i');
+  totalPersons = await FavPerson.find( {$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).estimatedDocumentCount();
+  persons = await FavPerson.find({$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).populate('person known_movie').limit(req.body.length).skip(req.body.start);
+}
+    res.status(200).send({
+      draw:req.body.draw,
+      recordsTotal:totalPersons,
+      recordsFiltered:totalPersons,
+      data:persons
+    });
+});
+
 router.post('/v1/movies', async (req, res) => {
 
 let searchValue = req.body.search.value;
@@ -65,12 +85,12 @@ router.get('/v1/person/fav/:id?', (req, res)=> {
       res.send({success:true})
     }).catch(err => {
       console.error(err)
-      res.send({success:false})
+      res.status(400).send({success:false})
     });
 })
 
 router.get('/v1/favperson/:id?', (req, res)=> {
-    FavPerson.findById(req.params.id).populate('persons').then(result => res.send(result)).catch(err => res.send(err));
+    FavPerson.findById(req.params.id).populate('person known_movie').then(result => res.send(result)).catch(err => res.send(err));
 });
 
 export default router;

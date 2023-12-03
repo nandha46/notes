@@ -57,6 +57,35 @@ schema.virtual("age").get(function () {
   return age;
 });
 
+schema.virtual('options').get(function () {
+
+    let content = `<ul class="nk-tb-actions gx-1">
+    <li class="nk-tb-action-hidden">
+        <a href="#" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+            <em class="icon ni ni-edit"></em>
+        </a>
+    </li>
+    <li class="nk-tb-action-hidden">
+        <a class="btn btn-trigger btn-icon rating text-danger" onclick="return markFavouritePerson('${this._id}');" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as Favourite">
+            <em class="icon ni ni-heart"></em>
+        </a>
+    </li>
+    <li>
+        <div class="drodown">
+            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
+            <div class="dropdown-menu dropdown-menu-end">
+                <ul class="link-list-opt no-bdr">
+                    <li><a href="#"><em class="icon ni ni-eye"></em><span>View Person Details</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </li>
+</ul>`;
+
+    return content;
+
+});
+
 const Person = mongoose.model('persons', schema);
 
 export default Person;

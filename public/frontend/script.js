@@ -57,9 +57,9 @@ $(function(){
                 { data: 'birthday' },
                 { data: 'movie_credits.cast.length' },
                 { data: 'tv_credits.cast.length' },
-                { data: 'age' }
+                { data: 'options', className:'nk-tb-col-tools' }
             ],
-
+            "stripeClasses": [ 'nk-tb-item odd', 'nk-tb-item even' ],
             processing: true,
             serverSide: true,
           buttons: ['copy', 'excel', 'csv', 'pdf', 'colvis']
@@ -79,6 +79,32 @@ $(function(){
                 { data: 'vote_average' },
                 { data: 'genre_ids' },
                 { data: 'release_date' },
+                { data: 'options', className:'nk-tb-col-tools' }
+            ],
+            "stripeClasses": [ 'nk-tb-item odd', 'nk-tb-item even' ],
+            processing: true,
+            serverSide: true,
+          buttons: ['copy', 'excel', 'csv', 'pdf', 'colvis']
+        });
+        
+        NioApp.DataTable('.datatable-init-export-serverside-fav-persons', {
+          responsive: {
+            details: true,
+          },
+            ajax: { 
+                "url":'api/v1/fav/persons',
+                "type":"POST"
+            },
+            columns: [
+                { data: 'person.name' },
+                { data: 'person.gender' },
+                { data: 'person.age' },
+                { data: 'person.place_of_birth' },
+                { data: 'person.popularity' },
+                { data: 'person.known_for_department' },
+                { data: 'person.birthday' },
+                { data: 'rating' },
+                { data: 'tag_formatted' },
                 { data: 'options', className:'nk-tb-col-tools' }
             ],
             "stripeClasses": [ 'nk-tb-item odd', 'nk-tb-item even' ],
@@ -186,4 +212,21 @@ const loadMovieData = e => {
             console.log('default');
     }
 
+}
+
+const markFavouritePerson = (id, el) => {
+    console.log('marked as favoutite', id);
+    console.log(el);
+
+    fetch(`http://localhost:3100/api/v1/person/fav/${id}`, {
+        method:'GET',
+        headers:{
+            accept:'application/json'
+        }
+    }).then(()=> {
+        NioApp.Toast('Marked as Favoutite.', 'success', {position: 'top-right'});
+    }).catch(err => {
+        NioApp.Toast('Error Marking Favourite. Check console.', 'error', {position: 'top-right'});
+        console.error(err)
+    });
 }

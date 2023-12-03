@@ -12,6 +12,14 @@ router.get('/persons', authMiddleware, async(req, res)=> {
     res.status(200).render('persons/allPersons', {title: "All Persons"});
 });
 
+router.get('/persons-fav', authMiddleware, async(req, res)=> {
+    res.status(200).render('persons/favPersons', {title: "Favorite Persons"});
+});
+
+router.get('/persons-known', authMiddleware, async(req, res)=> {
+    res.status(200).render('persons/knownPersons', {title: "Known Persons"});
+});
+
 router.get('/persons-gallery', authMiddleware, async(req, res) => {
     res.status(200).render('persons/personGallery');
 });
