@@ -6,7 +6,7 @@ var tvArr = [];
 // let tmdb_bearer_token = config.get('tmdb_bearer_token');
 
 $(function(){
-    $('#download-list-form').on('submit', ()=>{
+    $('#download-list-form').on('submit', () => {
 
         let data = {
             'mediaType': $('#media-select').val(),
@@ -93,6 +93,32 @@ $(function(){
           },
             ajax: { 
                 "url":'api/v1/fav/persons',
+                "type":"POST"
+            },
+            columns: [
+                { data: 'person.name' },
+                { data: 'person.gender' },
+                { data: 'person.age' },
+                { data: 'person.place_of_birth' },
+                { data: 'person.popularity' },
+                { data: 'person.known_for_department' },
+                { data: 'person.birthday' },
+                { data: 'rating' },
+                { data: 'tag_formatted' },
+                { data: 'options', className:'nk-tb-col-tools' }
+            ],
+            "stripeClasses": [ 'nk-tb-item odd', 'nk-tb-item even' ],
+            processing: true,
+            serverSide: true,
+          buttons: ['copy', 'excel', 'csv', 'pdf', 'colvis']
+        });
+        
+        NioApp.DataTable('.datatable-init-export-serverside-known-persons', {
+          responsive: {
+            details: true,
+          },
+            ajax: { 
+                "url":'api/v1/known/persons',
                 "type":"POST"
             },
             columns: [
@@ -214,19 +240,34 @@ const loadMovieData = e => {
 
 }
 
-const markFavouritePerson = (id, el) => {
-    console.log('marked as favoutite', id);
-    console.log(el);
-
-    fetch(`http://localhost:3100/api/v1/person/fav/${id}`, {
+const markFavouritePerson = (id) => {
+    fetch(`http://localhost:8000/api/v1/person/fav/${id}`, {
         method:'GET',
         headers:{
             accept:'application/json'
         }
     }).then(()=> {
         NioApp.Toast('Marked as Favoutite.', 'success', {position: 'top-right'});
+    console.log('marked as favoutite', id);
     }).catch(err => {
         NioApp.Toast('Error Marking Favourite. Check console.', 'error', {position: 'top-right'});
         console.error(err)
+    console.log('Error marking as favoutite', id);
+    });
+}
+
+const markKnownPerson = (id) => {
+    fetch(`http://localhost:8000/api/v1/person/known/${id}`, {
+        method:'GET',
+        headers:{
+            accept:'application/json'
+        }
+    }).then(()=> {
+        NioApp.Toast('Marked as Known.', 'success', {position: 'top-right'});
+    console.log('marked as Known', id);
+    }).catch(err => {
+        NioApp.Toast('Error Marking Known. Check console.', 'error', {position: 'top-right'});
+        console.error(err)
+    console.log('Error marking as Known', id);
     });
 }

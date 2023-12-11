@@ -19,8 +19,13 @@ const schema = new mongoose.Schema({
                 }
     }},
     homepage:String,
-    id:Number,
-    imdb_id:String,
+    id:{
+        type:Number,
+        unique:true
+    },
+    imdb_id:{
+        type:String 
+    },
     known_for_department:String,
     name:String,
     place_of_birth:String,
@@ -30,6 +35,7 @@ const schema = new mongoose.Schema({
     movie_credits:Schema.Types.Mixed,
     tv_credits:Schema.Types.Mixed
 }, {
+    timestamps:true,
     toJSON:{
         virtuals:true,
         getters:true
@@ -61,8 +67,8 @@ schema.virtual('options').get(function () {
 
     let content = `<ul class="nk-tb-actions gx-1">
     <li class="nk-tb-action-hidden">
-        <a href="#" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-            <em class="icon ni ni-edit"></em>
+        <a class="btn btn-trigger btn-icon text-primary" onclick="return markKnownPerson('${this._id}');" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark as Known">
+            <em class="icon ni ni-star"></em>
         </a>
     </li>
     <li class="nk-tb-action-hidden">
@@ -75,7 +81,8 @@ schema.virtual('options').get(function () {
             <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
             <div class="dropdown-menu dropdown-menu-end">
                 <ul class="link-list-opt no-bdr">
-                    <li><a href="#"><em class="icon ni ni-eye"></em><span>View Person Details</span></a></li>
+                    <li><a href="#"><em class="icon ni ni-edit"></em><span>Edit Person</span></a></li>
+                    <li><a href="#"><em class="icon ni ni-eye"></em><span>View Person</span></a></li>
                 </ul>
             </div>
         </div>

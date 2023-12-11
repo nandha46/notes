@@ -1,6 +1,6 @@
 {
     "name":"Notes App",
-    "port":"3100",
+    "port":"8000",
     "tmdb_bearer_token":"",
     "jwt_private_key":""
 }

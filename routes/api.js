@@ -9,19 +9,20 @@ import FavPerson from '../models/fav_person.js';
 router.post('/v1/persons', async (req, res) => {
 
 let searchValue = req.body.search.value;
-let persons, totalPersons;
+let persons, filteredPersons;
+let totalPersons = await Person.estimatedDocumentCount();
 if(searchValue == ''){
-  totalPersons = await Person.estimatedDocumentCount();
-  persons = await Person.find().limit(req.body.length).skip(req.body.start);    
+  persons = await Person.find().limit(req.body.length).skip(req.body.start);
+  filteredPersons = totalPersons;    
 } else {
   let search = new RegExp(searchValue, 'i');
-  totalPersons = await Person.find( {$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).estimatedDocumentCount();
+  filteredPersons = await Person.estimatedDocumentCount({$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] });
   persons = await Person.find({$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).limit(req.body.length).skip(req.body.start);
 }
     res.status(200).send({
       draw:req.body.draw,
       recordsTotal:totalPersons,
-      recordsFiltered:totalPersons,
+      recordsFiltered:filteredPersons,
       data:persons
     });
 });
@@ -31,12 +32,32 @@ router.post('/v1/fav/persons', async (req, res) => {
 let searchValue = req.body.search.value;
 let persons, totalPersons;
 if(searchValue == ''){
-  totalPersons = await FavPerson.estimatedDocumentCount();
-  persons = await FavPerson.find().populate('person known_movie tags').limit(req.body.length).skip(req.body.start);    
+  totalPersons = await FavPerson.find({isFavourite:true}).estimatedDocumentCount();
+  persons = await FavPerson.find({isFavourite:true}).populate('person known_movie tags').limit(req.body.length).skip(req.body.start);    
 } else {
   let search = new RegExp(searchValue, 'i');
-  totalPersons = await FavPerson.find( {$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).estimatedDocumentCount();
-  persons = await FavPerson.find({$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).populate('person known_movie').limit(req.body.length).skip(req.body.start);
+  totalPersons = await FavPerson.find( {isFavourite:true}, {$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).estimatedDocumentCount();
+  persons = await FavPerson.find({isFavourite:true}, {$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).populate('person known_movie').limit(req.body.length).skip(req.body.start);
+}
+    res.status(200).send({
+      draw:req.body.draw,
+      recordsTotal:totalPersons,
+      recordsFiltered:totalPersons,
+      data:persons
+    });
+});
+
+router.post('/v1/known/persons', async (req, res) => {
+
+let searchValue = req.body.search.value;
+let persons, totalPersons;
+if(searchValue == ''){
+  totalPersons = await FavPerson.find({isKnown:true}).estimatedDocumentCount();
+  persons = await FavPerson.find({isKnown:true}).populate('person known_movie tags').limit(req.body.length).skip(req.body.start);    
+} else {
+  let search = new RegExp(searchValue, 'i');
+  totalPersons = await FavPerson.find( {isKnown:true}, {$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).estimatedDocumentCount();
+  persons = await FavPerson.find({isKnown:true}, {$or:[ {name: { $regex:search }}, {place_of_birth: {$regex:search}}, {biography: {$regex:search}} ] }).populate('person known_movie').limit(req.body.length).skip(req.body.start);
 }
     res.status(200).send({
       draw:req.body.draw,
@@ -80,6 +101,17 @@ router.get('/v1/tags', (req,res) => {
 
 router.get('/v1/person/fav/:id?', (req, res)=> {
   const fav_person = new FavPerson({person:req.params.id, isFavourite:true});
+    fav_person.save().then(()=> {
+      console.log('Favourite Person Saved')
+      res.send({success:true})
+    }).catch(err => {
+      console.error(err)
+      res.status(400).send({success:false})
+    });
+})
+
+router.get('/v1/person/known/:id?', (req, res)=> {
+  const fav_person = new FavPerson({person:req.params.id, isKnown:true});
     fav_person.save().then(()=> {
       console.log('Favourite Person Saved')
       res.send({success:true})
