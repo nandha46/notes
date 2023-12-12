@@ -31,6 +31,10 @@ mongoose
     console.error("could not connect to mongo db....");
   });
 
+import storePageview from './middleware/PageviewMiddleware.js';
+
+app.use(storePageview);
+
 import commonRoutes from './routes/commonRoutes.js'
 import movies from './routes/movies.js';
 import tvshows from './routes/tvshows.js';
