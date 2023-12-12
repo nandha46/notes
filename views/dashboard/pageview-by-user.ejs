@@ -1,0 +1,41 @@
+<div class="col-md-6 col-xxl-3">
+    <div class="card card-bordered h-100">
+        <div class="card-inner mb-n2">
+            <div class="card-title-group">
+                <div class="card-title card-title-sm">
+                    <h6 class="title">Pages View by Users</h6>
+                </div>
+                <div class="card-tools">
+                    <div class="drodown">
+                        <a href="#" class="dropdown-toggle dropdown-indicator btn btn-sm btn-outline-light btn-white" data-bs-toggle="dropdown">30 Days</a>
+                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-xs">
+                            <ul class="link-list-opt no-bdr">
+                                <li><a href="#"><span>7 Days</span></a></li>
+                                <li><a href="#"><span>15 Days</span></a></li>
+                                <li><a href="#"><span>30 Days</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="nk-tb-list is-compact">
+            <div class="nk-tb-item nk-tb-head">
+                <div class="nk-tb-col"><span>Page</span></div>
+                <div class="nk-tb-col text-end"><span>Page Views</span></div>
+            </div><!-- .nk-tb-head -->
+            <% if(locals.pageviewsByUser) {%>
+                <% for (let item of locals.pageviewsByUser){ %>
+                <div class="nk-tb-item">
+                    <div class="nk-tb-col">
+                        <span class="tb-sub"><span><%= item._id %></span></span>
+                    </div>
+                    <div class="nk-tb-col text-end">
+                        <span class="tb-sub tb-amount"><span><%= item.count %></span></span>
+                    </div>
+                </div><!-- .nk-tb-item -->
+                <%}%>
+            <% }%>
+        </div><!-- .nk-tb-list -->
+    </div><!-- .card -->
+</div><!-- .col -->
