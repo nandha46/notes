@@ -24,13 +24,7 @@ router.get('/persons-gallery', authMiddleware, async(req, res) => {
     res.status(200).render('persons/personGallery');
 });
 
-let personCounter;
-let personDuplicateCounter;
-
 router.get('/load-persons-from-cast', async (req, res)=> {
-
-    personCounter = 0;
-    personDuplicateCounter = 0;
 
     const bearer_token = config.get('tmdb_bearer_token');
     const options = {
@@ -53,7 +47,6 @@ router.get('/load-persons-from-cast', async (req, res)=> {
                     .save()
                     .then(() => {
                       console.log("movie updated..");
-                      movieCounter++;
                     })
                     .catch(err => {
                         console.error(err)
@@ -85,8 +78,8 @@ router.get('/load-persons-from-cast', async (req, res)=> {
     <body>
     
         <h1>Updated Values</h1>
-        <div id="personsValue">Persons updated: ${personCounter}</div>
-        <div id="moviesValue">Persons Duplicates: ${personDuplicateCounter}</div>
+        <div id="personsValue">Persons updated: 0</div>
+        <div id="moviesValue">Persons Duplicates: 0</div>
     </body>
     </html>`);
 });
@@ -103,12 +96,10 @@ function loadPersonDetails (personId, options) {
               .save()
               .then(() => {
                 console.log("person saved..");
-                personCounter++;
               })
               .catch( err => {
                 if(err.code === 11000){
                 console.error('Duplicate Person');
-                personDuplicateCounter++;
               } else {
                 console.error(err)
               }});

@@ -3,6 +3,7 @@ const router = express.Router();
 
 import Movie from '../models/movie.js';
 import Tags from '../models/tags.js';
+import Pageview from "../models/pageview.js";
 
 import axios from 'axios';
 import { promises as fsPromises } from 'fs';
@@ -16,7 +17,35 @@ const {validateWatchlist ,Watchlist} = watchlistExport;
 import authMiddleware from '../middleware/auth.js';
 
 router.get('/', authMiddleware, (req, res)=>{
-    res.status(200).render('index', {title: "Dashboard | Notes App"});
+  Pageview.aggregate([
+      {$group:{
+        _id:'$page',
+        count:{$sum:1}
+      }},
+      {
+        $sort: {
+          count: -1, // Sort in descending order based on the count
+        },
+      },
+      {
+        $limit: 9, // Limit the results to 9 documents
+      }
+    ]).then(result => {
+      res
+      .status(200)
+      .render("index", {
+        title: "Dashboard | Notes App",
+        pageviewsByUser: result,
+      }); 
+    })
+    .catch(err => {
+      res
+      .status(200)
+      .render("index", {
+        title: "Dashboard | Notes App",
+        pageviewsByUser: false,
+      });
+    });
 });
 
 router.get('/download-posters', authMiddleware, async (req, res) => {

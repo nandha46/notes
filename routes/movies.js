@@ -30,7 +30,6 @@ async function getAllMovies () {
 
 async function getAllWatchlist () {
     const watchlist = await Watchlist.find({mediaType:1}).populate('movie');
-    console.log(watchlist[0]);
     return watchlist;
 }
 
