@@ -42,7 +42,6 @@ import auth from './routes/auth.js';
 import persons from './routes/persons.js';
 import api from './routes/api.js';
 import cookieParser from 'cookie-parser';
-import certifications from './routes/certifications.js';
 import actions from './routes/actions.js';
 
 app.use(cookieParser());

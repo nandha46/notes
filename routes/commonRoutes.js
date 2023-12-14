@@ -2,7 +2,6 @@ import express from "express";
 const router = express.Router();
 
 import Movie from '../models/movie.js';
-import Tags from '../models/tags.js';
 import Pageview from "../models/pageview.js";
 
 import axios from 'axios';
@@ -49,7 +48,7 @@ router.get('/', authMiddleware, (req, res)=>{
 });
 
 router.get('/download-posters', authMiddleware, async (req, res) => {
-    let movies = await Movie.find().select('poster_path');
+    let movies = await Movie.find({poster_path:{exists:true}}).select('poster_path');
     const imageUrl = 'https://image.tmdb.org/t/p/original';
     const imageDirectory = 'public/tmdb/movie_posters';
     const dirname = path.resolve();
@@ -127,8 +126,6 @@ router.post('/add-to-download-list', (req, res) => {
       }
     }
 
-    console.log(req.body)
-
     let newWatchlistEntry = new Watchlist({
       mediaType:req.body.mediaType,
       id:req.body.selectedTitle,
@@ -147,40 +144,5 @@ router.post('/add-to-download-list', (req, res) => {
 
     res.status(200).send( {status: true, "data": req.body});
 });
-
-router.get('/load-tags', authMiddleware, async (req, res)=> {
-    const tagsFile = path.resolve('data/tags.json');
-    fileExists(tagsFile).then(()=> {
-      fsPromises.readFile(tagsFile).then(fileDataBuffer => {
-        const tagsdata = JSON.parse(fileDataBuffer.toString());
-        const tags = tagsdata.tags;
-        const arr = [];
-        for (let tag of tags){
-          arr.push({name:tag});
-        }
-        Tags.insertMany(arr).then(()=> res.send('Inserted')).catch(err => {
-          if(err.code === 11000){
-            // Don't report duplicate
-          } else {
-            console.error('some other error in saving tag');
-            res.send(err)
-          }
-        });
-      })
-    }).catch(err => {
-      console.error(err);
-      res.send(err);
-    })
-    res.send('Completed.')
-});
-
-async function fileExists(filePath) {
-    try {
-        await fsPromises.access(filePath, fsPromises.constants.F_OK);
-        return true; // File exists
-    } catch (err) {
-        return false; // File does not exist
-    }
-  }
 
 export default router;
