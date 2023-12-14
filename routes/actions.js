@@ -3,15 +3,37 @@ const router = express.Router();
 
 import fetch from "node-fetch";
 import config from "config";
+import authMiddleware from '../middleware/auth.js';
 
 import Person from "../models/person.js";
 import Movie from "../models/movie.js";
 
-router.get('/load-persons-from-cast', async (req, res) => {
+router.get('/', authMiddleware, async (req, res)=> {
+   let totalPersons = await Person.countDocuments();
+   let malePersons = await Person.countDocuments({gender:2});
+   let femalePersons = await Person.countDocuments({gender:1});
+   let nonBPersons = await Person.countDocuments({gender:0});
+    res
+      .status(200)
+      .render("dashboard/actions", {
+        title: "Server Actions",
+        totalPersons: totalPersons,
+        malePersons: malePersons,
+        femalePersons: femalePersons,
+        nonBPersons: nonBPersons,
+      });
+});
 
-    const delay = 100;
-  
-      const bearer_token = config.get('tmdb_bearer_token');
+let updatedPersons = 0; 
+let duplicatePersons = 0;
+let updatedMovies = 0;
+
+router.get('/load-persons-from-cast', async (req, res) => {
+    updatedPersons = 0; 
+    duplicatePersons = 0;
+    updatedMovies = 0;
+
+    const bearer_token = config.get('tmdb_bearer_token');
       const options = {
           method: 'GET',
           headers: {
@@ -19,62 +41,52 @@ router.get('/load-persons-from-cast', async (req, res) => {
             Authorization: `Bearer ${bearer_token}`
           }
         };
-      let movies = await Movie.find().sort({createdAt:-1}).limit(100);
-      
+      let movies = await Movie.find().limit(20);
+
       for (let movie of movies){
           const url = `https://api.themoviedb.org/3/movie/${movie.id}/credits?language=en-US`;
-          setTimeout(()=> {
-              fetch(url, options)
-              .then(response => {
-               let data = response.json();
-               data.then(data => {
-                    movie.credits = {cast: data.cast };
-                    movie
-                      .save()
-                      .then(() => {
-                        console.log("movie updated..");
-                      })
-                      .catch(err => {
-                          console.error(err)
-                      })
-                    for (let castMember of movie.credits.cast ){
-                          loadPersonDetails(castMember.id, options);
-                    }
-  
-               });
-            }).catch(err => console.error('error:' + err));
-          } ,delay);
+        // Wait for 0.1 Seconds
+          await delay(100);
+         await getAndUpdateMovies(url, options, movie);
       }
   
-      res.status(200).send(`
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Update Values Example</title>
-          <style>
-              body {
-                  font-family: Arial, sans-serif;
-                  text-align: center;
-                  margin: 50px;
-              }
-          </style>
-      </head>
-      <body>
-      
-          <h1>Updated Values</h1>
-          <div id="personsValue">Persons updated: 0</div>
-          <div id="moviesValue">Persons Duplicates: 0</div>
-      </body>
-      </html>`);
+      res.status(200).send({updatedMovies:updatedMovies, updatedPersons:updatedPersons, duplicatePersons:duplicatePersons});
   });
+
+async function getAndUpdateMovies(url, options, movie) {
+    try {
+    fetch(url, options)
+    .then((response) => {
+      let data = response.json();
+      data.then( async data => {
+        movie.credits = { cast: data.cast };
+        movie
+          .save()
+          .then(() => {
+            console.log("movie updated..", updatedMovies++);
+            console.log(data.cast);
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+        for (let castMember of movie.credits.cast) {
+            // Wait for 0.1 Seconds
+            await delay(100);
+          loadPersonDetails(castMember.id, options);
+        }
+      });
+    })
+    .catch((err) => console.error("error:" + err));
+} catch (err){
+    console.error('App stopper', err);
+}
+
+  }
   
   function loadPersonDetails (personId, options) {
-    const delay = 100;
       const url = `https://api.themoviedb.org/3/person/${personId}?append_to_response=external_ids%2Cmovie_credits%2Ctv_credits&language=en-US`;
-      setTimeout(()=> {
-          fetch(url, options)
+          
+      fetch(url, options)
           .then(response => {
            let data = response.json();
            data.then(data => {
@@ -82,17 +94,20 @@ router.get('/load-persons-from-cast', async (req, res) => {
               person
                 .save()
                 .then(() => {
-                  console.log("person saved..");
+                  console.log("person saved..", updatedPersons++);
                 })
                 .catch( err => {
                   if(err.code === 11000){
-                  console.error('Duplicate Person');
+                  console.error('Duplicate Person', duplicatePersons++);
                 } else {
                   console.error(err)
                 }});
            });
         }).catch(err => console.error('error:' + err));
-      } ,delay);
   }
+
+function delay(ms) {
+   return new Promise(resolve => setTimeout(resolve, ms));
+ }
 
 export default router;

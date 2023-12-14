@@ -43,6 +43,7 @@ import persons from './routes/persons.js';
 import api from './routes/api.js';
 import cookieParser from 'cookie-parser';
 import certifications from './routes/certifications.js';
+import actions from './routes/actions.js';
 
 app.use(cookieParser());
 
@@ -52,6 +53,7 @@ app.use('/', tvshows);
 app.use('/', auth);
 app.use('/', persons);
 app.use('/api', api);
+app.use('/actions', actions);
 app.use('', certifications);
 
 const port = config.get('port');

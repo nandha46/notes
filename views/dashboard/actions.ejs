@@ -1,0 +1,108 @@
+<%- include('../includes/header') %>
+<body class="nk-body bg-lighter npc-general has-sidebar ">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main ">
+            <%- include('../includes/sidepanel') %>
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <%- include('../includes/navbar') %>
+                <!-- content @s -->
+                <div class="nk-content ">
+                    <div class="container-fluid">
+                        <div class="nk-content-inner">
+                            <div class="nk-content-body">
+                                <div class="nk-block-head nk-block-head-sm">
+                                    <div class="nk-block-between">
+                                        <div class="nk-block-head-content">
+                                            <h3 class="nk-block-title page-title">Server Actions</h3>
+                                            <div class="nk-block-des text-soft">
+                                                <p>You have total 7 Actions.</p>
+                                            </div>
+                                        </div><!-- .nk-block-head-content -->
+                                    </div><!-- .nk-block-between -->
+                                </div><!-- .nk-block-head -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nk-block">
+                        <div class="row g-gs">
+                            <div class="col-sm-6 col-lg-4 col-xxl-3">
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+                                        <div class="team">
+                                            <div class="user-card user-card-s2">
+                                                <div class="user-info">
+                                                    <h5>Persons</h5>
+                                                    <span class="sub-text"><%= locals.totalPersons%></span>
+                                                </div>
+                                            </div>
+                                            <div class="team-details">
+                                                <p>Load Person's data from Server by getting movies cast Info.</p>
+                                            </div>
+                                            <ul class="team-statistics">
+                                                <li><span><%= locals.malePersons%></span><span>Male</span></li>
+                                                <li><span><%= locals.femalePersons%></span><span>Female</span></li>
+                                                <li><span><%= locals.nonBPersons%></span><span>Non-binary</span></li>
+                                            </ul>
+                                            <div class="team-view">
+                                                <a class="btn btn-round btn-outline-light w-150px" onclick="return loadPersonsAction(this);">
+                                                    <span>
+                                                        <div class="team-status bg-success text-white"><em class="icon ni ni-check-thick"></em></div> Load Persons
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div><!-- .team -->
+                                    </div><!-- .card-inner -->
+                                </div><!-- .card -->
+                            </div><!-- .col -->
+                            <div class="col-sm-6 col-lg-4 col-xxl-3">
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+                                        <div class="team">
+                                            <div class="user-card user-card-s2">
+                                                <div class="user-info">
+                                                    <h5>Movie Posters</h5>
+                                                    <span class="sub-text">325</span>
+                                                </div>
+                                            </div>
+                                            <div class="team-details">
+                                                <p>I am an UI/UX Designer and Love to be creative.</p>
+                                            </div>
+                                            <ul class="team-statistics">
+                                                <li><span><%= locals.malePersons%></span><span>Male</span></li>
+                                                <li><span><%= locals.femalePersons%></span><span>Female</span></li>
+                                                <li><span><%= locals.totalPersons%></span><span>Total</span></li>
+                                            </ul>
+                                            <div class="team-view">
+                                                <a class="btn btn-round btn-outline-light w-150px" onclick="return loadPostersAction(this);">
+                                                    <span>
+                                                        <div class="team-status bg-success text-white"><em class="icon ni ni-check-thick"></em></div> Load Posters
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div><!-- .team -->
+                                    </div><!-- .card-inner -->
+                                </div><!-- .card -->
+                            </div><!-- .col -->
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <%- include('../includes/footer') %>
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+    <!-- app-root @e -->
+    <%- include('../includes/region-modal') %>
+    <!-- JavaScript -->
+    <script src="../assets/js/bundle.js?ver=3.0.3"></script>
+    <script src="../assets/js/scripts.js?ver=3.0.3"></script>
+    <script src="../assets/js/charts/gd-analytics.js?ver=3.0.3"></script>
+    <script src="../assets/js/libs/jqvmap.js?ver=3.0.3"></script>
+    <script src="../frontend/script.js?ver=1.0.0"></script>
+</body>
+
+</html>

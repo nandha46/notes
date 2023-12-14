@@ -271,3 +271,28 @@ const markKnownPerson = (id) => {
     console.log('Error marking as Known', id);
     });
 }
+
+const loadPersonsAction = e => {
+    
+    $(e).children().children().children('.icon').removeClass('ni-check-thick').addClass('ni-loader spin-loader');
+    
+    fetch(`http://localhost:8000/actions/load-persons-from-cast`, {
+        method:'GET',
+        headers:{
+            accept:'application/json'
+        }
+    }).then(response => {
+        response.json().then(data => console.log(data)).catch(err => console.error(err));
+        NioApp.Toast('Persons Updated.', 'success', {position: 'top-right'});
+        $(e).children().children().children('.icon').addClass('ni-check-thick').removeClass('ni-loader spin-loader');
+    }).catch(err => {
+        NioApp.Toast('Error updating persons. Check console.', 'error', {position: 'top-right'});
+        console.error(err);
+        $(e).children().children().children('.icon').addClass('ni-circle-fill').removeClass('ni-loader spin-loader');
+    });
+
+}
+
+const loadPostersAction = e => {
+
+}
