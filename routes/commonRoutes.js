@@ -48,7 +48,7 @@ router.get('/', authMiddleware, (req, res)=>{
 });
 
 router.get('/download-posters', authMiddleware, async (req, res) => {
-    let movies = await Movie.find({poster_path:{exists:true}}).select('poster_path');
+    let movies = await Movie.find({poster_path:{$exists:true}}).select('poster_path');
     const imageUrl = 'https://image.tmdb.org/t/p/original';
     const imageDirectory = 'public/tmdb/movie_posters';
     const dirname = path.resolve();
@@ -144,5 +144,14 @@ router.post('/add-to-download-list', (req, res) => {
 
     res.status(200).send( {status: true, "data": req.body});
 });
+
+async function fileExists(filePath) {
+  try {
+      await fsPromises.access(filePath, fsPromises.constants.F_OK);
+      return true; // File exists
+  } catch (err) {
+      return false; // File does not exist
+  }
+}
 
 export default router;

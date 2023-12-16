@@ -53,7 +53,6 @@ app.use('/', auth);
 app.use('/', persons);
 app.use('/api', api);
 app.use('/actions', actions);
-app.use('', certifications);
 
 const port = config.get('port');
 

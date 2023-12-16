@@ -6,7 +6,7 @@ const schema = new mongoose.Schema({
         default:Date.now
     },
     records:Number
-}, {timestamps:true});
+});
 
 const DatabaseStats = mongoose.model('database_stats', schema);
 

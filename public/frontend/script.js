@@ -281,12 +281,29 @@ const loadPersonsAction = e => {
         headers:{
             accept:'application/json'
         }
-    }).then(response => {
-        response.json().then(data => console.log(data)).catch(err => console.error(err));
-        NioApp.Toast('Persons Updated.', 'success', {position: 'top-right'});
+    }).then(async response => {
+       const data = await response.json()
+       console.log(data, "data");
+       // Sweet Alert
+        Swal.fire({
+            title: 'Persons Updated!',
+            html: `Updated Movies: ${data.updatedMovies} <br>Updated Persons: ${data.updatedPersons} <br>Duplicate Persons: ${data.duplicatePersons}`,
+            timer: 10000,
+            timerProgressBar: true,
+            onBeforeOpen: () => {
+                Swal.showLoading()
+            }
+        }).then((result) => {
+            if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.timer
+            ) {
+                console.log('I was closed by the timer') // eslint-disable-line
+            }
+        });
         $(e).children().children().children('.icon').addClass('ni-check-thick').removeClass('ni-loader spin-loader');
     }).catch(err => {
-        NioApp.Toast('Error updating persons. Check console.', 'error', {position: 'top-right'});
+        NioApp.Toast('Error updating persons. Check console.', 'error', {position: 'top-center'});
         console.error(err);
         $(e).children().children().children('.icon').addClass('ni-circle-fill').removeClass('ni-loader spin-loader');
     });
