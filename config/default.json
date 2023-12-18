@@ -2,5 +2,7 @@
     "name":"Notes App",
     "port":"8000",
     "tmdb_bearer_token":"",
-    "jwt_private_key":""
+    "jwt_private_key":"",
+    "db_url":"mongodb://localhost/",
+    "db_name":"mongo-test"
 }

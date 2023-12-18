@@ -15,7 +15,9 @@ import { promises as fsPromises } from "fs";
 import path from "path";
 import DatabaseStats from "../models/database_stats.js";
 
-router.get("/", authMiddleware, async (req, res) => {
+import asyncMiddleware from '../middleware/async.js';
+
+router.get("/", authMiddleware, asyncMiddleware (async (req, res) => {
   let totalPersons = await Person.countDocuments();
   let malePersons = await Person.countDocuments({ gender: 2 });
   let femalePersons = await Person.countDocuments({ gender: 1 });
@@ -38,7 +40,7 @@ router.get("/", authMiddleware, async (req, res) => {
     downloadedPosters: downloadedPosters,
     yettodownPosters: yettodownPosters,
   });
-});
+}));
 
 let updatedPersons = 0;
 let duplicatePersons = 0;
