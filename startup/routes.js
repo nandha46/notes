@@ -1,14 +1,14 @@
 import express from "express";
 
-import commonRoutes from "./routes/commonRoutes.js";
-import movies from "./routes/movies.js";
-import tvshows from "./routes/tvshows.js";
-import auth from "./routes/auth.js";
-import persons from "./routes/persons.js";
-import api from "./routes/api.js";
-import actions from "./routes/actions.js";
+import commonRoutes from "../routes/commonRoutes.js";
+import movies from "../routes/movies.js";
+import tvshows from "../routes/tvshows.js";
+import auth from "../routes/auth.js";
+import persons from "../routes/persons.js";
+import api from "../routes/api.js";
+import actions from "../routes/actions.js";
 
-import error from "./middleware/error.js";
+import error from "../middleware/error.js";
 
 export default function (app) {
   app.use(express.json());

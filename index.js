@@ -6,17 +6,28 @@ import morgan from 'morgan';
 
 import config from 'config';
 import winston from 'winston';
-import 'winstom-mongodb';
+// import 'winstom-mongodb';
 
-winston.add(winston.transports.File, {
-  filename: "logfile.log",
-  handleExceptions: true,
-  handleRejections: true,
+// winston.add(winston.transports.File, {
+//   filename: "logfile.log",
+//   handleExceptions: true,
+//   handleRejections: true,
+// });
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  defaultMeta: { service: 'user-service' },
+  transports: [
+    new winston.transports.File({ filename: 'error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'combined.log' }),
+  ],
 });
 
-const db_url = config.get('db_url');
-const db_name = config.get('db_name');
-winston.add(winston.transports.MongoDB, {db:`${db_url}${db_name}}`});
+
+// const db_url = config.get('db_url');
+// const db_name = config.get('db_name');
+// winston.add(winston.transports.MongoDB, {db:`${db_url}${db_name}}`});
 
 import compression from 'compression';
 app.use(compression());
