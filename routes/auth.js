@@ -50,7 +50,7 @@ router.post('/login', async (req, res) => {
         console.error(error.details[0].message);
         return res.status(400).render('auth/login', {err: error.details[0].message});
     }
-   
+
     let user = await User.findOne({email: req.body.email});
 
     if(!user) 
