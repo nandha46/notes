@@ -16,7 +16,7 @@ export default function (app) {
   app.use(express.static("public"));
 
   app.use("/", commonRoutes);
-  app.use("/", movies);
+  app.use("/films/", movies);
   app.use("/", tvshows);
   app.use("/", auth);
   app.use("/", persons);
