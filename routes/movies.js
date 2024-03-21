@@ -29,7 +29,7 @@ router.get('/watched', authMiddleware, async (req, res) => {
 });
 
 async function getAllMovies () {
-    const movies = await Movie.find().limit(30);
+    const movies = await Movie.find({$and:[{poster_path:{$ne:null}},{original_language:"ta"},{poster_downloaded:true}]}).limit(60);
     return movies;
 }
 

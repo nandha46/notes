@@ -14,12 +14,12 @@
             <div class="nk-block">
                 <div class="row g-gs">
                     <% for (film of allFilms) { %>
-                    <div class="col-sm-6 col-lg-4 col-xxl-3">
+                    <div class="col-sm-6 col-lg-4 col-xxl-1">
                         <div class="gallery card card-bordered">
                             <a class="gallery-image popup-image" href="./tmdb/movie_posters<%= film.poster_path %>">
                                 <img class="w-100 rounded-top" src="./tmdb/movie_posters<%= film.poster_path %>" alt="">
                             </a>
-                            <div class="gallery-body card-inner align-center justify-between flex-wrap g-2">
+                            <div class="gallery-body card-inner align-center justify-between flex-wrap g-2 d-none">
                                 <div class="user-card">
                                     <div class="user-info">
                                         <span class="lead-text"><%= film.title %></span>

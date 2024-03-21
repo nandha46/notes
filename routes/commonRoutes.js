@@ -48,27 +48,28 @@ router.get('/', authMiddleware, (req, res)=>{
 });
 
 router.get('/download-posters', authMiddleware, async (req, res) => {
-    let movies = await Movie.find({poster_path:{$exists:true}}).select('poster_path');
+    let movies = await Movie.find({$and:[{poster_path:{$ne:null}},{poster_path:{$exists:true}},{poster_downloaded:{$exists:false}}]}).select('poster_path');
     const imageUrl = 'https://image.tmdb.org/t/p/original';
     const imageDirectory = 'public/tmdb/movie_posters';
     const dirname = path.resolve();
     let downloaded = 0;
     let alreadyExists = 0;
-    let skipped = 0;
     for (let mov of movies){
+      console.log("loop iterating..."+mov);
       try {
         // Download the image using axios
-        if (mov.poster_path == null) {
-          console.log('Poster doesn\'t exist. Skipping...');
-          skipped++;
-          continue;
-        }
         const imagePath = path.join(dirname, imageDirectory, mov.poster_path);
 
         const exists = await fileExists(imagePath);
 
         if(exists) {
           console.log('poster exists..');
+          mov.poster_downloaded = true;
+          mov.save().then(() => {
+            console.log('poster status updated..');
+          }).catch( err => {
+            console.error("Error updating poster doesn't exist..")
+          });
           alreadyExists++;
           continue;
         }
@@ -78,17 +79,35 @@ router.get('/download-posters', authMiddleware, async (req, res) => {
 
         // Save the image to the disk
         await fsPromises.writeFile(imagePath, response.data);
-        downloaded++;
         console.log('Poster Saved.');
+        downloaded++;
+        mov.poster_downloaded = true;
+        mov.save().then(() => {
+          console.log('poster status updated..');
+        }).catch( err => {
+          console.error("Error updating poster exist status..")
+        });
     } catch (error) {
-        console.error(error);
+      if(error.response && error.response.status != 404){
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
         res.status(500).send('Internal Server Error');
+      } else if (error.request){
+        console.log(error.request);
+        res.status(500).send('Internal Server Error');
+      } else {
+        console.log('Error Message', error.message);
+        res.status(500).send('Internal Server Error');
+      }
+
+      console.error(error.response);
+      console.log("Skipping axios file not found error..")
     }
     }
 
     res.status(200).send(`
     Downloaded: ${downloaded} 
-    Skipped: ${skipped}
     Exists: ${alreadyExists}
     `);
 });

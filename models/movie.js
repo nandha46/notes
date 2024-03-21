@@ -22,6 +22,7 @@ const schema = new mongoose.Schema({
     overview:String,
     popularity:Number,
     poster_path:String,
+    poster_downloaded:{type:Boolean, default:false},
     production_companies:[],
     production_countries:[],
     release_date:{
