@@ -311,7 +311,7 @@ const loadPersonsAction = e => {
 }
 
 const loadPostersAction = e => {
-    // Path:  /load-certrifications
+    // Path:  /load-certifications
 }
 
 const loadCertificates = e => {

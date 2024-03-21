@@ -50,7 +50,7 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-router.get("/load-certrifications", authMiddleware, async (req, res) => {
+router.get("/load-certifications", authMiddleware, async (req, res) => {
   const movCertFile = path.resolve("data/movie_cert.json");
   fileExists(movCertFile)
     .then(() => {
