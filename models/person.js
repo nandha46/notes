@@ -93,6 +93,12 @@ schema.virtual('options').get(function () {
 
 });
 
+schema.virtual('DT_RowClass').get(function(){
+    if (this.gender == 1 || this.gender == "Female") {
+        return "female-highlight";
+    }
+});
+
 const Person = mongoose.model('persons', schema);
 
 export default Person;
