@@ -31,6 +31,7 @@ const schema = new mongoose.Schema({
     place_of_birth:String,
     popularity:Number,
     profile_path:String,
+    poster_downloaded:{type:Boolean, default:false},
     external_ids:Schema.Types.Mixed,
     movie_credits:Schema.Types.Mixed,
     tv_credits:Schema.Types.Mixed

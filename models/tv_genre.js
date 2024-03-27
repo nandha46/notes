@@ -8,6 +8,6 @@ const schema = new mongoose.Schema({
     name:String
 });
 
-const tvGenre = mongoose.model('tv_genre', schema);
+const TvGenre = mongoose.model('tv_genre', schema);
 
-export default tvGenre;
+export default TvGenre;

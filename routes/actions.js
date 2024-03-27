@@ -5,16 +5,19 @@ import fetch from "node-fetch";
 import config from "config";
 import authMiddleware from "../middleware/auth.js";
 
+// Models
 import Tags from "../models/tags.js";
 import Person from "../models/person.js";
 import Movie from "../models/movie.js";
 import MovieCertification from "../models/movie_certification.js";
 import TvCertification from "../models/tv_certification.js";
+import DatabaseStats from "../models/database_stats.js";
+import Tv from "../models/tv.js";
+import MovieGenre from "../models/movie_genre.js";
+import TvGenre from "../models/tv_genre.js";
 
 import { promises as fsPromises } from "fs";
 import path from "path";
-import DatabaseStats from "../models/database_stats.js";
-
 import asyncMiddleware from '../middleware/async.js';
 
 router.get("/", authMiddleware, asyncMiddleware (async (req, res) => {
@@ -26,20 +29,53 @@ router.get("/", authMiddleware, asyncMiddleware (async (req, res) => {
   let totalPosters = await Movie.countDocuments({
     poster_path: { $exists: true },
   });
-  const folder = await fsPromises.readdir("./public/tmdb/movie_posters/");
-  let downloadedPosters = folder.length;
+  const movFolder = await fsPromises.readdir("./public/tmdb/movie_posters/");
+  let downloadedPosters = movFolder.length;
   let yettodownPosters = totalPosters - downloadedPosters;
 
-  res.status(200).render("dashboard/actions", {
+  let totalMovies = await Movie.countDocuments();
+
+  let totalTv = await Tv.countDocuments();
+  let totalTvPosters = await Tv.countDocuments({poster_path:{$exists:true}});
+  const tvFolder = await fsPromises.readdir("./public/tmdb/tv_posters/");
+  let downloadedTvPosters = tvFolder.length;
+  let yettodownTvPosters = totalTvPosters - downloadedTvPosters;
+
+  let totalPersonPosters = await Person.countDocuments({profile_path:{$exists:true}});
+  const personFolder = await fsPromises.readdir("./public/tmdb/person_posters/");
+  let downloadedPersonPosters = personFolder.length;
+  let yettodownPersonPosters = totalPersonPosters - downloadedPersonPosters;
+
+  let totalMovCerts = await MovieCertification.countDocuments();
+  let totalTvCerts = await TvCertification.countDocuments();
+
+  let movGenres = await MovieGenre.countDocuments();
+  let tvGenres = await TvGenre.countDocuments();
+
+  const respData = {
     title: "Server Actions",
     totalPersons: totalPersons,
     malePersons: malePersons,
     femalePersons: femalePersons,
     nonBPersons: nonBPersons,
+    totalMovies:totalMovies,
     totalPosters: totalPosters,
     downloadedPosters: downloadedPosters,
     yettodownPosters: yettodownPosters,
-  });
+    totalTv:totalTv,
+    totalTvPosters:totalTvPosters,
+    downloadedTvPosters:downloadedTvPosters,
+    yettodownTvPosters:yettodownTvPosters,
+    totalPersonPosters:totalPersonPosters,
+    downloadedPersonPosters:downloadedPersonPosters,
+    yettodownPersonPosters:yettodownPersonPosters,
+    totalMovCerts:totalMovCerts,
+    totalTvCerts:totalTvCerts,
+    movGenres:movGenres,
+    tvGenres:tvGenres
+  };
+
+  res.status(200).render("dashboard/actions", respData);
 }));
 
 let updatedPersons = 0;

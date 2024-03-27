@@ -37,3 +37,17 @@ duplicates.forEach(function (doc) {
 });
 
 print("Duplicates removed successfully.");
+
+```
+
+ - Set createdAt data where it doesn't exist
+
+```
+ db.movies.updateMany({
+    createdAt:{$exists:false}
+},{
+    $set:{
+        createdAt:'2023-11-16T08:38:50.342+00:00'
+    }
+});
+ ```

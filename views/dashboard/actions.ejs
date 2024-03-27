@@ -34,7 +34,7 @@
                                             <div class="user-card user-card-s2">
                                                 <div class="user-info">
                                                     <h5>Persons</h5>
-                                                    <span class="sub-text"><%= locals.totalPersons%> <span class="sub-text text-success">(+298)</span></span>
+                                                    <span class="sub-text"><%= locals.totalPersons%> <span class="sub-text text-success">(+0)</span></span>
                                                 </div>
                                             </div>
                                             <div class="team-details">
@@ -63,7 +63,7 @@
                                             <div class="user-card user-card-s2">
                                                 <div class="user-info">
                                                     <h5>Movie Posters</h5>
-                                                    <span class="sub-text">325</span>
+                                                    <span class="sub-text"> <%= locals.totalMovies %> </span>
                                                 </div>
                                             </div>
                                             <div class="team-details">
@@ -92,16 +92,16 @@
                                             <div class="user-card user-card-s2">
                                                 <div class="user-info">
                                                     <h5>TV Posters</h5>
-                                                    <span class="sub-text">325</span>
+                                                    <span class="sub-text"><%= locals.totalTv %></span>
                                                 </div>
                                             </div>
                                             <div class="team-details">
                                                 <p>Download Highest quality Tvshow poster from TMDB Server using axios</p>
                                             </div>
                                             <ul class="team-statistics">
-                                                <li><span><%= locals.totalPosters%></span><span>Total Posters</span></li>
-                                                <li><span><%= locals.downloadedPosters%></span><span>Downloaded</span></li>
-                                                <li><span><%= locals.yettodownPosters%></span><span>Yet to Download</span></li>
+                                                <li><span><%= locals.totalTvPosters%></span><span>Total Posters</span></li>
+                                                <li><span><%= locals.downloadedTvPosters%></span><span>Downloaded</span></li>
+                                                <li><span><%= locals.yettodownTvPosters%></span><span>Yet to Download</span></li>
                                             </ul>
                                             <div class="team-view">
                                                 <a class="btn btn-round btn-outline-light w-150px" onclick="return loadPostersAction(this);">
@@ -121,16 +121,16 @@
                                             <div class="user-card user-card-s2">
                                                 <div class="user-info">
                                                     <h5>Person Posters</h5>
-                                                    <span class="sub-text">325</span>
+                                                    <span class="sub-text"><%= locals.totalPersons%></span>
                                                 </div>
                                             </div>
                                             <div class="team-details">
                                                 <p>Download Highest quality actors poster from TMDB Server using axios</p>
                                             </div>
                                             <ul class="team-statistics">
-                                                <li><span><%= locals.totalPosters%></span><span>Total Posters</span></li>
-                                                <li><span><%= locals.downloadedPosters%></span><span>Downloaded</span></li>
-                                                <li><span><%= locals.yettodownPosters%></span><span>Yet to Download</span></li>
+                                                <li><span><%= locals.totalPersonPosters%></span><span>Total Posters</span></li>
+                                                <li><span><%= locals.downloadedPersonPosters%></span><span>Downloaded</span></li>
+                                                <li><span><%= locals.yettodownPersonPosters%></span><span>Yet to Download</span></li>
                                             </ul>
                                             <div class="team-view">
                                                 <a class="btn btn-round btn-outline-light w-150px" onclick="return loadPostersAction(this);">
@@ -150,21 +150,46 @@
                                             <div class="user-card user-card-s2">
                                                 <div class="user-info">
                                                     <h5>Load Certificates</h5>
-                                                    <span class="sub-text">325</span>
                                                 </div>
                                             </div>
                                             <div class="team-details">
-                                                <p>I am an UI/UX Designer and Love to be creative.</p>
+                                                <p>Number of censor Certificates available on database</p>
                                             </div>
                                             <ul class="team-statistics">
-                                                <li><span><%= locals.malePersons%></span><span>Male</span></li>
-                                                <li><span><%= locals.femalePersons%></span><span>Female</span></li>
-                                                <li><span><%= locals.totalPersons%></span><span>Total</span></li>
+                                                <li><span><%= locals.totalMovCerts%></span><span>Movie</span></li>
+                                                <li><span><%= locals.totalTvCerts%></span><span>TV Shows</span></li>
                                             </ul>
                                             <div class="team-view">
                                                 <a class="btn btn-round btn-outline-light w-150px" onclick="return loadCertificates(this);">
                                                     <span>
-                                                        <div class="team-status bg-success text-white"><em class="icon ni ni-check-thick"></em></div> Load Posters
+                                                        <div class="team-status bg-success text-white"><em class="icon ni ni-check-thick"></em></div> <div> Load Certificates </div>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div><!-- .team -->
+                                    </div><!-- .card-inner -->
+                                </div><!-- .card -->
+                            </div><!-- .col -->
+                            <div class="col-sm-6 col-lg-4 col-xxl-3">
+                                <div class="card card-bordered">
+                                    <div class="card-inner">
+                                        <div class="team">
+                                            <div class="user-card user-card-s2">
+                                                <div class="user-info">
+                                                    <h5>Load Genres</h5>
+                                                </div>
+                                            </div>
+                                            <div class="team-details">
+                                                <p>Number of genres available on database</p>
+                                            </div>
+                                            <ul class="team-statistics">
+                                                <li><span><%= locals.movGenres%></span><span>Movie</span></li>
+                                                <li><span><%= locals.tvGenres%></span><span>TV Shows</span></li>
+                                            </ul>
+                                            <div class="team-view">
+                                                <a class="btn btn-round btn-outline-light w-150px" onclick="return loadCertificates(this);">
+                                                    <span>
+                                                        <div class="team-status bg-success text-white"><em class="icon ni ni-check-thick"></em></div> Load Genres
                                                     </span>
                                                 </a>
                                             </div>
