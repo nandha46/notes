@@ -19,6 +19,7 @@ import TvGenre from "../models/tv_genre.js";
 import { promises as fsPromises } from "fs";
 import path from "path";
 import asyncMiddleware from '../middleware/async.js';
+import delay from "../services/delay_service.js";
 
 router.get("/", authMiddleware, asyncMiddleware (async (req, res) => {
   let totalPersons = await Person.countDocuments();
@@ -81,10 +82,6 @@ router.get("/", authMiddleware, asyncMiddleware (async (req, res) => {
 let updatedPersons = 0;
 let duplicatePersons = 0;
 let updatedMovies = 0;
-
-function delay(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 router.get("/load-certifications", authMiddleware, async (req, res) => {
   const movCertFile = path.resolve("data/movie_cert.json");

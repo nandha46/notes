@@ -48,7 +48,7 @@ $(function(){
                 "type":"POST"
             },
             columns: [
-                { data: 'name' },
+                { data: 'profile' },
                 { data: 'gender' },
                 { data: 'age' },
                 { data: 'place_of_birth' },
@@ -288,6 +288,46 @@ const loadPersonsAction = e => {
         Swal.fire({
             title: 'Persons Updated!',
             html: `Updated Movies: ${data.updatedMovies} <br>Updated Persons: ${data.updatedPersons} <br>Duplicate Persons: ${data.duplicatePersons}`,
+            timer: 10000,
+            timerProgressBar: true,
+            onBeforeOpen: () => {
+                Swal.showLoading()
+            }
+        }).then((result) => {
+            if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.timer
+            ) {
+                console.log('I was closed by the timer') // eslint-disable-line
+            }
+        });
+        $(e).children().children().children('.icon').addClass('ni-check-thick').removeClass('ni-loader spin-loader');
+    }).catch(err => {
+        NioApp.Toast('Error updating persons. Check console.', 'error', {position: 'top-center'});
+        console.error(err);
+        $(e).children().children().children('.icon').addClass('ni-circle-fill').removeClass('ni-loader spin-loader');
+    });
+
+}
+const loadPersonsPostersAction = e => {
+    
+    $(e).children().children().children('.icon').removeClass('ni-check-thick').addClass('ni-loader spin-loader');
+    
+    fetch(`http://localhost:8000/download-persons-posters`, {
+        method:'GET',
+        headers:{
+            accept:'application/json'
+        }
+    }).then(async response => {
+       const data = await response.json()
+       console.log(data, "data");
+       if(!data.status){
+        alert('Status false..')
+       }
+       // Sweet Alert
+        Swal.fire({
+            title: 'Persons posters downloaded!',
+            html: `Downloaded: ${data.downloaded}`,
             timer: 10000,
             timerProgressBar: true,
             onBeforeOpen: () => {

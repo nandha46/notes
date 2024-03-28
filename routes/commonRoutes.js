@@ -7,6 +7,7 @@ import Pageview from "../models/pageview.js";
 import axios from 'axios';
 import { promises as fsPromises } from 'fs';
 import path from 'path';
+import fileExists from "../services/file_service.js";
 
 import Tv from '../models/tv.js';
 import watchlistExport from '../models/watchlist.js';
@@ -163,14 +164,5 @@ router.post('/add-to-download-list', (req, res) => {
 
     res.status(200).send( {status: true, "data": req.body});
 });
-
-async function fileExists(filePath) {
-  try {
-      await fsPromises.access(filePath, fsPromises.constants.F_OK);
-      return true; // File exists
-  } catch (err) {
-      return false; // File does not exist
-  }
-}
 
 export default router;

@@ -100,6 +100,29 @@ schema.virtual('DT_RowClass').get(function(){
     }
 });
 
+schema.virtual('profile').get(function(){
+    
+    if(this.profile_path == null){
+        return `<div class="user-card">
+        <div class="user-avatar user-avatar-sm bg-purple">
+            <span>${this.name.slice(0,2).toUpperCase()}</span>
+        </div>
+        <div class="user-name">
+            <span class="tb-lead">${this.name}</span>
+        </div>
+    </div>`;
+    }
+
+    return `<div class="user-card">
+    <div class="user-avatar user-avatar-sm bg-warning">
+        <img src="./tmdb/person_posters/${this.profile_path}" alt="">
+    </div>
+    <div class="user-name">
+        <span class="tb-lead">${this.name}</span>
+    </div>
+</div>`;
+});
+
 const Person = mongoose.model('persons', schema);
 
 export default Person;
