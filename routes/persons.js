@@ -23,7 +23,9 @@ router.get('/persons-known', authMiddleware, async(req, res)=> {
 });
 
 router.get('/persons-gallery', authMiddleware, async(req, res) => {
-    res.status(200).render('persons/personGallery');
+    const persons = await Person.find({$and:[{profile_path:{$ne:null}},{poster_downloaded:true}]}).limit(48);
+    const respData = {title: "Person Gallery", persons: persons};
+    res.status(200).render('persons/personGallery', respData);
 });
 
 router.get('/download-persons-posters', async(req, res) => {
