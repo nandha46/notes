@@ -170,6 +170,7 @@ $(function(){
     };
 
     NioApp.Select2.init();
+
 });
 
 const loadMovieData = e => {
