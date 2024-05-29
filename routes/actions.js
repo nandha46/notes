@@ -206,7 +206,7 @@ router.get("/load-persons-from-cast", async (req, res) => {
     })
     .catch((err) => console.error(err));
   
-  let movies = await Movie.find().limit(4);
+  let movies = await Movie.find({credits:{$exists:false}}).limit(500);
 
   for (let movie of movies) {
     const url = `https://api.themoviedb.org/3/movie/${movie.id}/credits?language=en-US`;
@@ -242,10 +242,10 @@ async function getAndUpdateMovies(url, movie) {
       throw new Error('Error from TMDB Server. Error code: ${}');
     }
     const data = await response.json();
-    const headers = response.headers;
-    const respStatus = response.status;
-    console.log(headers, 'header data of response')
-    console.log(respStatus, 'status code')
+    // const headers = response.headers;
+    // const respStatus = response.status;
+    // console.log(headers, 'header data of response')
+    // console.log(respStatus, 'status code')
     movie.credits = { cast: data.cast };
     movie
       .save()
