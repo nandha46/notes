@@ -1,5 +1,7 @@
 # Notes App
 
+    To keep track of movies, tv shows, anime's watched and watch list. Also serves as Learning tool for Node ExpressJS.
+
 ### JS libraries used
  - Datatable 1.12.1
   - 
