@@ -17,21 +17,6 @@ app.use(morgan('dev'));
 
 import config from 'config';
 
-/*
-
-// Catch uncaught Exception outside of request processing pipelines
-process.on('uncaughtException', ex => {
-  console.log('Uncaught Exception', ex);
-  winston.error(ex.message, ex);
-});
-
-// Catch unhandled Rejection inside of request processing pipelines
-process.on('unhandledRejection', ex => {
-  console.log('Unhandled Rejection', ex);
-  winston.error(ex.message, ex);
-});
- */
-
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
