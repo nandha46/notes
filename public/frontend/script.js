@@ -175,18 +175,19 @@ $(function(){
 
         let uFile = $('#inputGroupFile02').prop('files');
 
-        console.log(uFile[0]);
-
-      try { const reader = new FileReader();
+      const reader = new FileReader();
 
        reader.addEventListener('load', () => {
-            console.log(reader.result);
+        let csvContent = reader.result;
+        let line = csvContent.split("\n");
+        line.forEach(e => {
+            console.log(e);
+        });
+        console.log(line[0]);
        }, false);
 
-       if (uFile){
-        reader.readAsText(uFile);
-       }} catch (e){
-        console.log(e);
+       if (uFile[0]){
+        reader.readAsText(uFile[0]);
        }
 
        return false;
