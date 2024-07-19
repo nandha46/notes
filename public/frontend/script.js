@@ -171,6 +171,57 @@ $(function(){
 
     NioApp.Select2.init();
 
+    $('#watchlist-csv-upload-form').on('submit', () => {
+
+        let uFile = $('#inputGroupFile02').prop('files');
+
+        console.log(uFile[0]);
+
+      try { const reader = new FileReader();
+
+       reader.addEventListener('load', () => {
+            console.log(reader.result);
+       }, false);
+
+       if (uFile){
+        reader.readAsText(uFile);
+       }} catch (e){
+        console.log(e);
+       }
+
+       return false;
+
+
+        let data = {
+            'mediaType': $('#media-select').val(),
+            'selectedTitle': $('#movie-select').val(),
+            'adult': $('#customSwitch1').is(':checked'),
+            'priority': $('#priority')[0].noUiSlider.get(),
+            'url': $('#url').val(),
+            'comment': $('#comment').val(),
+            'movArr': movArr,
+            'tvArr': tvArr,
+            'tags':$('#tag-select').val()
+        };
+
+        $.ajax({
+            url: '/add-to-download-list', 
+            type:'post',
+            data: JSON.stringify(data), 
+            contentType: "application/json"
+        }).done(function(result){
+            if(result.status){
+                Swal.fire("Good job!", "Added to watchlist!", "success");
+            } else {
+                Swal.fire(`${result.message}!`, "", "error");
+            }
+        }).fail(function (xhr, status, error){
+            Swal.fire(`Error!`, "Check the console for more..", "error");            
+            console.log("Error:", error);
+        });
+        return false;
+    });
+
 });
 
 const loadMovieData = e => {
