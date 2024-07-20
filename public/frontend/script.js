@@ -175,15 +175,47 @@ $(function(){
 
         let uFile = $('#inputGroupFile02').prop('files');
 
+        const options = {
+            method: 'GET',
+            headers: {
+              accept: 'application/json',
+              Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNzU2YTNmOTk4MWMzMjRmMDE3MDI5MTY4MmUwNzQ2ZSIsInN1YiI6IjYzMzBiMWRlYTVkODQ5MDA5MjU1OTY2ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.VyrNPvyjIohhS-gGcJxBJbfAar6xJNMljeJOkU35NkU'
+            }
+          };
+
       const reader = new FileReader();
 
        reader.addEventListener('load', () => {
         let csvContent = reader.result;
-        let line = csvContent.split("\n");
-        line.forEach(e => {
-            console.log(e);
-        });
-        console.log(line[0]);
+        let lines = csvContent.split("\n");
+
+        for (let i = 0; i< lines.length; i++){
+
+            setTimeout(function(){
+                let query = lines[i].split(",")[0];
+                fetch(`https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=true&language=en-US&page=1`, options)
+                .then(response => {
+                        let data = response.json();
+                        $('#movie-select').empty().trigger("change");
+                        data.then(data => {
+                         if(data.results){
+                            let results = data.results;
+                            movArr = [...movArr, ...results];
+                             for (const item of results){
+                                let releaseYear = ('release_date' in item) ? new Date(item.release_date).toLocaleDateString('en-US', {year: 'numeric' }):'';
+                                let optionName = item.title+" ("+releaseYear+")";
+                                 var newOption = new Option(optionName, item.id, true, true);
+                                 // Append it to the select
+                                 $('#movie-select').append(newOption).trigger('change');
+                             }
+                         }
+                         }, fail => console.log(fail)).catch(err => console.error(err));
+                })
+                // .then(response => console.log(response))
+                .catch(err => console.error(err));
+            }, 500*i);
+            
+        }
        }, false);
 
        if (uFile[0]){
@@ -191,7 +223,6 @@ $(function(){
        }
 
        return false;
-
 
         let data = {
             'mediaType': $('#media-select').val(),
