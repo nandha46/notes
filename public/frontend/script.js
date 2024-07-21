@@ -6,6 +6,19 @@ var tvArr = [];
 // let tmdb_bearer_token = config.get('tmdb_bearer_token');
 
 $(function(){
+
+    let clearFormInputs = () => {
+        $('#media-select').val(),
+        $('#movie-select').val(),
+        $('#customSwitch1').is(':checked'),
+        $('#priority')[0].noUiSlider.get(),
+        $('#url').val(),
+        $('#comment').val(),
+        $('#tag-select').val()
+        movArr = [];
+        tvArr = [];   
+    }
+
     $('#download-list-form').on('submit', () => {
 
         let data = {
@@ -28,6 +41,7 @@ $(function(){
         }).done(function(result){
             if(result.status){
                 Swal.fire("Good job!", "Added to watchlist!", "success");
+
             } else {
                 Swal.fire(`${result.message}!`, "", "error");
             }
