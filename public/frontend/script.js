@@ -8,13 +8,11 @@ var tvArr = [];
 $(function(){
 
     let clearFormInputs = () => {
-        $('#media-select').val(),
-        $('#movie-select').val(),
-        $('#customSwitch1').is(':checked'),
-        $('#priority')[0].noUiSlider.get(),
-        $('#url').val(),
-        $('#comment').val(),
-        $('#tag-select').val()
+        $('#movie-select').empty().trigger("change");
+        $('#priority')[0].noUiSlider.set(5);
+        $('#url').val("");
+        $('#comment').val("");
+        $('#tag-select').empty().trigger("change");
         movArr = [];
         tvArr = [];   
     }
@@ -41,7 +39,7 @@ $(function(){
         }).done(function(result){
             if(result.status){
                 Swal.fire("Good job!", "Added to watchlist!", "success");
-
+                clearFormInputs();
             } else {
                 Swal.fire(`${result.message}!`, "", "error");
             }
