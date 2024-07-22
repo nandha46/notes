@@ -309,23 +309,22 @@ const loadMovieData = e => {
         case "2":
             fetch(`https://api.themoviedb.org/3/search/tv?query=${query}&include_adult=true&language=en-US&page=1`, options)
         .then(response => {
-            { 
                 let data = response.json();
                 $('#movie-select').empty().trigger("change");
                 data.then(data => {
-                 if(data.results){
-                    let results = data.results;
-                    tvArr = [...tvArr, ...results];
-                     for (const item of results){
-                        let releaseYear = ('first_air_date' in item) ? new Date(item.first_air_date).toLocaleDateString('en-US', {year: 'numeric' }):'';
-                        let optionName = item.name+" ("+releaseYear+")";
-                         var newOption = new Option(optionName, item.id, true, true);
-                         // Append it to the select
-                         $('#movie-select').append(newOption).trigger('change');
-                     }
-                 }
-                 }, fail => console.log(fail)).catch(err => console.error(err));
-             }
+                        if(data.results){
+                            let results = data.results;
+                            tvArr = [...tvArr, ...results];
+                            for (const item of results){
+                                let releaseYear = ('first_air_date' in item) ? new Date(item.first_air_date).toLocaleDateString('en-US', {year: 'numeric' }):'';
+                                let optionName = item.name+" ("+releaseYear+")";
+                                var newOption = new Option(optionName, item.id, true, true);
+                                // Append it to the select
+                                $('#movie-select').append(newOption).trigger('change');
+                                    }
+                                }
+                            }, fail => console.log(fail))
+                 .catch(err => console.error(err));
         })
         .then(response => console.log(response))
         .catch(err => console.error(err));
