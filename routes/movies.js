@@ -23,6 +23,8 @@ router.get('/watchlist', authMiddleware, async (req, res) => {
     res.status(200).render('movies/toDownloadMovie', { title:"Movies To Download", allWatchlists: allWatchlists});
 });
 
+
+
 router.get('/watched', authMiddleware, async (req, res) => {
     // get all watched movies
     res.status(200).render('auth/error' , { title:"Error", code:404});
