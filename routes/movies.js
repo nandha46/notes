@@ -34,5 +34,5 @@ async function getAllWatchlist () {
     const watchlist = await Watchlist.find({mediaType:1}).populate('movie');
     return watchlist;
 }
-
+// 
 export default router;
