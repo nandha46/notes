@@ -25,12 +25,13 @@
 
 .image-overlay {
     position: absolute;
-    /* bottom: 2px; */
-    /* left: 2px; */
+    bottom: 2px;
+    left: 2px;
     z-index: 2;
+    height: 15%;
     background: rgba(23, 23, 23, 0.654);
     width: 75%;
-    /* margin-left: 0.75rem; */
+    margin-left: 12.5%;
 }
 
 /* Nandha 25 sep 2024 */
