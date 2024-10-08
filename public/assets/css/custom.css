@@ -23,7 +23,8 @@
     margin-left: 0.4rem;
 }
 
-.image-overlay {
+
+.image-overlay:hover {
     position: absolute;
     bottom: 2px;
     left: 2px;
@@ -34,6 +35,16 @@
     margin-left: 12.5%;
 }
 
+.image-overlay {
+    position: relative;
+    bottom: 2px;
+    left: 2px;
+    z-index: -1;
+    height: 15%;
+    background: rgba(23, 23, 23, 0.654);
+    width: 75%;
+    margin-left: 12.5%;
+}
 /* Nandha 25 sep 2024 */
 
 .w-3 {
@@ -46,4 +57,13 @@
 
 .w-10 {
     width: 5% !important;
+}
+
+.overlay.icon.ni {
+    color: whitesmoke;
+    font-size: 100%;
+}
+
+.gallery.card.card-bordered:hover {
+    box-shadow: 3px 3px 15px teal, 4px 4px 15px rgb(8, 118, 181);
 }
