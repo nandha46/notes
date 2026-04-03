@@ -182,7 +182,86 @@ $(function () {
   };
 
   NioApp.Select2.init();
+
+  // Check for active sync on load
+  checkActiveSync();
 });
+
+let syncInterval = null;
+
+const checkActiveSync = () => {
+  fetch("/actions/sync-status")
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.isRunning) {
+        showSyncModal();
+        startPolling();
+      }
+    })
+    .catch(err => console.error("Error checking sync status:", err));
+};
+
+const showSyncModal = () => {
+  const modal = new bootstrap.Modal(document.getElementById('syncProgressModal'));
+  modal.show();
+  $("#btnStopSync").removeClass("d-none");
+  $("#btnCloseSyncModal").addClass("d-none");
+};
+
+const startPolling = () => {
+  if (syncInterval) clearInterval(syncInterval);
+  syncInterval = setInterval(() => {
+    fetch("/actions/sync-status")
+      .then(res => res.json())
+      .then(data => {
+        updateSyncUI(data);
+        if (!data.isRunning) {
+          stopPolling();
+          $("#btnStopSync").addClass("d-none");
+          $("#btnCloseSyncModal").removeClass("d-none");
+          if (data.stopRequested) {
+            $("#syncProgressMovie").text("Stopped by user");
+          } else {
+            $("#syncProgressMovie").text("Completed successfully");
+          }
+        }
+      })
+      .catch(err => {
+        console.error("Polling error:", err);
+        stopPolling();
+      });
+  }, 2000);
+};
+
+const stopPolling = () => {
+  if (syncInterval) {
+    clearInterval(syncInterval);
+    syncInterval = null;
+  }
+};
+
+const updateSyncUI = (data) => {
+  if (!data) return;
+  
+  $("#syncProgressMovie").text(data.currentMovie || "Processing...");
+  $("#syncStatMovies").text(`${data.updatedMovies} / ${data.totalMovies}`);
+  $("#syncStatPersons").text(data.updatedPersons);
+  $("#syncStatDuplicates").text(data.duplicatePersons);
+  
+  const percent = data.totalMovies > 0 ? Math.round((data.updatedMovies / data.totalMovies) * 100) : 0;
+  $("#syncProgressBar").css("width", percent + "%").text(percent + "%").attr("aria-valuenow", percent);
+};
+
+const stopSyncAction = () => {
+  if (!confirm("Are you sure you want to stop the synchronization?")) return;
+  
+  fetch("/actions/stop-sync", { method: "POST" })
+    .then(res => res.json())
+    .then(data => {
+      NioApp.Toast("Stop request sent", "info", { position: "top-right" });
+    })
+    .catch(err => console.error("Error stopping sync:", err));
+};
 
 const loadMovieData = (e) => {
   let mediaType = $("#media-select").val();
@@ -320,14 +399,7 @@ const markKnownPerson = (id) => {
 };
 
 const loadPersonsAction = (e) => {
-  $(e)
-    .children()
-    .children()
-    .children(".icon")
-    .removeClass("ni-check-thick")
-    .addClass("ni-loader spin-loader");
-
-  fetch(`http://localhost:8000/actions/load-persons-from-cast`, {
+  fetch(`/actions/load-persons-from-cast`, {
     method: "GET",
     headers: {
       accept: "application/json",
@@ -335,42 +407,20 @@ const loadPersonsAction = (e) => {
   })
     .then(async (response) => {
       const data = await response.json();
-      console.log(data, "data");
-      // Sweet Alert
-      Swal.fire({
-        title: "Persons Updated!",
-        html: `Updated Movies: ${data.updatedMovies} <br>Updated Persons: ${data.updatedPersons} <br>Duplicate Persons: ${data.duplicatePersons}`,
-        timer: 10000,
-        timerProgressBar: true,
-        onBeforeOpen: () => {
-          Swal.showLoading();
-        },
-      }).then((result) => {
-        if (
-          /* Read more about handling dismissals below */
-          result.dismiss === Swal.DismissReason.timer
-        ) {
-          console.log("I was closed by the timer"); // eslint-disable-line
-        }
-      });
-      $(e)
-        .children()
-        .children()
-        .children(".icon")
-        .addClass("ni-check-thick")
-        .removeClass("ni-loader spin-loader");
+      if (data.status === "started") {
+        showSyncModal();
+        startPolling();
+      } else if (data.status === "already_running") {
+        NioApp.Toast("A sync is already in progress.", "warning", { position: "top-right" });
+        showSyncModal();
+        startPolling();
+      }
     })
     .catch((err) => {
-      NioApp.Toast("Error updating persons. Check console.", "error", {
+      NioApp.Toast("Error starting sync. Check console.", "error", {
         position: "top-center",
       });
       console.error(err);
-      $(e)
-        .children()
-        .children()
-        .children(".icon")
-        .addClass("ni-circle-fill")
-        .removeClass("ni-loader spin-loader");
     });
 };
 const loadPersonsPostersAction = (e) => {

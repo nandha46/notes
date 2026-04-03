@@ -15,216 +15,333 @@ import DatabaseStats from "../models/database_stats.js";
 import Tv from "../models/tv.js";
 import MovieGenre from "../models/movie_genre.js";
 import TvGenre from "../models/tv_genre.js";
+import SyncStatus from "../models/sync_status.js";
 
 import { promises as fsPromises } from "fs";
 import path from "path";
 import asyncMiddleware from '../middleware/async.js';
 import delay from "../services/delay_service.js";
+import fileExists from "../services/file_service.js";
 
-router.get("/", authMiddleware, asyncMiddleware (async (req, res) => {
-  let totalPersons = await Person.countDocuments();
-  let malePersons = await Person.countDocuments({ gender: 2 });
-  let femalePersons = await Person.countDocuments({ gender: 1 });
-  let nonBPersons = await Person.countDocuments({ gender: 0 });
+// Rate Limiter for TMDB (Target: 32 requests per second = 80% of 40 req/sec limit)
+class TMDBLimiter {
+  constructor(limitPerSecond) {
+    this.limit = limitPerSecond;
+    this.tokens = limitPerSecond;
+    this.lastRefill = Date.now();
+    this.queue = [];
+    this.isCoolingDown = false;
+    this.coolDownUntil = 0;
+    
+    // Refill tokens periodically
+    setInterval(() => this.refill(), 50);
+  }
 
-  let totalPosters = await Movie.countDocuments({
-    poster_path: { $exists: true },
-  });
-  const movFolder = await fsPromises.readdir("./public/tmdb/movie_posters/");
-  let downloadedPosters = movFolder.length;
-  let yettodownPosters = totalPosters - downloadedPosters;
+  refill() {
+    const now = Date.now();
+    if (this.isCoolingDown && now < this.coolDownUntil) return;
+    if (this.isCoolingDown && now >= this.coolDownUntil) {
+      this.isCoolingDown = false;
+      console.log("TMDB Limiter: Cooldown finished.");
+    }
 
-  let totalMovies = await Movie.countDocuments();
+    const elapsed = now - this.lastRefill;
+    const refillAmount = (elapsed / 1000) * this.limit;
+    this.tokens = Math.min(this.limit, this.tokens + refillAmount);
+    this.lastRefill = now;
+    this.processQueue();
+  }
 
-  let totalTv = await Tv.countDocuments();
-  let totalTvPosters = await Tv.countDocuments({poster_path:{$exists:true}});
-  const tvFolder = await fsPromises.readdir("./public/tmdb/tv_posters/");
-  let downloadedTvPosters = tvFolder.length;
-  let yettodownTvPosters = totalTvPosters - downloadedTvPosters;
+  async wait() {
+    if (this.tokens >= 1 && (!this.isCoolingDown || Date.now() >= this.coolDownUntil)) {
+      this.tokens -= 1;
+      return Promise.resolve();
+    }
+    return new Promise(resolve => this.queue.push(resolve));
+  }
 
-  let totalPersonPosters = await Person.countDocuments({profile_path:{$exists:true}});
-  const personFolder = await fsPromises.readdir("./public/tmdb/person_posters/");
-  let downloadedPersonPosters = personFolder.length;
-  let yettodownPersonPosters = totalPersonPosters - downloadedPersonPosters;
+  processQueue() {
+    while (this.queue.length > 0 && this.tokens >= 1 && !this.isCoolingDown) {
+      this.tokens -= 1;
+      const resolve = this.queue.shift();
+      resolve();
+    }
+  }
 
-  let totalMovCerts = await MovieCertification.countDocuments();
-  let totalTvCerts = await TvCertification.countDocuments();
+  triggerCooldown(seconds) {
+    this.isCoolingDown = true;
+    this.coolDownUntil = Date.now() + (seconds * 1000);
+    console.warn(`TMDB Limiter: 429 Received. Cooling down for ${seconds} seconds.`);
+  }
+}
 
-  let movGenres = await MovieGenre.countDocuments();
-  let tvGenres = await TvGenre.countDocuments();
+const limiter = new TMDBLimiter(32);
+
+async function fetchWithRateLimit(url, options, retries = 3) {
+  await limiter.wait();
+  
+  try {
+    const response = await fetch(url, options);
+    
+    if (response.status === 429) {
+      const retryAfter = parseInt(response.headers.get("Retry-After")) || 5;
+      limiter.triggerCooldown(retryAfter);
+      
+      if (retries > 0) {
+        console.log(`Retrying request for ${url} after ${retryAfter}s...`);
+        await delay(retryAfter * 1000 + 100);
+        return fetchWithRateLimit(url, options, retries - 1);
+      }
+      throw new Error("TMDB Rate Limit exceeded and retries exhausted.");
+    }
+    
+    return response;
+  } catch (err) {
+    if (retries > 0 && (err.message.includes("Rate Limit") || err.message.includes("429"))) {
+      await delay(2000); // Backoff before retry
+      return fetchWithRateLimit(url, options, retries - 1);
+    }
+    throw err;
+  }
+}
+
+router.get("/", authMiddleware, asyncMiddleware(async (req, res) => {
+  const [
+    totalPersons,
+    malePersons,
+    femalePersons,
+    nonBPersons,
+    totalPosters,
+    movFolder,
+    totalMovies,
+    totalTv,
+    totalTvPosters,
+    tvFolder,
+    totalPersonPosters,
+    personFolder,
+    totalMovCerts,
+    totalTvCerts,
+    movGenres,
+    tvGenres
+  ] = await Promise.all([
+    Person.countDocuments(),
+    Person.countDocuments({ gender: 2 }),
+    Person.countDocuments({ gender: 1 }),
+    Person.countDocuments({ gender: 0 }),
+    Movie.countDocuments({ poster_path: { $exists: true } }),
+    fsPromises.readdir("./public/tmdb/movie_posters/").catch(() => []),
+    Movie.countDocuments(),
+    Tv.countDocuments(),
+    Tv.countDocuments({ poster_path: { $exists: true } }),
+    fsPromises.readdir("./public/tmdb/tv_posters/").catch(() => []),
+    Person.countDocuments({ profile_path: { $exists: true } }),
+    fsPromises.readdir("./public/tmdb/person_posters/").catch(() => []),
+    MovieCertification.countDocuments(),
+    TvCertification.countDocuments(),
+    MovieGenre.countDocuments(),
+    TvGenre.countDocuments()
+  ]);
+
+  const downloadedPosters = movFolder.length;
+  const downloadedTvPosters = tvFolder.length;
+  const downloadedPersonPosters = personFolder.length;
 
   const respData = {
     title: "Server Actions",
-    totalPersons: totalPersons,
-    malePersons: malePersons,
-    femalePersons: femalePersons,
-    nonBPersons: nonBPersons,
-    totalMovies:totalMovies,
-    totalPosters: totalPosters,
-    downloadedPosters: downloadedPosters,
-    yettodownPosters: yettodownPosters,
-    totalTv:totalTv,
-    totalTvPosters:totalTvPosters,
-    downloadedTvPosters:downloadedTvPosters,
-    yettodownTvPosters:yettodownTvPosters,
-    totalPersonPosters:totalPersonPosters,
-    downloadedPersonPosters:downloadedPersonPosters,
-    yettodownPersonPosters:yettodownPersonPosters,
-    totalMovCerts:totalMovCerts,
-    totalTvCerts:totalTvCerts,
-    movGenres:movGenres,
-    tvGenres:tvGenres
+    totalPersons,
+    malePersons,
+    femalePersons,
+    nonBPersons,
+    totalMovies,
+    totalPosters,
+    downloadedPosters,
+    yettodownPosters: totalPosters - downloadedPosters,
+    totalTv,
+    totalTvPosters,
+    downloadedTvPosters,
+    yettodownTvPosters: totalTvPosters - downloadedTvPosters,
+    totalPersonPosters,
+    downloadedPersonPosters,
+    yettodownPersonPosters: totalPersonPosters - downloadedPersonPosters,
+    totalMovCerts,
+    totalTvCerts,
+    movGenres,
+    tvGenres
   };
 
   res.status(200).render("dashboard/actions", respData);
 }));
 
-let updatedPersons = 0;
-let duplicatePersons = 0;
-let updatedMovies = 0;
-
-router.get("/load-certifications", authMiddleware, async (req, res) => {
-  const movCertFile = path.resolve("data/movie_cert.json");
-  fileExists(movCertFile)
-    .then(() => {
-      fsPromises.readFile(movCertFile).then((fileDataBuffer) => {
-        const movieCertData = JSON.parse(fileDataBuffer.toString());
-        for (let cert in movieCertData) {
-          let certArr = movieCertData[cert];
-          for (let certData of certArr) {
-            let movC = new MovieCertification({
-              country: cert,
-              certification: certData.certification,
-              meaning: certData.meaning,
-              order: certData.order,
-            });
-            movC
-              .save()
-              .then(() => {
-                console.log("Mov Cert Saved.");
-              })
-              .catch((err) => {
-                console.error(err);
-              });
-          }
-        }
-      });
-    })
-    .catch((err) => {
-      console.error(err);
-      res.send(err);
-    });
-
-  const tvCertFile = path.resolve("data/tv_cert.json");
-  fileExists(tvCertFile)
-    .then(() => {
-      fsPromises.readFile(tvCertFile).then((fileDataBuffer) => {
-        const tvCertData = JSON.parse(fileDataBuffer.toString());
-        for (let cert in tvCertData) {
-          let certArr = tvCertData[cert];
-          for (let certData of certArr) {
-            let tvC = new TvCertification({
-              country: cert,
-              certification: certData.certification,
-              meaning: certData.meaning,
-              order: certData.order,
-            });
-            tvC
-              .save()
-              .then(() => {
-                console.log("TV Cert Saved.");
-              })
-              .catch((err) => {
-                console.error(err);
-              });
-          }
-        }
-      });
-    })
-    .catch((err) => {
-      console.error(err);
-      res.send(err);
-    });
-
-  res.send("Completed");
-});
-
-router.get("/load-tags", authMiddleware, async (req, res) => {
-  const tagsFile = path.resolve("data/tags.json");
-  fileExists(tagsFile)
-    .then(() => {
-      fsPromises.readFile(tagsFile).then((fileDataBuffer) => {
-        const tagsdata = JSON.parse(fileDataBuffer.toString());
-        const tags = tagsdata.tags;
-        const arr = [];
-        for (let tag of tags) {
-          arr.push({ name: tag });
-        }
-        Tags.insertMany(arr)
-          .then(() => res.send("Inserted"))
-          .catch((err) => {
-            if (err.code === 11000) {
-              // Don't report duplicate
-            } else {
-              console.error("some other error in saving tags");
-              res.send(err);
-            }
-          });
-      });
-    })
-    .catch((err) => {
-      console.error(err);
-      res.send(err);
-    });
-  res.send("Completed.");
-});
-
-async function fileExists(filePath) {
+// Helper function for certifications
+async function loadCertificationsFromJson(filePath, Model, typeLabel) {
+  if (!await fileExists(filePath)) {
+    console.warn(`${typeLabel} certification file not found: ${filePath}`);
+    return;
+  }
   try {
-    await fsPromises.access(filePath, fsPromises.constants.F_OK);
-    return true; // File exists
+    const fileDataBuffer = await fsPromises.readFile(filePath);
+    const certData = JSON.parse(fileDataBuffer.toString());
+    for (let country in certData) {
+      const certArr = certData[country];
+      for (let data of certArr) {
+        try {
+          const cert = new Model({
+            country,
+            certification: data.certification,
+            meaning: data.meaning,
+            order: data.order,
+          });
+          await cert.save();
+          console.log(`${typeLabel} Cert Saved: ${country} - ${data.certification}`);
+        } catch (err) {
+          if (err.code !== 11000) console.error(`Error saving ${typeLabel} cert:`, err);
+        }
+      }
+    }
   } catch (err) {
-    return false; // File does not exist
+    console.error(`Error loading ${typeLabel} certifications:`, err);
   }
 }
 
-router.get("/load-persons-from-cast", async (req, res) => {
-  updatedPersons = 0;
-  duplicatePersons = 0;
-  updatedMovies = 0;
-  const countPersons = await Person.countDocuments();
+router.get("/load-certifications", authMiddleware, asyncMiddleware(async (req, res) => {
+  await Promise.all([
+    loadCertificationsFromJson(path.resolve("data/movie_cert.json"), MovieCertification, "Movie"),
+    loadCertificationsFromJson(path.resolve("data/tv_cert.json"), TvCertification, "TV")
+  ]);
+  res.send("Certifications loading process completed.");
+}));
 
-  const databaseStats = new DatabaseStats({
-    collection_name: "persons",
-    records: countPersons,
-  });
-
-  databaseStats
-    .save()
-    .then(() => {
-      console.log("database stat updated");
-    })
-    .catch((err) => console.error(err));
-  
-  let movies = await Movie.find({credits:{$exists:false}}).limit(500);
-
-  for (let movie of movies) {
-    const url = `https://api.themoviedb.org/3/movie/${movie.id}/credits?language=en-US`;
-    // Wait for 0.1 Seconds
-    await delay(100);
-    await getAndUpdateMovies(url, movie);
+router.get("/load-tags", authMiddleware, asyncMiddleware(async (req, res) => {
+  const tagsFile = path.resolve("data/tags.json");
+  if (!await fileExists(tagsFile)) {
+    return res.status(404).send("Tags file not found");
   }
 
-  res
-    .status(200)
-    .send({
-      updatedMovies: updatedMovies,
-      updatedPersons: updatedPersons,
-      duplicatePersons: duplicatePersons,
-    });
-});
+  try {
+    const fileDataBuffer = await fsPromises.readFile(tagsFile);
+    const tagsData = JSON.parse(fileDataBuffer.toString());
+    const tags = tagsData.tags;
+    
+    let insertedCount = 0;
+    for (const tagName of tags) {
+      const exists = await Tags.exists({ name: tagName });
+      if (!exists) {
+        await Tags.create({ name: tagName });
+        insertedCount++;
+      }
+    }
+    res.send(`Completed. Inserted ${insertedCount} new tags.`);
+  } catch (err) {
+    console.error("Error in load-tags:", err);
+    res.status(500).send(err);
+  }
+}));
 
-async function getAndUpdateMovies(url, movie) {
+
+router.get("/sync-status", authMiddleware, asyncMiddleware(async (req, res) => {
+  const status = await SyncStatus.findOne({ syncName: "persons_sync" });
+  res.json(status || { isRunning: false });
+}));
+
+router.post("/stop-sync", authMiddleware, asyncMiddleware(async (req, res) => {
+  await SyncStatus.findOneAndUpdate(
+    { syncName: "persons_sync" },
+    { stopRequested: true }
+  );
+  res.json({ message: "Stop request sent" });
+}));
+
+router.get("/load-persons-from-cast", authMiddleware, asyncMiddleware(async (req, res) => {
+  let status = await SyncStatus.findOne({ syncName: "persons_sync" });
+  if (status && status.isRunning) {
+    return res.status(400).json({ status: "already_running" });
+  }
+
+  const moviesCount = await Movie.countDocuments({ credits: { $exists: false } });
+  
+  status = await SyncStatus.findOneAndUpdate(
+    { syncName: "persons_sync" },
+    {
+      isRunning: true,
+      stopRequested: false,
+      updatedMovies: 0,
+      updatedPersons: 0,
+      duplicatePersons: 0,
+      currentMovie: "Initializing...",
+      totalMovies: Math.min(moviesCount, 500),
+      lastUpdateTime: new Date()
+    },
+    { upsert: true, new: true }
+  );
+
+  // Start process in background
+  runBackgroundSync(status);
+
+  res.status(200).json({ status: "started" });
+}));
+
+async function runBackgroundSync(initialStatus) {
+  const stats = {
+    updatedPersons: 0,
+    duplicatePersons: 0,
+    updatedMovies: 0
+  };
+
+  try {
+    const movies = await Movie.find({ credits: { $exists: false } }).limit(500);
+
+    for (const movie of movies) {
+      // Check for stop request
+      const currentStatus = await SyncStatus.findOne({ syncName: "persons_sync" });
+      if (currentStatus && currentStatus.stopRequested) {
+        console.log("Sync stopped by user request.");
+        break;
+      }
+
+      const url = `https://api.themoviedb.org/3/movie/${movie.id}/credits?language=en-US`;
+      
+      await SyncStatus.findOneAndUpdate(
+        { syncName: "persons_sync" },
+        { currentMovie: movie.title, lastUpdateTime: new Date() }
+      );
+
+      await delay(100);
+      try {
+        await getAndUpdateMovies(url, movie, stats);
+        
+        // Persist stats to DB
+        await SyncStatus.findOneAndUpdate(
+          { syncName: "persons_sync" },
+          {
+            updatedMovies: stats.updatedMovies,
+            updatedPersons: stats.updatedPersons,
+            duplicatePersons: stats.duplicatePersons,
+            lastUpdateTime: new Date()
+          }
+        );
+      } catch (err) {
+        console.error(`Failed to process movie ${movie.id}: ${err.message}`);
+      }
+    }
+  } catch (err) {
+    console.error("Background sync failed:", err);
+  } finally {
+    await SyncStatus.findOneAndUpdate(
+      { syncName: "persons_sync" },
+      { isRunning: false, currentMovie: "Completed", lastUpdateTime: new Date() }
+    );
+    
+    // Update general database stats
+    const countPersons = await Person.countDocuments();
+    await DatabaseStats.findOneAndUpdate(
+      { collection_name: "persons" },
+      { records: countPersons, last_updated: new Date() },
+      { upsert: true }
+    );
+  }
+}
+
+async function getAndUpdateMovies(url, movie, stats) {
   const bearer_token = config.get("tmdb_bearer_token");
   const options = {
     method: "GET",
@@ -237,57 +354,52 @@ async function getAndUpdateMovies(url, movie) {
   };
 
   try {
-    const response = await fetch(url, options);
-    if(response.status != 200){
-      throw new Error('Error from TMDB Server. Error code: ${}');
+    const response = await fetchWithRateLimit(url, options);
+    if (response.status !== 200) {
+      throw new Error(`Error from TMDB Server. Status code: ${response.status}`);
     }
     const data = await response.json();
-    // const headers = response.headers;
-    // const respStatus = response.status;
-    // console.log(headers, 'header data of response')
-    // console.log(respStatus, 'status code')
     movie.credits = { cast: data.cast };
-    movie
-      .save()
-      .then(() => {
-        console.log("movie updated..", updatedMovies++);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-    for (let castMember of movie.credits.cast) {
-      // Wait for 0.1 Seconds
+    await movie.save();
+    console.log(`Movie updated: ${movie.title} (${++stats.updatedMovies})`);
+
+    // Process cast in parallel
+    const personPromises = movie.credits.cast.map(async (castMember) => {
       const isExist = await Person.exists({ id: castMember.id });
-      if (isExist != null) {
-        console.error("Pre-Duplicate Person", duplicatePersons++);
-        continue;
+      if (isExist) {
+        stats.duplicatePersons++;
+        return;
       }
-      await delay(100);
-      await loadPersonDetails(castMember.id, options);
-    }
+      return loadPersonDetails(castMember.id, options, stats);
+    });
+
+    await Promise.all(personPromises);
   } catch (err) {
-    console.error("App stopper", err);
+    console.error(`Error in getAndUpdateMovies for movie ${movie.id}:`, err);
+    throw err;
   }
 }
 
-async function loadPersonDetails(personId, options) {
+async function loadPersonDetails(personId, options, stats) {
   const url = `https://api.themoviedb.org/3/person/${personId}?append_to_response=external_ids%2Cmovie_credits%2Ctv_credits&language=en-US`;
 
-  const response = await fetch(url, options);
-  const data = await response.json();
-  const person = new Person(data);
-  person
-    .save()
-    .then(() => {
-      console.log("person saved..", updatedPersons++);
-    })
-    .catch((err) => {
-      if (err.code === 11000) {
-        console.error("Duplicate Person", duplicatePersons++);
-      } else {
-        console.error(err);
-      }
-    });
+  try {
+    const response = await fetchWithRateLimit(url, options);
+    if (response.status !== 200) {
+      console.error(`TMDB error fetching person ${personId}: ${response.status}`);
+      return;
+    }
+    const data = await response.json();
+    const person = new Person(data);
+    await person.save();
+    console.log(`Person saved: ${data.name} (${++stats.updatedPersons})`);
+  } catch (err) {
+    if (err.code === 11000) {
+      stats.duplicatePersons++;
+    } else {
+      console.error(`Error saving person ${personId}:`, err);
+    }
+  }
 }
 
 export default router;
