@@ -213,7 +213,7 @@ router.get("/v1/tags", (req, res) => {
     });
 });
 
-router.get("/v1/person/fav/:id?", (req, res) => {
+router.get("/v1/person/fav{/:id}", (req, res) => {
   const fav_person = new FavPerson({
     person: req.params.id,
     isFavourite: true,
@@ -230,7 +230,7 @@ router.get("/v1/person/fav/:id?", (req, res) => {
     });
 });
 
-router.get("/v1/person/known/:id?", (req, res) => {
+router.get("/v1/person/known{/:id}", (req, res) => {
   const fav_person = new FavPerson({ person: req.params.id, isKnown: true });
   fav_person
     .save()
@@ -244,7 +244,7 @@ router.get("/v1/person/known/:id?", (req, res) => {
     });
 });
 
-router.get("/v1/favperson/:id?", (req, res) => {
+router.get("/v1/favperson{/:id}", (req, res) => {
   FavPerson.findById(req.params.id)
     .populate("person known_movie")
     .then((result) => res.send(result))

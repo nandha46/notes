@@ -19,7 +19,6 @@ import SyncStatus from "../models/sync_status.js";
 
 import { promises as fsPromises } from "fs";
 import path from "path";
-import asyncMiddleware from '../middleware/async.js';
 import delay from "../services/delay_service.js";
 import fileExists from "../services/file_service.js";
 
@@ -105,7 +104,7 @@ async function fetchWithRateLimit(url, options, retries = 3) {
   }
 }
 
-router.get("/", authMiddleware, asyncMiddleware(async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
   const [
     totalPersons,
     malePersons,
@@ -170,7 +169,7 @@ router.get("/", authMiddleware, asyncMiddleware(async (req, res) => {
   };
 
   res.status(200).render("dashboard/actions", respData);
-}));
+});
 
 // Helper function for certifications
 async function loadCertificationsFromJson(filePath, Model, typeLabel) {
@@ -203,15 +202,15 @@ async function loadCertificationsFromJson(filePath, Model, typeLabel) {
   }
 }
 
-router.get("/load-certifications", authMiddleware, asyncMiddleware(async (req, res) => {
+router.get("/load-certifications", authMiddleware, async (req, res) => {
   await Promise.all([
     loadCertificationsFromJson(path.resolve("data/movie_cert.json"), MovieCertification, "Movie"),
     loadCertificationsFromJson(path.resolve("data/tv_cert.json"), TvCertification, "TV")
   ]);
   res.send("Certifications loading process completed.");
-}));
+});
 
-router.get("/load-tags", authMiddleware, asyncMiddleware(async (req, res) => {
+router.get("/load-tags", authMiddleware, async (req, res) => {
   const tagsFile = path.resolve("data/tags.json");
   if (!await fileExists(tagsFile)) {
     return res.status(404).send("Tags file not found");
@@ -235,23 +234,23 @@ router.get("/load-tags", authMiddleware, asyncMiddleware(async (req, res) => {
     console.error("Error in load-tags:", err);
     res.status(500).send(err);
   }
-}));
+});
 
 
-router.get("/sync-status", authMiddleware, asyncMiddleware(async (req, res) => {
+router.get("/sync-status", authMiddleware, async (req, res) => {
   const status = await SyncStatus.findOne({ syncName: "persons_sync" });
   res.json(status || { isRunning: false });
-}));
+});
 
-router.post("/stop-sync", authMiddleware, asyncMiddleware(async (req, res) => {
+router.post("/stop-sync", authMiddleware, async (req, res) => {
   await SyncStatus.findOneAndUpdate(
     { syncName: "persons_sync" },
     { stopRequested: true }
   );
   res.json({ message: "Stop request sent" });
-}));
+});
 
-router.get("/load-persons-from-cast", authMiddleware, asyncMiddleware(async (req, res) => {
+router.get("/load-persons-from-cast", authMiddleware, async (req, res) => {
   let status = await SyncStatus.findOne({ syncName: "persons_sync" });
   if (status && status.isRunning) {
     return res.status(400).json({ status: "already_running" });
@@ -278,7 +277,7 @@ router.get("/load-persons-from-cast", authMiddleware, asyncMiddleware(async (req
   runBackgroundSync(status);
 
   res.status(200).json({ status: "started" });
-}));
+});
 
 async function runBackgroundSync(initialStatus) {
   const stats = {
